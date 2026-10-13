@@ -1,87 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Bolsa Panadera de la Patagonia</title>
 <style>
-:root{--marron:#5D4037;--beige:#FFF8F0;--verde:#2E7D32;--claro:#EFEBE9}
+:root{--m:#5D4037;--b:#FFF8F0;--v:#2E7D32;--c:#EFEBE9}
 *{box-sizing:border-box}
-body{font-family:'Segoe UI',Arial,sans-serif;max-width:850px;margin:auto;background:var(--beige);padding:0;color:#3E2723}
-header{background:var(--marron);color:white;padding:16px 12px 14px 12px;border-radius:0 0 16px 16px;text-align:center;position:sticky;top:0;z-index:99}
-header h1{margin:0;font-size:18px;letter-spacing:0.3px}
-.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.nav button{background:var(--claro);color:var(--marron);border:none;padding:10px 16px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px}
-.nav button.active{background:var(--verde);color:white}
-.card{background:white;margin:14px 10px;padding:18px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid #E0D6D0}
-h2{color:var(--marron);margin:0 0 6px 0;font-size:19px}
-.leyenda{font-size:13px;color:#6D4C41;margin-bottom:10px;display:block}
-.btn{background:var(--verde);color:white;padding:13px;border:none;border-radius:10px;width:100%;font-size:14px;font-weight:bold;cursor:pointer}
-.btn-sec{background:var(--marron)}
-.admin{margin-top:14px;text-align:center;background:var(--claro);padding:14px 10px;border-radius:10px}
-.wsp{display:inline-block;background:var(--marron);color:white;padding:8px 14px;border-radius:7px;text-decoration:none;font-weight:bold;font-size:13px;margin-top:6px}
-.oculto{display:none}
-.trab{border-left:4px solid var(--verde);background:#F1F8E9;padding:11px;border-radius:10px;margin:10px 0;position:relative}
+body{font-family:Segoe UI,Arial,sans-serif;max-width:850px;margin:auto;background:var(--b);padding:0;color:#3E2723;position:relative}
+body::before{content:"🥐";position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:280px;opacity:0.06;z-index:-1;pointer-events:none}
+header{background:var(--m);color:#fff;padding:16px 12px;border-radius:0 0 16px 16px;text-align:center;position:sticky;top:0;z-index:99}
+.nav{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.nav button{background:var(--c);color:var(--m);border:none;padding:9px 15px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px}
+.nav button.active{background:var(--v);color:#fff}
+.card{background:#fff;margin:12px 10px;padding:18px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid #E0D6D0}
+h2{color:var(--m);margin:0 0 4px 0;font-size:18px}.leyenda{font-size:12px;color:#795548;margin-bottom:10px;display:block}
+label{font-weight:600;margin-top:11px;display:block;font-size:13px;color:var(--m)}
+input,select{width:100%;padding:10px;margin:4px 0;border:1.5px solid #D7CCC8;border-radius:8px;font-size:14px;background:#FFFBF8}
+.btn{background:var(--v);color:#fff;padding:13px;border:none;border-radius:10px;width:100%;font-size:15px;font-weight:bold;cursor:pointer;margin-top:14px}
+.btn2{background:var(--m)}.trab{border-left:4px solid var(--v);background:#F1F8E9;padding:11px;border-radius:10px;margin:10px 0;position:relative}
+.wsp{display:inline-block;background:#25D366;color:#fff;padding:7px 11px;border-radius:7px;text-decoration:none;font-weight:bold;margin-top:7px;font-size:13px}
 .del{position:absolute;top:6px;right:6px;background:#FFEBEE;color:#B71C1C;border:1px solid #FFCDD2;padding:3px 7px;border-radius:5px;cursor:pointer;font-size:11px}
-.badge{display:inline-block;background:#E8F5E9;color:var(--verde);padding:2px 7px;border-radius:12px;font-size:11px;font-weight:bold}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:600px){.grid2{grid-template-columns:1fr}}
-label{font-weight:600;margin-top:10px;display:block;font-size:13px;color:var(--marron)}
-input,select,textarea{width:100%;padding:10px;margin:4px 0;border:1.5px solid #D7CCC8;border-radius:8px;font-size:14px;background:#FFFBF8}
+.badge{display:inline-block;background:#E8F5E9;color:var(--v);padding:2px 7px;border-radius:12px;font-size:11px;font-weight:bold}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+.oculto{display:none}.admBox{margin-top:12px;text-align:center;background:var(--c);padding:10px;border-radius:10px}
 </style>
 </head>
 <body>
 <header>
 <h1>BOLSA PANADERA DE LA PATAGONIA</h1>
-<div style="font-size:12px;opacity:0.9;margin-top:3px">Gratis - Sin intermediarios - Toda la Patagonia</div>
+<div style="font-size:12px;opacity:.9">Gratis - Sin intermediarios - Toda la Patagonia</div>
 <div class="nav">
-<button id="b-inicio" class="active" onclick="ver('inicio')">INICIO</button>
-<button id="b-trabajo" onclick="ver('cargar')">BUSCO TRABAJO</button>
-<button id="b-empleado" onclick="ver('ver')">BUSCO EMPLEADO</button>
+<button id="b-i" class="active" onclick="ver('i')">INICIO</button>
+<button id="b-t" onclick="ver('t')">BUSCO TRABAJO</button>
+<button id="b-e" onclick="ver('e')">BUSCO EMPLEADO</button>
 </div>
 </header>
 
-<div id="sec-inicio" class="card">
+<div id="sec-i" class="card">
 <h2>Bienvenidos</h2>
-<span class="leyenda">Bolsa de trabajo del rubro panadero, pastelero, facturero y afines.<br><br>Conectamos panaderías con trabajadores con referencia real.</span>
-<p style="font-size:14px;line-height:1.5;margin-top:14px">
-✅ Cargá tu CV.<br>
-✅ Filtrá por oficio y ciudad.<br>
-✅ Contacto directo por WhatsApp.
-</p>
-<button class="btn" onclick="ver('cargar')" style="margin-top:18px">BUSCO TRABAJO - CARGAR MI CV</button>
-<button class="btn btn-sec" style="margin-top:10px" onclick="ver('ver')">BUSCO EMPLEADO</button>
-<div class="admin">
-<div style="font-size:13px;color:#3E2723">¿CV falso o problema?</div>
-<a class="wsp" href="#" onclick="contactoAdmin()">📲 CONTACTO ADMINISTRADOR</a>
-<div style="font-size:11px;color:#8D6E63;margin-top:6px">Para darte de baja enviá "Darme de baja"</div>
-<div style="margin-top:10px"><a href="#" onclick="ver('admin');return false" style="font-size:12px;color:var(--marron);text-decoration:underline">Ingresar como administrador</a></div>
+<span class="leyenda">Bolsa de trabajo panadero, pastelero, facturero y afines. Con referencia real.</span>
+<p style="line-height:1.5;font-size:14px">✅ Cargá tu CV<br>✅ Filtrá por oficio y ciudad<br>✅ Contacto directo por WhatsApp<br><br><small style="color:#795548"><b>Nota:</b> Medios y escuelas pueden difundir citando "Bolsa Panadera de la Patagonia". Para darte de baja enviá por WhatsApp "Darme de baja".</small></p>
+<button class="btn" onclick="ver('t')">BUSCO TRABAJO - CARGAR MI CV</button>
+<button class="btn btn2" style="margin-top:8px" onclick="ver('e')">BUSCO EMPLEADO</button>
+<div class="admBox">
+<a class="wsp" style="background:var(--m)" href="#" onclick="contactoAdmin()">📲 CONTACTO ADMINISTRADOR</a><br>
+<button onclick="ver('a')" style="margin-top:8px;background:transparent;border:none;color:var(--m);text-decoration:underline;font-size:12px;cursor:pointer">Ingresar como administrador</button>
 </div>
 </div>
 
-<div id="sec-cargar" class="card oculto">
-<h2>Cargar mi CV</h2>
-<span class="leyenda">Original cerrado.</span>
+<div id="sec-t" class="card oculto">
+<h2>Busco Trabajo</h2>
+<span class="leyenda">Sin asteriscos. Referencia real obligatoria.</span>
+
 <label>Oficio</label><select id="oficio"></select>
-<div class="grid2"><div><label>Provincia</label><select id="prov" onchange="cargarCiudades()"></select></div><div><label>Ciudad</label><select id="ciudad"></select></div></div>
-<label>Nombre y Apellido</label><input id="nombre">
+
+<div class="grid2">
+<div><label>Provincia</label><select id="prov" onchange="cargarCiudades()"></select></div>
+<div><label>Ciudad</label><select id="ciudad"></select><input id="otraCiudad" placeholder="Escribí tu ciudad" style="display:none"><input id="otraProv" placeholder="Provincia - Ciudad" style="display:none"></div>
+</div>
+
+<label>Nombre y Apellido completo</label><input id="nombre" placeholder="Ej: Juan Pérez">
 <label>WhatsApp</label><input id="wsp" placeholder="2974092277">
-<label>Último o actual trabajo</label><input id="ultimo">
-<label>Referencia con teléfono</label><input id="ref">
-<button class="btn" onclick="guardar()">GUARDAR MI CV</button>
-<p id="msg" style="color:green;text-align:center;font-weight:bold"></p>
+
+<label>Situación laboral actual</label>
+<select id="situacion">
+<option value="">-- Elegí tu situación --</option>
+<option value="Trabajando actualmente">Trabajando actualmente</option>
+<option value="Desempleado - último trabajo">Desempleado - último trabajo</option>
+<option value="Busco primer empleo">Busco primer empleo</option>
+<option value="Changas / Eventual">Changas / Eventual</option>
+</select>
+
+<div style="background:#FFF8E0;padding:11px;border-radius:10px;border:1px dashed #BCAAA4;margin-top:12px">
+<label style="margin-top:2px">Nombre de la panadería</label><input id="panaderia" placeholder="Panadería Don Bosco">
+<label>Dirección de la panadería</label><input id="direccion" placeholder="Don Bosco 1234, Comodoro">
+<label>Contacto de referencia - Teléfono</label><input id="referencia" placeholder="Carlos Encargado - 2974 12-3456">
 </div>
 
-<div id="sec-ver" class="card oculto">
+<button class="btn" onclick="guardar()">✅ YA ESTOY AUTORIZADO - GUARDAR MI CV</button>
+<p id="msg" style="color:var(--v);font-weight:bold;text-align:center"></p>
+</div>
+
+<div id="sec-e" class="card oculto">
 <h2>Busco Empleado</h2>
-<div id="lista"></div>
+<span class="leyenda">Filtro inteligente: si buscás pastelero, primero muestra pasteleros.</span>
+<div class="grid2">
+<div><label>Filtrar por oficio</label><select id="filtro" onchange="render()"></select></div>
+<div><label>Filtrar por provincia</label><select id="filtroProv" onchange="render()"><option value="">Todas</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option><option>Otros</option></select></div>
+</div>
+<div id="lista" style="margin-top:12px"></div>
+<div class="admBox"><a class="wsp" style="background:var(--m)" href="#" onclick="contactoAdmin()">📲 CONTACTO ADMINISTRADOR</a></div>
 </div>
 
-<div id="sec-admin" class="card oculto">
-<h2>🔐 Admin</h2>
-<label>Contraseña</label><input id="pass" type="password">
-<button class="btn btn-sec" onclick="loginAdmin()">INGRESAR</button>
-<p id="msgAdmin" style="color:red;text-align:center"></p>
+<div id="sec-a" class="card oculto">
+<h2>🔐 Ingresar como administrador</h2>
+<label>Contraseña</label><input id="pass" type="password" placeholder="panadera2024">
+<button class="btn btn2" onclick="loginAdmin()">INGRESAR</button>
+<p id="msgAdmin" style="color:red;text-align:center;font-size:13px"></p>
 <div id="panelAdmin" class="oculto"><div id="listaAdmin"></div></div>
 </div>
 
@@ -89,15 +104,44 @@ input,select,textarea{width:100%;padding:10px;margin:4px 0;border:1.5px solid #D
 const ADMIN_WSP="5492974092277";const CLAVE_ADMIN="panadera2024";
 function contactoAdmin(){window.open("https://wa.me/"+ADMIN_WSP+"?text=Hola%20admin%20Bolsa%20Panadera","_blank")}
 const OFICIOS=["Maestro panadero","Ayudante panadero","Pastelero/a","Facturero/a","Cajero/a","Repartidor","Atención al público","Limpieza","Churrero","Pizzero","Heladero","Cocinero","Otros"];
-const CIUDADES={"Chubut":["Comodoro Rivadavia","Rada Tilly","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento"],"Santa Cruz":["Río Gallegos","Caleta Olivia","Pico Truncado","Las Heras","El Calafate"],"Río Negro":["Viedma","Bariloche","General Roca","Cipolletti"],"Neuquén":["Neuquén Capital","Cutral Có","Zapala","San Martín"],"Tierra del Fuego":["Ushuaia","Río Grande","Tolhuin"],"Otros":[]};
-function ver(s){document.querySelectorAll('[id^=sec-]').forEach(x=>x.classList.add('oculto'));document.getElementById('sec-'+s).classList.remove('oculto');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));const m={inicio:'b-inicio',cargar:'b-trabajo',ver:'b-empleado'};if(m[s])document.getElementById(m[s]).classList.add('active');}
-function init(){const o=document.getElementById('oficio');OFICIOS.forEach(x=>{let a=document.createElement('option');a.value=x;a.text=x;o.appendChild(a);});const p=document.getElementById('prov');Object.keys(CIUDADES).forEach(pr=>{let op=document.createElement('option');op.value=pr;op.text=pr;p.appendChild(op);});cargarCiudades();}init();
-function cargarCiudades(){const prov=document.getElementById('prov').value,sel=document.getElementById('ciudad');sel.innerHTML='';(CIUDADES[prov]||[]).forEach(c=>{let op=document.createElement('option');op.value=c;op.text=c;sel.appendChild(op);});}
-let datos=JSON.parse(localStorage.getItem('bolsa_final')||'[]');
-function guardar(){const o=document.getElementById('oficio').value,p=document.getElementById('prov').value,c=document.getElementById('ciudad').value,n=document.getElementById('nombre').value,w=document.getElementById('wsp').value,u=document.getElementById('ultimo').value,r=document.getElementById('ref').value;if(!o||!p||!n||!w||!u||!r){alert('Faltan datos');return;}datos.push({oficio:o,prov:p,ciudad:c,nombre:n,wsp:w,ultimo:u,ref:r,fecha:Date.now()});localStorage.setItem('bolsa_final',JSON.stringify(datos));document.getElementById('msg').innerText='✅ Guardado';setTimeout(()=>ver('ver'),600);}
-function loginAdmin(){if(document.getElementById('pass').value===CLAVE_ADMIN){document.getElementById('panelAdmin').classList.remove('oculto');renderAdmin();}else document.getElementById('msgAdmin').innerText='Clave incorrecta';}
-function renderAdmin(){const cont=document.getElementById('listaAdmin');cont.innerHTML='';datos.forEach((t,i)=>{const d=document.createElement('div');d.className='trab';d.innerHTML=`<button class="del" onclick="borrar(${i})">X</button><b>${t.nombre}</b> <span class="badge">${t.oficio}</span><br><small>📍 ${t.ciudad} - ${t.prov}</small><br><small>🏭 ${t.ultimo}</small><br><small>⭐ ${t.ref}</small>`;cont.appendChild(d);});}
-function borrar(i){if(confirm('¿Borrar?')){if(confirm('¿Seguro?')){datos.splice(i,1);localStorage.setItem('bolsa_final',JSON.stringify(datos));renderAdmin();}}}
+const CIUDADES={"Chubut":["Comodoro Rivadavia","Rada Tilly","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Todas de Chubut"],"Santa Cruz":["Río Gallegos","Caleta Olivia","Pico Truncado","Las Heras","El Calafate","Todas de Santa Cruz"],"Río Negro":["Viedma","Bariloche","General Roca","Cipolletti","Todas de Río Negro"],"Neuquén":["Neuquén Capital","Cutral Có","Zapala","San Martín","Todas de Neuquén"],"Tierra del Fuego":["Ushuaia","Río Grande","Tolhuin","Todas de Tierra del Fuego"],"Otros":[]};
+function ver(s){document.querySelectorAll('[id^=sec-]').forEach(x=>x.classList.add('oculto'));document.getElementById('sec-'+s).classList.remove('oculto');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));const m={i:'b-i',t:'b-t',e:'b-e'};if(m[s])document.getElementById(m[s]).classList.add('active');if(s==='e')render();}
+function init(){
+const o=document.getElementById('oficio'),f=document.getElementById('filtro');o.innerHTML='<option value="">-- Elegí tu oficio --</option>';f.innerHTML='<option value="">Todos los oficios</option>';
+OFICIOS.forEach(x=>{let a=document.createElement('option');a.value=x;a.text=x;o.appendChild(a);let b=document.createElement('option');b.value=x;b.text=x;f.appendChild(b);});
+const p=document.getElementById('prov');Object.keys(CIUDADES).forEach(pr=>{let op=document.createElement('option');op.value=pr;op.text=pr;p.appendChild(op);});cargarCiudades();
+}init();
+function cargarCiudades(){
+const prov=document.getElementById('prov').value,sel=document.getElementById('ciudad'),otraC=document.getElementById('otraCiudad'),otraP=document.getElementById('otraProv');sel.innerHTML='';
+if(prov==='Otros'){sel.style.display='none';otraC.style.display='none';otraP.style.display='block';return;}
+sel.style.display='block';otraP.style.display='none';(CIUDADES[prov]||[]).forEach(c=>{let op=document.createElement('option');op.value=c;op.text=c;sel.appendChild(op);});let op=document.createElement('option');op.value='Otra';op.text='Otra (escribir)';sel.appendChild(op);
+sel.onchange=()=>{otraC.style.display=sel.value==='Otra'?'block':'none';};
+}
+let datos=JSON.parse(localStorage.getItem('bolsa_final_v10')||'[]');
+function guardar(){
+const oficio=document.getElementById('oficio').value,provSel=document.getElementById('prov').value;let prov=provSel,ciudad='';
+if(provSel==='Otros'){const txt=document.getElementById('otraProv').value.trim();if(!txt){alert('Escribí provincia y ciudad');return;}prov=txt;ciudad=txt;}
+else{prov=provSel;const ciSel=document.getElementById('ciudad').value;if(ciSel==='Otra'){ciudad=document.getElementById('otraCiudad').value.trim();if(!ciudad){alert('Escribí tu ciudad');return;}}else ciudad=ciSel;}
+const nombre=document.getElementById('nombre').value.trim(),wspRaw=document.getElementById('wsp').value.trim(),situacion=document.getElementById('situacion').value,panaderia=document.getElementById('panaderia').value.trim(),direccion=document.getElementById('direccion').value.trim(),referencia=document.getElementById('referencia').value.trim();
+if(!oficio||!prov||!ciudad||!nombre||!wspRaw||!situacion||!panaderia||!direccion||!referencia){alert('Faltan datos: Oficio, Provincia, Ciudad, Nombre completo, WhatsApp, Situación, Nombre panadería, Dirección y Referencia');return;}
+let n=wspRaw.replace(/\D/g,'');if(n.startsWith('0'))n=n.slice(1);if(n.startsWith('54'))n=n.slice(2);
+datos.push({oficio,prov,ciudad,nombre,wsp:n,situacion,panaderia,direccion,referencia,fecha:Date.now()});localStorage.setItem('bolsa_final_v10',JSON.stringify(datos));
+document.getElementById('msg').innerText='✅ ¡Guardado!';setTimeout(()=>ver('e'),600);
+}
+function render(){
+const f=document.getElementById('filtro').value,fp=document.getElementById('filtroProv').value,cont=document.getElementById('lista');let lista=[...datos];
+if(fp)lista=lista.filter(t=>t.prov.toLowerCase().includes(fp.toLowerCase()));
+if(f)lista.sort((a,b)=>{const ai=a.oficio.toLowerCase().includes(f.toLowerCase())?0:1,bi=b.oficio.toLowerCase().includes(f.toLowerCase())?0:1;if(ai!==bi)return ai-bi;return b.fecha-a.fecha;});else lista.sort((a,b)=>b.fecha-a.fecha);
+if(!lista.length){cont.innerHTML='<p style="font-size:13px">No hay CVs aún.</p>';return;}
+cont.innerHTML='';lista.forEach(t=>{const d=document.createElement('div');d.className='trab';
+d.innerHTML=`<b>${t.nombre}</b> <span class="badge">${t.oficio}</span><br><small>📍 ${t.ciudad} - ${t.prov} | ${t.situacion}</small><br><small>🏭 ${t.panaderia} - ${t.direccion}</small><br><small>⭐ Ref: ${t.referencia}</small><br><small>📱 Wsp: ${t.wsp}</small><br><a class="wsp" href="https://wa.me/549${t.wsp}" target="_blank">WhatsApp ${t.nombre}</a>`;cont.appendChild(d);});
+}
+function loginAdmin(){if(document.getElementById('pass').value===CLAVE_ADMIN){document.getElementById('panelAdmin').classList.remove('oculto');renderAdmin();}else document.getElementById('msgAdmin').innerText='Contraseña incorrecta';}
+function renderAdmin(){
+const cont=document.getElementById('listaAdmin');let lista=[...datos].sort((a,b)=>b.fecha-a.fecha);cont.innerHTML='';
+lista.forEach(t=>{const idx=datos.indexOf(t);const d=document.createElement('div');d.className='trab';d.innerHTML=`<button class="del" onclick="borrar(${idx})">X</button><b>${t.nombre}</b> <span class="badge">${t.oficio}</span><br><small>📍 ${t.ciudad} - ${t.prov} | ${t.situacion}</small><br><small>🏭 ${t.panaderia} | ${t.direccion}</small><br><small>⭐ ${t.referencia} | Wsp: ${t.wsp}</small>`;cont.appendChild(d);});
+}
+function borrar(i){const t=datos[i];if(confirm(`¿Borrar CV de ${t.nombre}?\n${t.panaderia}\n\n1er confirmación`)){if(confirm(`¿Seguro? 2da confirmación definitiva.`)){datos.splice(i,1);localStorage.setItem('bolsa_final_v10',JSON.stringify(datos));renderAdmin();render();}}}
 </script>
 </body>
 </html>
