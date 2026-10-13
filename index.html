@@ -3,21 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolsa Panadera de la Patagonia</title>
+<title>Bolsa Panadera de la Patagonia - v15 Completa</title>
 <style>
-body{font-family:Arial,sans-serif;max-width:750px;margin:auto;padding:15px;background:#FFF8F0}
-h1{background:#FF6F00;color:white;padding:16px;border-radius:12px;text-align:center;margin:0}
-.sub{text-align:center;color:#555;margin:8px 0 15px 0}
-.card{background:white;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:16px}
-label{font-weight:bold;margin-top:10px;display:block}
-input,select{width:100%;padding:11px;margin:6px 0 2px 0;border:1.5px solid #ccc;border-radius:8px;box-sizing:border-box}
-small.hint{color:#D32F2F;font-weight:bold;display:block;margin:4px 0 12px 0;font-size:13px;line-height:1.3}
-small.hint2{color:#666;display:block;margin:4px 0 12px 0;font-size:13px}
-button{background:#E65100;color:white;padding:13px;border:none;border-radius:9px;width:100%;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
+body{font-family:Arial,sans-serif;max-width:780px;margin:auto;padding:14px;background:#FFF8F0}
+h1{background:#FF6F00;color:white;padding:18px;border-radius:14px;text-align:center;margin:0;font-size:22px}
+.sub{text-align:center;color:#555;margin:8px 0 16px 0}
+.card{background:white;padding:18px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.1);margin-bottom:18px}
+label{font-weight:bold;margin-top:12px;display:block}
+input,select{width:100%;padding:12px;margin:6px 0 2px 0;border:1.6px solid #ccc;border-radius:9px;box-sizing:border-box;font-size:15px}
+small.hint{color:#C62828;font-weight:bold;display:block;margin:5px 0 12px 0;font-size:13px;line-height:1.35}
+small.hint2{color:#555;display:block;margin:5px 0 12px 0;font-size:13px}
+button{background:#E65100;color:white;padding:14px;border:none;border-radius:10px;width:100%;font-size:17px;font-weight:bold;cursor:pointer;margin-top:12px}
 button:hover{background:#BF360C}
-.trab{border-left:5px solid #FF6F00;background:#FFF3E0;padding:12px;border-radius:8px;margin:12px 0}
-.wsp{display:inline-block;background:#25D366;color:white;padding:8px 14px;border-radius:7px;text-decoration:none;font-weight:bold;margin-top:8px}
-.del{float:right;background:#ffebee;color:#c62828;border:1px solid #ffcdd2;padding:4px 8px;border-radius:6px;cursor:pointer}
+.trab{border-left:5px solid #FF6F00;background:#FFF3E0;padding:13px;border-radius:10px;margin:12px 0;position:relative}
+.wsp{display:inline-block;background:#25D366;color:white;padding:9px 15px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:9px}
+.del{position:absolute;top:8px;right:8px;background:#ffebee;color:#c62828;border:1px solid #ffcdd2;padding:5px 10px;border-radius:7px;cursor:pointer;font-weight:bold}
+.badge{display:inline-block;background:#FFE0B2;color:#E65100;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:bold;margin-left:6px}
 </style>
 </head>
 <body>
@@ -26,154 +27,93 @@ button:hover{background:#BF360C}
 
 <div class="card">
 <h3 style="margin-top:0">Cargar mi CV</h3>
-
 <label>Oficio *</label>
-<select id="oficio" onchange="toggleOtro()">
-<option value="">-- Elegí --</option>
-<option>Maestro panadero</option><option>Ayudante panadero</option><option>Pastelero/a</option><option>Facturero/a</option><option>Cajero/a</option><option>Repartidor</option><option>Atención al público</option><option>Limpieza</option><option>Otros</option>
-</select>
-<input id="otroOficio" placeholder="¿Qué oficio? Ej: Pizzero" style="display:none">
-
+<select id="oficio"></select>
+<input id="otroOficio" placeholder="¿Qué oficio? Ej: Pizzero / Churrero" style="display:none">
 <label>Provincia *</label>
-<select id="prov" onchange="cargarCiudades()">
-<option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option><option>Otros</option>
-</select>
-
+<select id="prov" onchange="cargarCiudades()"></select>
 <label>Ciudad / Localidad *</label>
-<select id="ciudad"></select>
-<input id="otraCiudad" placeholder="Escribí tu ciudad, Ej: Comodoro" style="display:none">
+<select id="ciudad" onchange="toggleOtraCiudad()"></select>
+<input id="otraCiudad" placeholder="Escribí tu ciudad, Ej: Comodoro Rivadavia" style="display:none">
 <input id="otraProv" placeholder="Escribí tu provincia y ciudad, Ej: La Pampa - Santa Rosa" style="display:none">
-
 <label>Nombre y Apellido *</label>
 <input id="nombre" placeholder="Ej: Juan Pérez">
-
 <label>WhatsApp *</label>
 <input id="wsp" type="tel" placeholder="Ej: 2974092277">
-<small class="hint">⚠️ IMPORTANTE: Cargá SOLO números. Ej: 2974092277<br>Sin 0 adelante, sin +54, sin espacios, sin guiones.</small>
-
-<label>Referencia / Última panadería *</label>
-<input id="ref" placeholder="Ej: Panadería La Espiga - Jefe: Carlos 2974...">
-<small class="hint2">Obligatorio. Es para dar confianza. Ej: Trabajé en Don Bosco, Comodoro.</small>
-
+<small class="hint">⚠️ IMPORTANTE: Cargá SOLO números. Ej: 2974092277<br>Sin 0 adelante, sin +54, sin espacios, sin guiones. Así el botón funciona bien.</small>
+<label>Referencia / Última panadería * (obligatorio para dar confianza)</label>
+<input id="ref" placeholder="Ej: Panadería La Espiga - Jefe Carlos 2974... - 2 años">
+<small class="hint2">Es obligatorio. Ej: Trabajé en Don Bosco, Comodoro. Encargado: Juan.</small>
 <button onclick="guardar()">GUARDAR MI CV GRATIS</button>
 <p id="msg"></p>
 </div>
 
 <div class="card">
-<h3 style="margin-top:0">🔍 Ver Trabajadores</h3>
-<label>Filtrar por oficio (muestra primero los de ese oficio)</label>
-<select id="filtro" onchange="render()"><option value="">Todos los oficios</option><option>Maestro panadero</option><option>Ayudante panadero</option><option>Pastelero/a</option><option>Facturero/a</option><option>Cajero/a</option><option>Repartidor</option><option>Atención al público</option><option>Limpieza</option><option>Otros</option></select>
+<h3 style="margin-top:0">🔍 Ver Trabajadores - Filtra por oficio</h3>
+<small class="hint2">Si filtrás por "Pastelero", primero aparecen los pasteleros y abajo el resto. Para contratar rápido.</small>
+<label>Filtrar por oficio</label>
+<select id="filtro" onchange="render()"></select>
 <div id="lista"></div>
 </div>
 
 <script>
-const ciudades = {
-"Chubut":["Comodoro Rivadavia","Rada Tilly","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Todas de Chubut"],
-"Santa Cruz":["Río Gallegos","Caleta Olivia","Pico Truncado","Las Heras","El Calafate","Todas de Santa Cruz"],
-"Río Negro":["Viedma","Bariloche","General Roca","Cipolletti","Villa Regina","Todas de Río Negro"],
-"Neuquén":["Neuquén Capital","Cutral Có","Zapala","San Martín de los Andes","Todas de Neuquén"],
+const OFICIOS=["Maestro panadero","Ayudante panadero","Pastelero/a","Facturero/a","Cajero/a","Repartidor","Atención al público","Limpieza","Churrero","Pizzero","Otros"];
+const CIUDADES={
+"Chubut":["Comodoro Rivadavia","Rada Tilly","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Gaiman","Dolavon","Todas de Chubut"],
+"Santa Cruz":["Río Gallegos","Caleta Olivia","Pico Truncado","Las Heras","El Calafate","Río Turbio","Puerto Deseado","Todas de Santa Cruz"],
+"Río Negro":["Viedma","Bariloche","General Roca","Cipolletti","Villa Regina","Allen","Cinco Saltos","Todas de Río Negro"],
+"Neuquén":["Neuquén Capital","Cutral Có","Zapala","San Martín de los Andes","Villa La Angostura","Plottier","Centenario","Todas de Neuquén"],
 "Tierra del Fuego":["Ushuaia","Río Grande","Tolhuin","Todas de Tierra del Fuego"],
 "Otros":[]
 };
-
-function toggleOtro(){
- const o=document.getElementById('oficio').value;
- document.getElementById('otroOficio').style.display = o==='Otros'?'block':'none';
+const PROVS=Object.keys(CIUDADES);
+function initSelects(){
+ const of=document.getElementById('oficio');const filt=document.getElementById('filtro');
+ of.innerHTML='<option value="">-- Elegí tu oficio --</option>';filt.innerHTML='<option value="">Todos los oficios</option>';
+ OFICIOS.forEach(o=>{let op=document.createElement('option');op.value=o;op.text=o;of.appendChild(op);let op2=document.createElement('option');op2.value=o;op2.text=o;filt.appendChild(op2);});
+ const p=document.getElementById('prov');PROVS.forEach(pr=>{let op=document.createElement('option');op.value=pr;op.text=pr;p.appendChild(op);});
 }
+initSelects();
+document.getElementById('oficio').addEventListener('change', e=>{
+ document.getElementById('otroOficio').style.display = e.target.value==='Otros'?'block':'none';
+});
 function cargarCiudades(){
- const prov=document.getElementById('prov').value;
- const sel=document.getElementById('ciudad');
- const otraC=document.getElementById('otraCiudad');
- const otraP=document.getElementById('otraProv');
+ const prov=document.getElementById('prov').value;const sel=document.getElementById('ciudad');
  sel.innerHTML='';
- if(prov==='Otros'){
-   sel.style.display='none'; otraC.style.display='none'; otraP.style.display='block';
-   return;
- }else{
-   sel.style.display='block'; otraP.style.display='none'; otraC.style.display='none';
- }
- (ciudades[prov]||[]).forEach(c=>{let op=document.createElement('option');op.value=c;op.text=c;sel.appendChild(op);});
+ if(prov==='Otros'){sel.style.display='none';document.getElementById('otraProv').style.display='block';return;}
+ else{sel.style.display='block';document.getElementById('otraProv').style.display='none';}
+ (CIUDADES[prov]||[]).forEach(c=>{let op=document.createElement('option');op.value=c;op.text=c;sel.appendChild(op);});
+ sel.innerHTML+='<option value="Otra">Otra (escribir)</option>';
 }
 cargarCiudades();
-document.getElementById('prov').addEventListener('change', e=>{
- if(e.target.value==='Otros'){
-   document.getElementById('otraProv').style.display='block';
-   document.getElementById('ciudad').style.display='none';
- }else{
-   document.getElementById('otraProv').style.display='none';
-   document.getElementById('ciudad').style.display='block';
-   cargarCiudades();
- }
-});
-
-let datos = JSON.parse(localStorage.getItem('bolsa_patagonia_v14')||'[]');
-
+function toggleOtraCiudad(){document.getElementById('otraCiudad').style.display = document.getElementById('ciudad').value==='Otra'?'block':'none';}
+let datos = JSON.parse(localStorage.getItem('bolsa_patagonia_v15')||'[]');
 function validarTelefono(raw){
- let n = raw.replace(/\D/g,''); // saca todo lo que no es numero
- if(n.startsWith('0')) n = n.substring(1);
- if(n.startsWith('54')) n = n.substring(2);
- if(n.length < 9 || n.length > 11) return null;
- return n;
+ let n = raw.replace(/\D/g,'');if(n.startsWith('0')) n=n.substring(1);if(n.startsWith('54')) n=n.substring(2);
+ if(n.length < 9 || n.length > 11) return null;return n;
 }
-
 function guardar(){
- const oficioSel=document.getElementById('oficio').value;
- const oficio = oficioSel==='Otros'? (document.getElementById('otroOficio').value.trim()||'Otros') : oficioSel;
- const provSel=document.getElementById('prov').value;
- let prov=provSel, ciudad='';
- if(provSel==='Otros'){
-   prov=document.getElementById('otraProv').value.trim();
-   ciudad=prov;
- }else{
-   ciudad=document.getElementById('ciudad').value;
- }
- const nombre=document.getElementById('nombre').value.trim();
- const wspRaw=document.getElementById('wsp').value.trim();
- const ref=document.getElementById('ref').value.trim();
- if(!oficio||!prov||!nombre||!wspRaw||!ref){alert('Completá todos los campos con *');return;}
- const wsp=validarTelefono(wspRaw);
- if(!wsp){alert('⚠️ WhatsApp incorrecto.\nCargá SOLO números.\nEj correcto: 2974092277\n(Sin 0, sin +54, sin espacios)');return;}
- datos.push({oficio,prov,ciudad,nombre,wsp,ref,fecha:Date.now()});
- localStorage.setItem('bolsa_patagonia_v14', JSON.stringify(datos));
- document.getElementById('msg').innerHTML='✅ ¡Guardado! Ya aparecés en la lista.';
- document.getElementById('nombre').value='';document.getElementById('wsp').value='';document.getElementById('ref').value='';
- render();
+ const oficioSel=document.getElementById('oficio').value;const otroOf=document.getElementById('otroOficio').value.trim();
+ const oficio = oficioSel==='Otros'? (otroOf||'Otros') : oficioSel;
+ const provSel=document.getElementById('prov').value;let prov=provSel, ciudad='';
+ if(provSel==='Otros'){const txt=document.getElementById('otraProv').value.trim();if(!txt){alert('Escribí provincia y ciudad');return;}prov=txt;ciudad=txt;}
+ else{prov=provSel;const ciSel=document.getElementById('ciudad').value;if(ciSel==='Otra') ciudad=document.getElementById('otraCiudad').value.trim();else ciudad=ciSel;}
+ const nombre=document.getElementById('nombre').value.trim();const wspRaw=document.getElementById('wsp').value.trim();const ref=document.getElementById('ref').value.trim();
+ if(!oficio||!prov||!ciudad||!nombre||!wspRaw||!ref){alert('Completá todos los campos con * - La referencia es obligatoria');return;}
+ const wsp=validarTelefono(wspRaw);if(!wsp){alert('⚠️ WhatsApp incorrecto. Cargá SOLO números. Correcto: 2974092277');return;}
+ datos.push({oficio,prov,ciudad,nombre,wsp,ref,fecha:Date.now()});localStorage.setItem('bolsa_patagonia_v15', JSON.stringify(datos));
+ document.getElementById('msg').innerHTML='✅ ¡Guardado! Ya aparecés primero en la lista.';document.getElementById('nombre').value='';document.getElementById('wsp').value='';document.getElementById('ref').value='';render();
 }
-
 function render(){
- const filtro=document.getElementById('filtro').value;
- const cont=document.getElementById('lista');
- let lista=[...datos];
- if(filtro){
-   lista.sort((a,b)=>{
-     const aMatch = a.oficio.toLowerCase().includes(filtro.toLowerCase())? -1 : 1;
-     const bMatch = b.oficio.toLowerCase().includes(filtro.toLowerCase())? -1 : 1;
-     return aMatch - bMatch;
-   });
- }
+ const filtro=document.getElementById('filtro').value;const cont=document.getElementById('lista');let lista=[...datos];
+ if(filtro){lista.sort((a,b)=>{const aIs = a.oficio.toLowerCase().includes(filtro.toLowerCase())? 0 : 1;const bIs = b.oficio.toLowerCase().includes(filtro.toLowerCase())? 0 : 1;if(aIs!==bIs) return aIs-bIs;return b.fecha - a.fecha;});}
+ else{lista.sort((a,b)=>b.fecha-a.fecha);}
  if(lista.length===0){cont.innerHTML='<p>No hay trabajadores aún. ¡Sé el primero!</p>';return;}
- cont.innerHTML='';
- [...lista].reverse().forEach((t,i)=>{
-   const idx = datos.indexOf(t);
-   const div=document.createElement('div');div.className='trab';
-   div.innerHTML=`<button class="del" onclick="borrar(${idx})">X</button>
-   <b>${t.nombre} - ${t.ciudad||t.prov}</b><br>${t.oficio}<br><small>Ref: ${t.ref}</small><br>
-   <a class="wsp" href="https://wa.me/54${t.wsp}?text=Hola%20${encodeURIComponent(t.nombre)}%2C%20vi%20tu%20CV%20en%20la%20Bolsa%20Panadera%20Patagonia" target="_blank">WhatsApp ${t.nombre}</a>`;
-   cont.appendChild(div);
- });
+ cont.innerHTML='';lista.forEach((t)=>{const realIdx = datos.indexOf(t);const div=document.createElement('div');div.className='trab';
+ div.innerHTML=`<button class="del" onclick="borrar(${realIdx})">X</button><b>${t.nombre}</b> <span class="badge">${t.oficio}</span><br><small>📍 ${t.ciudad} - ${t.prov}</small><br><small>Ref: ${t.ref}</small><br><a class="wsp" href="https://wa.me/549${t.wsp}?text=Hola%20${encodeURIComponent(t.nombre)}%2C%20vi%20tu%20CV%20en%20la%20Bolsa%20Panadera%20Patagonia" target="_blank">📱 WhatsApp ${t.nombre}</a>`;cont.appendChild(div);});
 }
-function borrar(idx){
- if(confirm('¿Seguro que querés borrar este CV?\nSe borra de la app para todos, pero quedará guardado en tu Excel como respaldo.')){
-   datos.splice(idx,1);
-   localStorage.setItem('bolsa_patagonia_v14', JSON.stringify(datos));
-   render();
- }
-}
+function borrar(idx){const t=datos[idx];if(confirm(`¿Seguro que querés borrar el CV de ${t.nombre}?\nSe borra de la app para todos. Para borrar perfiles falsos o de prueba.`)){datos.splice(idx,1);localStorage.setItem('bolsa_patagonia_v15', JSON.stringify(datos));render();}}
 render();
-
-// NOTA: Para conectar con tu Google Sheet real, reemplazá la función guardar() y render() con el fetch a tu SCRIPT_URL que ya tenías en la v13.
-// Tu URL es: https://script.google.com/macros/s/... /exec (la misma que usaste en Tiiny)
-// Si querés te la conecto yo, pasame tu URL del Apps Script.
 </script>
 </body>
 </html>
