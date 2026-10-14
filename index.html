@@ -72,7 +72,6 @@ function verificarAcceso(){
  let encontrado = empleadores.find(e=> e.tel.replace(/[^0-9]/g,'')===telIngresado );
  if(!encontrado){msgAcceso.innerText='Ese número no pidió autorización. Primero registrate en BUSCO EMPLEADO.';return;}
  if(!encontrado.autorizado){msgAcceso.innerText='Tu solicitud está pendiente. Todavía no estás autorizado por el admin.';return;}
- // autorizado ok
  msgAcceso.innerText='';
  bienvenidaPana.innerText=`Hola ${encontrado.nombreP} - ${encontrado.direccion} - Acceso autorizado`;
  abrirListaPublicaDirecto();
@@ -83,7 +82,7 @@ function abrirListaPublicaDirecto(){
  if(t.length==0){html='<p style="font-size:13px;color:#666">Todavía no hay postulantes.</p>'}
  else{t.slice().reverse().forEach(x=>{
   let telLimpio = x.tel.replace(/[^0-9]/g,'');
-  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} ${x.prov?'- '+x.prov:''} • Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, soy de ${encodeURIComponent(document.getElementById('telAcceso').value? 'Panaderia autorizada' : '')} te vi en Bolsa Panadera por ${encodeURIComponent(x.oficio)}" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
+  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} ${x.prov?'- '+x.prov:''} • Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, soy de Panaderia autorizada te vi en Bolsa Panadera por ${encodeURIComponent(x.oficio)}" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
  });}
  document.getElementById('contenidoListaPublica').innerHTML=html;
  ver('listaPublica');
