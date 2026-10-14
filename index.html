@@ -1,140 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOLSA PANADERA v31 FIX</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOLSA PANADERA PATAGONIA v32 FINAL</title>
 <style>
-:root{--azul:#0A1931;--amarillo:#FFC947}
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
-body{background:var(--azul);color:#fff;padding:12px}
-header{background:var(--amarillo);color:var(--azul);padding:18px;border-radius:12px;text-align:center;font-weight:900;font-size:20px;margin-bottom:12px}
-.card{background:#fff;color:var(--azul);padding:16px;border-radius:12px;margin:10px 0}
-button{background:var(--amarillo);color:var(--azul);border:0;padding:13px;border-radius:10px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
-button.verde{background:#27ae60;color:#fff}
-input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #999;margin:6px 0;font-size:16px;background:#fff;color:#000}
-.filters{border:2px solid #0A1931;padding:8px;border-radius:10px;background:#f5f5f5}
-.item{border-bottom:1px solid #ddd;padding:10px 0}
-.badge{background:var(--azul);color:var(--amarillo);padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700}
-.hidden{display:none}
+:root{--azul:#0A1931;--amarillo:#FFC947}*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:var(--azul);color:#fff;padding:12px}header{background:var(--amarillo);color:var(--azul);padding:18px;border-radius:12px;text-align:center;font-weight:900;font-size:20px;margin-bottom:12px}
+.card{background:#fff;color:var(--azul);padding:16px;border-radius:12px;margin:10px 0}button{background:var(--amarillo);color:var(--azul);border:0;padding:13px;border-radius:10px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
+button.verde{background:#27ae60;color:#fff}input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #999;margin:6px 0;font-size:16px;background:#fff;color:#000}
+.filters{background:#f0f0f0;border:2px solid #0A1931;padding:10px;border-radius:10px}.item{border-bottom:1px solid #ddd;padding:10px 0}.badge{background:var(--azul);color:var(--amarillo);padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700}.hidden{display:none}
 </style>
 </head>
 <body>
-<header>🍞 BOLSA PANADERA PATAGONIA<br><small>v31 - FILTROS ARREGLADOS</small></header>
-
+<header>🍞 BOLSA PANADERA PATAGONIA<br><small>v32 FINAL - 2 CLICS</small></header>
 <div id="menu">
 <button onclick="show('trabajador')">🥖 BUSCO TRABAJO</button>
 <button onclick="show('panaderia')">🏪 BUSCO EMPLEADO</button>
-<button onclick="show('autorizada')">✅ SOY PANADERIA AUTORIZADA - BUSCAR</button>
+<button onclick="show('autorizada')">✅ AUTORIZADA - FILTRO PROV > CIUDAD</button>
 <button onclick="show('admin')">🔐 ADMIN</button>
 </div>
 
 <div id="trabajador" class="card hidden">
-<h3>🥖 CARGA TRABAJADOR</h3>
-<input id="t_nombre" placeholder="Nombre *">
-<input id="t_wsp" placeholder="WhatsApp *">
-<label>Provincia *</label>
-<select id="t_provincia" onchange="cargarCiudadesTrabajador()">
-<option value="">-- Elegí Provincia --</option>
-<option value="Chubut">Chubut</option>
-<option value="Santa Cruz">Santa Cruz</option>
-<option value="Rio Negro">Rio Negro</option>
-<option value="Neuquen">Neuquen</option>
-<option value="Tierra del Fuego">Tierra del Fuego</option>
-</select>
-<label>Ciudad *</label>
-<select id="t_ciudad"><option>Primero elegí provincia arriba</option></select>
-<input id="t_ciudad_manual" placeholder="Si no está tu ciudad escribila acá" style="display:none;border:2px solid red">
-<select id="t_oficio"><option value="">Oficio *</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option></select>
-<input id="t_pana1_n" placeholder="Panadería referencia">
-<button class="verde" onclick="guardarTrabajador()">✅ GUARDAR</button>
-<button onclick="show('menu')">VOLVER</button>
-<div id="t_msg"></div>
+<h3>🥖 BUSCO TRABAJO - COMPLETO</h3>
+<input id="t_nombre" placeholder="Nombre *"><input id="t_wsp" placeholder="WhatsApp *">
+<select id="t_prov" onchange="updCiudad('t_prov','t_ciu','t_ciu_man')"><option value="">Provincia *</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
+<select id="t_ciu"><option>Primero elegí provincia</option></select>
+<input id="t_ciu_man" placeholder="Tu ciudad si no está en lista" style="display:none">
+<select id="t_of"><option value="">Oficio *</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero/a</option></select>
+<input id="t_exp" placeholder="Experiencia"><input id="t_ref1" placeholder="Panaderia referencia nombre"><input id="t_ref1tel" placeholder="Panaderia referencia tel">
+<button class="verde" onclick="saveT()">✅ GUARDAR EN SHEET ORIGINAL</button><button onclick="show('menu')">VOLVER</button><div id="t_msg"></div>
 </div>
 
 <div id="panaderia" class="card hidden">
-<h3>🏪 BUSCO EMPLEADO</h3>
-<input id="p_nombreP" placeholder="Nombre Panadería">
-<input id="p_tel" placeholder="Tel">
-<input id="p_puesto" placeholder="Puesto">
-<button class="verde" onclick="guardarPanaderia()">ENVIAR</button>
-<button onclick="show('menu')">VOLVER</button>
-<div id="p_msg"></div>
+<h3>🏪 BUSCO EMPLEADO - COMPLETO</h3>
+<input id="p_resp" placeholder="Tu nombre"><input id="p_nom" placeholder="Nombre Panaderia *"><input id="p_dir" placeholder="Dirección"><input id="p_puesto" placeholder="Puesto *"><input id="p_tel" placeholder="Tel *"><input id="p_turno" placeholder="Turno">
+<button class="verde" onclick="saveP()">✅ ENVIAR</button><button onclick="show('menu')">VOLVER</button><div id="p_msg"></div>
 </div>
 
 <div id="autorizada" class="card hidden">
-<h3>✅ FILTRO - AHORA SI SE DESPLIEGA</h3>
+<h3>✅ FILTRO - PROVINCIA > CIUDAD (ARREGLADO)</h3>
 <div class="filters">
-<label><b>1- Oficio:</b></label>
-<select id="f_oficio" onchange="filtrar()"><option value="">-- Todos Oficios --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option></select>
-<label><b>2- Provincia:</b></label>
-<select id="f_prov" onchange="cargarCiudadesFiltro()"><option value="">-- Todas Provincias --</option><option value="Chubut">Chubut</option><option value="Santa Cruz">Santa Cruz</option><option value="Rio Negro">Rio Negro</option><option value="Neuquen">Neuquen</option><option value="Tierra del Fuego">Tierra del Fuego</option></select>
-<label><b>3- Ciudad (depende de provincia):</b></label>
-<select id="f_ciudad" onchange="filtrar()"><option value="">-- Primero elegí provincia arriba --</option></select>
+<label>Oficio:</label><select id="f_of" onchange="filtrar()"><option value="">Todos</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option></select>
+<label>Provincia:</label><select id="f_prov" onchange="updCiudad('f_prov','f_ciu','');filtrar()"><option value="">Todas</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
+<label>Ciudad:</label><select id="f_ciu" onchange="filtrar()"><option value="">Primero elegí provincia arriba</option></select>
 </div>
-<button class="verde" onclick="cargarDesdeSheet()">🔄 CARGAR TRABAJADORES DEL SHEET</button>
-<div id="listaTrabajadores" style="margin-top:10px">Tocá CARGAR</div>
+<button class="verde" onclick="cargar()">🔄 CARGAR DESDE SHEET ORIGINAL</button>
+<div id="lista" style="margin-top:10px">Tocá CARGAR</div>
 <button onclick="show('menu')">VOLVER</button>
 </div>
 
 <div id="admin" class="card hidden">
-<h3>🔐 ADMIN</h3>
-<input id="admin_pass" type="password" placeholder="Clave chanchadas">
-<button onclick="loginAdmin()">ENTRAR</button>
-<div id="adminPanel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:10px;border-radius:8px"></div><div id="adminTrab"></div></div>
+<h3>🔐 ADMIN</h3><input id="a_pass" type="password" placeholder="Clave"><button onclick="login()">ENTRAR</button>
+<div id="a_panel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:10px;border-radius:8px;margin:8px 0"></div><div id="a_trab"></div></div>
 <button onclick="show('menu')">VOLVER</button>
 </div>
 
 <script>
-const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxDV93xIcDOYR-DWnp148hlav0MFkuTlmTpAW_0tisneILlxkQnpKiDcXjk9uMs8U4G/exec";
-const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado","Las Heras","Puerto Deseado","El Calafate"],"Rio Negro":["Bariloche","Cipolletti","General Roca","Viedma","Allen","El Bolson"],"Neuquen":["Neuquen Capital","Centenario","Cutral Co","Zapala","San Martin de los Andes"],"Tierra del Fuego":["Ushuaia","Rio Grande","Tolhuin"]};
-let DATA={trabajadores:[]};
-
+const URL="https://script.google.com/macros/s/AKfycbxDV93xIcDOYR-DWnp148hlav0MFkuTlmTpAW_0tisneILlxkQnpKiDcXjk9uMs8U4G/exec";
+const CIU={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado","Las Heras","Puerto Deseado","El Calafate"],"Rio Negro":["Bariloche","Cipolletti","General Roca","Viedma","Allen","El Bolson"],"Neuquen":["Neuquen Capital","Centenario","Cutral Co","Zapala","San Martin de los Andes"],"Tierra del Fuego":["Ushuaia","Rio Grande","Tolhuin"]};
+let DATA=[];
 function show(id){document.querySelectorAll('#trabajador,#panaderia,#autorizada,#admin,#menu').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
-
-// FORM TRABAJADOR
-function cargarCiudadesTrabajador(){
-let prov=document.getElementById('t_provincia').value;
-let sel=document.getElementById('t_ciudad');
-let man=document.getElementById('t_ciudad_manual');
-if(!prov){sel.innerHTML='<option>Primero elegí provincia arriba</option>';return;}
-let lista=CIUDADES[prov];
-sel.innerHTML='<option value="">-- Elegí ciudad de '+prov+' --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('')+'<option value="OTRA">OTRA - Escribir</option>';
-sel.onchange=function(){man.style.display=(this.value==='OTRA')?'block':'none';}
+function updCiudad(idProv,idCiu,idMan){
+let prov=document.getElementById(idProv).value;let sel=document.getElementById(idCiu);let man=idMan?document.getElementById(idMan):null;
+if(!prov){sel.innerHTML='<option>Primero elegí provincia</option>';return;}
+let lista=CIU[prov]||[];sel.innerHTML='<option value="">-- Elegí ciudad de '+prov+' --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('')+'<option value="OTRA">OTRA - Escribir</option>';
+if(man){sel.onchange=function(){man.style.display=this.value==='OTRA'?'block':'none';};}
 }
-
-// FILTRO AUTORIZADA - ESTO ES LO QUE ESTABA ROTO Y AHORA ARREGLÉ
-function cargarCiudadesFiltro(){
-let prov=document.getElementById('f_prov').value;
-let sel=document.getElementById('f_ciudad');
-console.log('Provincia elegida filtro:',prov);
-if(!prov){
-sel.innerHTML='<option value="">-- Todas las ciudades --</option>';
-let todas=[...new Set(Object.values(CIUDADES).flat())];
-todas.forEach(c=>{let o=document.createElement('option');o.value=c;o.text=c;sel.appendChild(o);});
-}else{
-let lista=CIUDADES[prov]||[];
-sel.innerHTML='<option value="">-- Todas de '+prov+' --</option>';
-lista.forEach(c=>{let o=document.createElement('option');o.value=c;o.text=c;sel.appendChild(o);});
+function saveT(){
+let ciu=document.getElementById('t_ciu').value;let ciuMan=document.getElementById('t_ciu_man').value.trim();let ciudadFinal=ciu==='OTRA'?ciuMan:ciu;
+let d={tipo:"trabajador",nombre:document.getElementById('t_nombre').value,wsp:document.getElementById('t_wsp').value,provincia:document.getElementById('t_prov').value,ciudad:ciudadFinal,oficio:document.getElementById('t_of').value,experiencia:document.getElementById('t_exp').value,pana1_nombre:document.getElementById('t_ref1').value,pana1_tel:document.getElementById('t_ref1tel').value};
+if(!d.nombre||!d.wsp||!d.provincia||!d.ciudad||!d.oficio){alert('Falta dato');return;}
+document.getElementById('t_msg').innerText='Enviando...';fetch(URL,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerText='✅ GUARDADO';setTimeout(()=>show('menu'),1000);});
 }
-filtrar();
-}
-
-function guardarTrabajador(){
-let cs=document.getElementById('t_ciudad').value;
-let cm=document.getElementById('t_ciudad_manual').value.trim();
-let ciudadFinal=(cs==='OTRA'?cm:cs);
-let d={tipo:"trabajador",nombre:document.getElementById('t_nombre').value,wsp:document.getElementById('t_wsp').value,provincia:document.getElementById('t_provincia').value,ciudad:ciudadFinal,oficio:document.getElementById('t_oficio').value,pana1_nombre:document.getElementById('t_pana1_n').value};
-if(!d.nombre||!d.wsp||!d.provincia||!d.ciudad){alert('Falta nombre, wsp, provincia o ciudad');return;}
-document.getElementById('t_msg').innerText='Enviando...';
-fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerText='✅ GUARDADO';setTimeout(()=>show('menu'),1000);});
-}
-function guardarPanaderia(){let d={tipo:"panaderia",nombreP:document.getElementById('p_nombreP').value,tel:document.getElementById('p_tel').value,puesto:document.getElementById('p_puesto').value};fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerText='✅ ENVIADA';});}
-function cargarDesdeSheet(){document.getElementById('listaTrabajadores').innerHTML='Cargando...';fetch(GOOGLE_SCRIPT_URL).then(r=>r.json()).then(data=>{DATA.trabajadores=data.trabajadores||[];render(DATA.trabajadores);});}
-function render(lista){if(!lista.length){document.getElementById('listaTrabajadores').innerHTML='No hay';return;}document.getElementById('listaTrabajadores').innerHTML=lista.map(t=>`<div class=item><b>${t.nombre}</b> <span class=badge>${t.oficio}</span><br>${t.ciudad} - ${t.provincia} | ${t.wsp}</div>`).join('');}
-function filtrar(){let of=document.getElementById('f_oficio').value;let pr=document.getElementById('f_prov').value;let ci=document.getElementById('f_ciudad').value;let f=DATA.trabajadores.filter(t=>(!of||t.oficio===of)&&(!pr||t.provincia===pr)&&(!ci||t.ciudad===ci));render(f);}
-function loginAdmin(){if(document.getElementById('admin_pass').value==='chanchadas'){document.getElementById('adminPanel').classList.remove('hidden');fetch(GOOGLE_SCRIPT_URL).then(r=>r.json()).then(data=>{document.getElementById('stats').innerText='Trab: '+data.trabajadores.length;document.getElementById('adminTrab').innerHTML=data.trabajadores.map(t=>`<div class=item>${t.nombre} - ${t.ciudad} - ${t.provincia}</div>`).join('');});}}
-show('menu');
+function saveP(){let d={tipo:"panaderia",resp:document.getElementById('p_resp').value,nombreP:document.getElementById('p_nom').value,direccion:document.getElementById('p_dir').value,puesto:document.getElementById('p_puesto').value,tel:document.getElementById('p_tel').value,turno:document.getElementById('p_turno').value};fetch(URL,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerText='✅ ENVIADA';});}
+function cargar(){document.getElementById('lista').innerHTML='Cargando...';fetch(URL).then(r=>r.json()).then(j=>{DATA=j.trabajadores||[];render(DATA);});}
+function render(l){if(!l.length){document.getElementById('lista').innerHTML='Vacío';return;}document.getElementById('lista').innerHTML=l.map(t=>`<div class=item><b>${t.nombre}</b> <span class=badge>${t.oficio}</span><br>${t.ciudad} - ${t.provincia}<br>📱 ${t.wsp}</div>`).join('');}
+function filtrar(){let of=document.getElementById('f_of').value;let pr=document.getElementById('f_prov').value;let ci=document.getElementById('f_ciu').value;let f=DATA.filter(t=>(!of||t.oficio===of)&&(!pr||t.provincia===pr)&&(!ci||t.ciudad===ci||ci===''));render(f);}
+function login(){if(document.getElementById('a_pass').value==='chanchadas'){document.getElementById('a_panel').classList.remove('hidden');fetch(URL).then(r=>r.json()).then(j=>{document.getElementById('stats').innerText='Trabajadores: '+j.trabajadores.length+' | Panaderias: '+j.panaderias.length;document.getElementById('a_trab').innerHTML=j.trabajadores.map(t=>`<div class=item>${t.nombre} - ${t.ciudad} - ${t.oficio} - ${t.wsp}</div>`).join('');});}else alert('Clave mal');}
 </script>
 </body>
 </html>
