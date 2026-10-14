@@ -1,80 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOLSA PANADERA PATAGONIA - BASE LIMPIA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOLSA PANADERA PATAGONIA v28</title>
 <style>
-:root{--azul:#0A1931;--amarillo:#FFC947}*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
-body{background:var(--azul);color:#fff;padding:12px}header{background:var(--amarillo);color:var(--azul);padding:18px;border-radius:12px;text-align:center;font-weight:900;font-size:20px;margin-bottom:12px}
-.card{background:#fff;color:var(--azul);padding:16px;border-radius:12px;margin:10px 0}button{background:var(--amarillo);color:var(--azul);border:0;padding:13px;border-radius:10px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
-button.verde{background:#27ae60;color:#fff}input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #999;margin:6px 0;font-size:16px;background:#fff;color:#000}
-.filters{background:#f0f0f0;border:2px solid #0A1931;padding:10px;border-radius:10px}.item{border-bottom:1px solid #ddd;padding:10px 0}.badge{background:var(--azul);color:var(--amarillo);padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700}.hidden{display:none}
+:root{--azul:#0A1931;--amarillo:#FFC947}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:var(--azul);color:#fff;padding:12px}
+header{background:var(--amarillo);color:var(--azul);padding:18px;border-radius:12px;text-align:center;font-weight:900;font-size:20px;margin-bottom:12px}
+.card{background:#fff;color:var(--azul);padding:16px;border-radius:12px;margin:10px 0}
+button{background:var(--amarillo);color:var(--azul);border:0;padding:13px;border-radius:10px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
+button.verde{background:#27ae60;color:#fff}
+input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #999;margin:6px 0;font-size:16px;background:#fff;color:#000}
+.filters{background:#f0f0f0;border:2px solid var(--azul);padding:10px;border-radius:10px}
+.item{border-bottom:1px solid #ddd;padding:10px 0}
+.badge{background:var(--azul);color:var(--amarillo);padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.hidden{display:none}
 </style>
 </head>
 <body>
-<header>🍞 BOLSA PANADERA PATAGONIA<br><small>BASE LIMPIA - SOLO SHEET</small></header>
+<header>🍞 BOLSA PANADERA PATAGONIA<br><small>v28 - BASE PERFECTA GUARDADA</small></header>
+
 <div id="menu">
 <button onclick="show('trabajador')">🥖 BUSCO TRABAJO</button>
 <button onclick="show('panaderia')">🏪 SOY PANADERIA</button>
-<button onclick="show('autorizada')">✅ AUTORIZADA - VER TRABAJADORES</button>
+<button onclick="show('autorizada')">✅ AUTORIZADA</button>
 <button onclick="show('admin')">🔐 ADMIN</button>
 </div>
 
 <div id="trabajador" class="card hidden">
-<h3>🥖 Carga Trabajador</h3>
-<input id="t_nombre" placeholder="Nombre *"><input id="t_wsp" placeholder="WhatsApp *">
-<label>Provincia *</label><select id="t_prov" onchange="cargarCiudades('t_prov','t_ciu','t_ciu_man')"><option value="">-- Elegí Provincia --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
-<label>Ciudad *</label><select id="t_ciu"><option>Primero elegí provincia</option></select>
-<input id="t_ciu_man" placeholder="Si no está, escribí tu ciudad acá" style="display:none;border:2px solid #0A1931">
-<label>Oficio *</label><select id="t_of"><option value="">-- Oficio --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option></select>
-<button class="verde" onclick="guardarT()">✅ GUARDAR - VA AL SHEET</button><button onclick="show('menu')">VOLVER</button><div id="t_msg" style="margin-top:10px;font-weight:700"></div>
+<h3>🥖 BUSCO TRABAJO</h3>
+<input id="t_nombre" placeholder="Nombre completo *">
+<input id="t_wsp" placeholder="WhatsApp *">
+<label>Provincia *</label>
+<select id="t_prov" onchange="cargarCiudades('t_prov','t_ciu','t_ciu_man')">
+<option value="">-- Elegí Provincia --</option>
+<option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option>
+</select>
+<label>Ciudad *</label>
+<select id="t_ciu"><option>Primero elegí provincia arriba</option></select>
+<input id="t_ciu_man" placeholder="Escribí tu ciudad si no está en la lista" style="display:none;border:2px solid #0A1931">
+<label>Oficio *</label>
+<select id="t_of"><option value="">-- Oficio --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero/a</option></select>
+<input id="t_exp" placeholder="Años de experiencia">
+<button class="verde" onclick="guardarT()">✅ GUARDAR EN GOOGLE SHEET</button>
+<button onclick="show('menu')">VOLVER</button>
+<div id="t_msg" style="margin-top:10px;font-weight:800"></div>
 </div>
 
 <div id="panaderia" class="card hidden">
-<h3>🏪 Carga Panadería</h3><input id="p_nom" placeholder="Nombre Panadería *"><input id="p_tel" placeholder="Tel *"><input id="p_puesto" placeholder="Puesto *">
-<button class="verde" onclick="guardarP()">ENVIAR AL SHEET</button><button onclick="show('menu')">VOLVER</button><div id="p_msg"></div>
+<h3>🏪 SOY PANADERIA - BUSCO EMPLEADO</h3>
+<input id="p_nom" placeholder="Nombre Panadería *">
+<input id="p_dir" placeholder="Dirección">
+<input id="p_puesto" placeholder="Puesto que buscás *">
+<input id="p_tel" placeholder="Tel / WhatsApp *">
+<button class="verde" onclick="guardarP()">✅ PUBLICAR EN SHEET</button>
+<button onclick="show('menu')">VOLVER</button>
+<div id="p_msg" style="margin-top:10px;font-weight:800"></div>
 </div>
 
 <div id="autorizada" class="card hidden">
-<h3>✅ Trabajadores - Filtra por Provincia > Ciudad</h3>
+<h3>✅ AUTORIZADA - VER TRABAJADORES</h3>
 <div class="filters">
-<label>Oficio:</label><select id="f_of" onchange="filtrar()"><option value="">Todos</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option></select>
-<label>Provincia:</label><select id="f_prov" onchange="cargarCiudades('f_prov','f_ciu','');filtrar()"><option value="">Todas</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
-<label>Ciudad:</label><select id="f_ciu" onchange="filtrar()"><option value="">-- Elegí provincia primero --</option></select>
+<label>Filtrar por Oficio:</label>
+<select id="f_of" onchange="filtrar()"><option value="">Todos</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option></select>
+<label>Filtrar por Provincia:</label>
+<select id="f_prov" onchange="cargarCiudades('f_prov','f_ciu','');filtrar()"><option value="">Todas</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
+<label>Filtrar por Ciudad:</label>
+<select id="f_ciu" onchange="filtrar()"><option value="">Primero elegí provincia</option></select>
 </div>
-<button class="verde" onclick="cargarDesdeSheet()">🔄 CARGAR DESDE GOOGLE SHEET</button>
-<div id="lista" style="margin-top:10px">Tocá CARGAR para ver lo que hay en tu Sheet</div>
+<button class="verde" onclick="cargarDesdeSheet()">🔄 CARGAR DATOS DESDE GOOGLE SHEET</button>
+<div id="lista" style="margin-top:12px">Tocá CARGAR para ver los datos de tu Sheet</div>
 <button onclick="show('menu')">VOLVER</button>
 </div>
 
 <div id="admin" class="card hidden">
-<h3>🔐 ADMIN</h3><input id="a_pass" type="password" placeholder="Clave chanchadas"><button onclick="login()">ENTRAR</button>
-<div id="a_panel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:10px;border-radius:8px"></div><div id="a_trab"></div></div>
+<h3>🔐 ADMIN</h3>
+<input id="a_pass" type="password" placeholder="Clave: chanchadas">
+<button onclick="login()">ENTRAR</button>
+<div id="a_panel" class="hidden">
+<div id="stats" style="background:#0A1931;color:#FFC947;padding:10px;border-radius:8px;margin:8px 0"></div>
+<div id="a_lista"></div>
+</div>
 <button onclick="show('menu')">VOLVER</button>
 </div>
 
 <script>
 const URL_SHEET="https://script.google.com/macros/s/AKfycbxDV93xIcDOYR-DWnp148hlav0MFkuTlmTpAW_0tisneILlxkQnpKiDcXjk9uMs8U4G/exec";
-const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado","Las Heras","Puerto Deseado","El Calafate"],"Rio Negro":["Bariloche","Cipolletti","General Roca","Viedma","Allen","El Bolson"],"Neuquen":["Neuquen Capital","Centenario","Cutral Co","Zapala","San Martin de los Andes"],"Tierra del Fuego":["Ushuaia","Rio Grande","Tolhuin"]};
+const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly","Trevelin","Gaiman"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado","Las Heras","Puerto Deseado","El Calafate","Rio Turbio"],"Rio Negro":["San Carlos de Bariloche","Cipolletti","General Roca","Viedma","Allen","El Bolson","Cinco Saltos"],"Neuquen":["Neuquen Capital","Centenario","Cutral Co","Zapala","San Martin de los Andes","Villa La Angostura"],"Tierra del Fuego":["Ushuaia","Rio Grande","Tolhuin"]};
 let DATA=[];
+
 function show(id){document.querySelectorAll('#trabajador,#panaderia,#autorizada,#admin,#menu').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+
 function cargarCiudades(idProv,idCiu,idMan){
-let prov=document.getElementById(idProv).value;let sel=document.getElementById(idCiu);let man=idMan?document.getElementById(idMan):null;
-if(!prov){sel.innerHTML='<option>Primero elegí provincia</option>';return;}
-let lista=CIUDADES[prov];sel.innerHTML='<option value="">-- Elegí ciudad de '+prov+' --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('')+'<option value="OTRA">OTRA - Escribir manual</option>';
-if(man){sel.onchange=function(){man.style.display=this.value==='OTRA'?'block':'none';if(idProv.includes('f_')) filtrar();};}
+let prov=document.getElementById(idProv).value;
+let sel=document.getElementById(idCiu);
+let man=idMan?document.getElementById(idMan):null;
+if(!prov){sel.innerHTML='<option>Primero elegí provincia</option>';if(man)man.style.display='none';return;}
+let lista=CIUDADES[prov]||[];
+sel.innerHTML='<option value="">-- Elegí ciudad de '+prov+' --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('')+'<option value="OTRA">OTRA - Escribir a mano</option>';
+if(man){
+man.style.display='none';
+sel.addEventListener('change',function(){man.style.display=this.value==='OTRA'?'block':'none';});
 }
+}
+
 function guardarT(){
-let ciu=document.getElementById('t_ciu').value;let ciuMan=document.getElementById('t_ciu_man').value.trim();let ciudadFinal=ciu==='OTRA'?ciuMan:ciu;
-let d={tipo:"trabajador",nombre:document.getElementById('t_nombre').value,wsp:document.getElementById('t_wsp').value,provincia:document.getElementById('t_prov').value,ciudad:ciudadFinal,oficio:document.getElementById('t_of').value};
-if(!d.nombre||!d.wsp||!d.provincia||!d.ciudad||!d.oficio){alert('Faltan datos');return;}
-document.getElementById('t_msg').innerText='Enviando al Sheet...';fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerText='✅ Guardado! Verificá tu Google Sheet';setTimeout(()=>show('menu'),1200);});
+let ciu=document.getElementById('t_ciu').value;
+let ciuMan=document.getElementById('t_ciu_man').value.trim();
+let ciudadFinal=ciu==='OTRA'?ciuMan:ciu;
+let d={tipo:"trabajador",nombre:document.getElementById('t_nombre').value,wsp:document.getElementById('t_wsp').value,provincia:document.getElementById('t_prov').value,ciudad:ciudadFinal,oficio:document.getElementById('t_of').value,experiencia:document.getElementById('t_exp').value};
+if(!d.nombre||!d.wsp||!d.provincia||!d.ciudad||!d.oficio){alert('Completa nombre, wsp, provincia, ciudad y oficio');return;}
+document.getElementById('t_msg').innerText='Enviando a tu Google Sheet...';
+fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerText='✅ Guardado! Revisá tu Sheet, ya tiene que estar ahí.';setTimeout(()=>show('menu'),1500);});
 }
-function guardarP(){let d={tipo:"panaderia",nombreP:document.getElementById('p_nom').value,tel:document.getElementById('p_tel').value,puesto:document.getElementById('p_puesto').value};fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerText='✅ Enviada al Sheet';});}
-function cargarDesdeSheet(){document.getElementById('lista').innerHTML='Cargando desde Sheet...';fetch(URL_SHEET).then(r=>r.json()).then(j=>{DATA=j.trabajadores||[];render(DATA);});}
-function render(l){if(!l.length){document.getElementById('lista').innerHTML='Sheet vacío - 0 trabajadores. Cargá uno para probar.';return;}document.getElementById('lista').innerHTML=l.map(t=>`<div class=item><b>${t.nombre}</b> <span class=badge>${t.oficio}</span><br>${t.ciudad} - ${t.provincia} | ${t.wsp}</div>`).join('');}
-function filtrar(){let of=document.getElementById('f_of').value;let pr=document.getElementById('f_prov').value;let ci=document.getElementById('f_ciu').value;if(ci==='OTRA')ci='';let f=DATA.filter(t=>(!of||t.oficio===of)&&(!pr||t.provincia===pr)&&(!ci||t.ciudad===ci));render(f);}
-function login(){if(document.getElementById('a_pass').value==='chanchadas'){document.getElementById('a_panel').classList.remove('hidden');fetch(URL_SHEET).then(r=>r.json()).then(j=>{document.getElementById('stats').innerText='Trabajadores en Sheet: '+j.trabajadores.length;document.getElementById('a_trab').innerHTML=j.trabajadores.map(t=>`<div class=item>${t.nombre} - ${t.ciudad}</div>`).join('');});}}
+
+function guardarP(){
+let d={tipo:"panaderia",nombreP:document.getElementById('p_nom').value,direccion:document.getElementById('p_dir').value,puesto:document.getElementById('p_puesto').value,tel:document.getElementById('p_tel').value};
+if(!d.nombreP||!d.tel||!d.puesto){alert('Falta nombre, puesto y tel');return;}
+document.getElementById('p_msg').innerText='Enviando...';
+fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerText='✅ Publicado en Sheet';});
+}
+
+function cargarDesdeSheet(){
+document.getElementById('lista').innerHTML='Cargando desde tu Sheet...';
+fetch(URL_SHEET).then(r=>r.json()).then(j=>{DATA=j.trabajadores||[];render(DATA);}).catch(()=>{document.getElementById('lista').innerHTML='Error al cargar. Verificá que tu Apps Script esté publicado como "Cualquiera"';});
+}
+
+function render(l){
+if(!l.length){document.getElementById('lista').innerHTML='Sheet vacío - 0 trabajadores. Es lo que querías, quedó limpio.';return;}
+document.getElementById('lista').innerHTML=l.map(t=>`<div class=item><b>${t.nombre}</b> <span class=badge>${t.oficio}</span><br>📍 ${t.ciudad} - ${t.provincia}<br>📱 ${t.wsp} ${t.experiencia?'<br>Exp: '+t.experiencia:''}</div>`).join('');
+}
+
+function filtrar(){
+let of=document.getElementById('f_of').value;
+let pr=document.getElementById('f_prov').value;
+let ci=document.getElementById('f_ciu').value;
+if(ci==='OTRA'||ci==='')ci='';
+let f=DATA.filter(t=>(!of||t.oficio===of)&&(!pr||t.provincia===pr)&&(!ci||t.ciudad===ci));
+render(f);
+}
+
+function login(){
+if(document.getElementById('a_pass').value==='chanchadas'){
+document.getElementById('a_panel').classList.remove('hidden');
+fetch(URL_SHEET).then(r=>r.json()).then(j=>{
+document.getElementById('stats').innerText='En tu Sheet hay: '+j.trabajadores.length+' trabajadores | '+j.panaderias.length+' panaderías';
+document.getElementById('a_lista').innerHTML=j.trabajadores.map(t=>`<div class=item>${t.nombre} - ${t.ciudad} - ${t.oficio}</div>`).join('');
+});
+}else alert('Clave incorrecta');
+}
 </script>
 </body>
 </html>
