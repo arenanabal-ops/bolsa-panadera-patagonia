@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>ADMIN</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body style="background:#0A1931;font-family:system-ui">
+<div style="max-width:700px;margin:0 auto;padding:16px">
+<header style="background:#FFC947;color:#0A1931;padding:16px;border-radius:14px;text-align:center"><h1 style="font-weight:900">🔐 ADMIN - BOLSA PANADERA</h1><p style="font-size:11px">2974092277 - Solo vos</p></header>
+<div id="login" style="background:white;margin-top:18px;padding:22px;border-radius:18px;text-align:center">
+<input id="claveInput" type="password" placeholder="Clave admin" style="border:2px solid #0A1931;padding:12px;border-radius:10px;width:100%">
+<button onclick="if(claveInput.value==='chanchadas'){localStorage.setItem('adminOK','si');login.style.display='none';panel.style.display='block';cargar()}else alert('Clave incorrecta')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:12px;border-radius:10px">ENTRAR</button>
+</div>
+<div id="panel" style="display:none;background:white;margin-top:18px;padding:18px;border-radius:18px">
+<h2 style="font-weight:900">Solicitudes pendientes</h2>
+<div id="lista" style="margin-top:14px"></div>
+<br><a href="index.html" style="font-size:11px">← Volver</a>
+</div>
+</div>
+<script>
+function cargar(){let d=JSON.parse(localStorage.getItem('empPatagonia')||'null');let cont=document.getElementById('lista');cont.innerHTML='';if(!d){cont.innerHTML='No hay solicitudes en ESTE dispositivo.<br>Te llega el WhatsApp a tu 2974092277 con los datos.';return}cont.innerHTML=`<div style="border:2px solid #f59e0b;padding:14px;border-radius:12px"><b>${d.nombre}</b> - ${d.panaderia}<br>${d.direccion}<br>Tel: ${d.telefono}<br><br><button onclick="localStorage.setItem('empEstado','validado');alert('Validado! Avisale al panadero por WhatsApp');cargar()" style="background:#10b981;color:white;padding:10px 16px;border-radius:10px;border:none;font-weight:900">✔️ VALIDAR AHORA</button> <a href="https://wa.me/${d.telefono.replace(/[^0-9]/g,'')}" target="_blank" style="background:#25D366;color:white;padding:10px 16px;border-radius:10px;text-decoration:none">WhatsApp</a></div>`}
+(function(){if(localStorage.getItem('adminOK')==='si'){login.style.display='none';panel.style.display='block';cargar()}})();
+</script>
+</body></html>
