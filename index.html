@@ -6,68 +6,138 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="background:#0A1931;font-family:system-ui">
-<div style="max-width:480px;margin:0 auto;padding:16px">
-<header style="background:#FFC947;padding:18px;border-radius:18px;text-align:center">
-<h1 style="font-weight:900;color:#0A1931">BOLSA PANADERA DE LA PATAGONIA</h1>
+<div style="max-width:500px;margin:0 auto;padding:14px">
+
+<header style="background:#FFC947;padding:16px;border-radius:18px;text-align:center">
+<h1 style="font-weight:900;color:#0A1931;font-size:19px">BOLSA PANADERA DE LA PATAGONIA</h1>
+<p style="font-size:11px;color:#0A1931;font-weight:600;margin-top:2px">Chubut - Santa Cruz - Patagonia</p>
 </header>
 
-<div id="inicio" style="background:white;padding:22px;border-radius:18px;margin-top:16px;text-align:center">
+<!-- INICIO 3 BOTONES + ADMIN CHIQUITO -->
+<div id="inicio" style="background:white;padding:20px;border-radius:18px;margin-top:14px;text-align:center">
 <button onclick="ver('formEmpleo')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:18px;width:100%;border-radius:14px;font-size:16px">🔍 BUSCO TRABAJO</button>
 <button onclick="ver('formEmpleado')" style="background:#FFC947;color:#0A1931;font-weight:900;padding:18px;width:100%;margin-top:12px;border-radius:14px;border:2px solid #0A1931;font-size:16px">🏪 BUSCO EMPLEADO</button>
 <button onclick="ver('baja')" style="background:#f3f4f6;color:#333;font-weight:700;padding:16px;width:100%;margin-top:12px;border-radius:14px;border:1px solid #ddd">📩 SOLICITAR BAJA / CONTACTO ADMIN</button>
-<p style="margin-top:18px"><a href="admin.html" style="font-size:10px;color:#aaa;text-decoration:none;letter-spacing:1px">admin •</a></p>
+<p style="margin-top:16px"><a href="admin.html" style="font-size:10px;color:#bbb;text-decoration:none">admin •</a></p>
 </div>
 
-<div id="formEmpleo" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px">
+<!-- BUSCO TRABAJO - TODOS LOS DATOS -->
+<div id="formEmpleo" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
-<h2 style="font-weight:800;margin-top:8px">Busco Trabajo</h2>
-<input id="nombre" placeholder="Nombre completo" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:10px;border-radius:10px">
-<select id="oficio" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option>Panadero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Cocinero</option></select>
-<div style="border:1px solid #e5e7eb;padding:10px;border-radius:10px;margin-top:10px">
-<input id="pan1" placeholder="Último trabajo / trabajo actual" style="border:1px solid #ddd;padding:10px;width:100%;border-radius:8px">
-<input id="telRef1" placeholder="Tel de referencia" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px">
+<h2 style="font-weight:800;margin-top:6px">Busco Trabajo - Datos Completos</h2>
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Nombre completo</label>
+<input id="nombre" placeholder="Nombre y apellido" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Oficio</label>
+<select id="oficio" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+<option value="">Seleccioná oficio</option>
+<option>Panadero</option><option>Maestro Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Atención Mostrador</option><option>Cajero</option><option>Repartidor</option>
+</select>
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Último trabajo / trabajo actual</label>
+<input id="ultimoTrabajo" placeholder="Ej: Panadería La Espiga - Comodoro" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+<input id="telRef" placeholder="Tel de referencia de ese trabajo" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:6px;border-radius:10px">
+
+<div id="bloqueOtras" style="border:1.5px dashed #ccc;padding:10px;border-radius:10px;margin-top:10px">
+<label style="font-size:11px;font-weight:700;display:block">Otras panaderías donde trabajaste</label>
 <div id="otrasPanas"></div>
-<button onclick="agregarPana()" type="button" style="background:#f3f4f6;border:1px dashed #999;padding:8px;width:100%;margin-top:8px;border-radius:8px;font-size:12px">+ Agregar otra panadería</button>
-</div>
-<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option></select>
-<select id="ciudad" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option>Seleccioná provincia</option></select>
-<input id="ciudadManual" placeholder="Si no está, escribí tu ciudad" style="border:1px dashed #aaa;padding:11px;width:100%;margin-top:8px;border-radius:10px">
-<input id="tel" placeholder="Tu WhatsApp" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
-<button onclick="enviarEmpleo()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:12px;border-radius:12px">ENVIAR PARA AUTORIZACIÓN</button>
+<button onclick="agregarPana()" type="button" style="background:#f3f4f6;border:1px dashed #888;padding:8px;width:100%;margin-top:8px;border-radius:8px;font-size:12px;font-weight:700">+ Agregar otra panadería</button>
 </div>
 
-<div id="formEmpleado" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px">
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Provincia y Ciudad</label>
+<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+<option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option><option>La Pampa</option>
+</select>
+<select id="ciudad" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:6px;border-radius:10px"><option value="">Seleccioná provincia primero</option></select>
+<input id="ciudadManual" placeholder="Si no está tu ciudad, escribila acá (manual)" style="border:1.5px dashed #aaa;padding:11px;width:100%;margin-top:6px;border-radius:10px">
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">WhatsApp para contacto</label>
+<input id="tel" placeholder="2974..." style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+
+<button onclick="enviarEmpleo()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px">ENVIAR PARA AUTORIZACIÓN</button>
+</div>
+
+<!-- BUSCO EMPLEADO - TODOS LOS DATOS -->
+<div id="formEmpleado" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
-<h2 style="font-weight:800">Busco Empleado</h2>
-<input id="resp" placeholder="Nombre completo responsable" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:10px;border-radius:10px">
-<input id="nombreP" placeholder="Nombre panadería" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
-<select id="puesto" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option value="">Puesto a cubrir</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Cocinero</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option></select>
-<input id="telP" placeholder="WhatsApp panadería" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
-<button onclick="enviarEmpleado()" style="background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:12px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
+<h2 style="font-weight:800;margin-top:6px">Busco Empleado - Datos Completos</h2>
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Nombre completo del responsable</label>
+<input id="resp" placeholder="Nombre y apellido" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Nombre de la panadería / comercio</label>
+<input id="nombreP" placeholder="Ej: Panadería San Juan" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Puesto a cubrir</label>
+<select id="puesto" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+<option value="">Seleccioná puesto</option>
+<option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Atención al público / Mostrador</option><option>Cajero/a</option><option>Repartidor</option><option>Encargado</option><option>Limpieza</option>
+</select>
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">Ubicación del trabajo</label>
+<select id="provinciaP" onchange="cargarCiudadesP()" style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+<option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option>
+</select>
+<select id="ciudadP" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:6px;border-radius:10px"><option value="">Ciudad</option></select>
+
+<label style="font-size:11px;font-weight:700;margin-top:10px;display:block">WhatsApp de contacto</label>
+<input id="telP" placeholder="2974..." style="border:1.5px solid #ddd;padding:11px;width:100%;border-radius:10px">
+
+<button onclick="enviarEmpleado()" style="background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
 </div>
 
-<div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:16px;text-align:center">
-<h2 style="font-weight:900;color:#2E7D32">📲 SOLICITUD ENVIADA</h2>
+<!-- AUTORIZACION -->
+<div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
+<h2 style="font-weight:900;color:#2E7D32">📲 SOLICITUD ENVIADA AL ADMIN</h2>
 <p id="textoAutorizar" style="font-size:13px;margin-top:10px"></p>
+<p style="font-size:11px;color:#666;margin-top:10px">Validación en 24hs - Te contacta el 2974092277</p>
 <button onclick="ver('lista')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:12px;border-radius:10px">👀 YA ESTOY AUTORIZADO - VER EMPLEOS</button>
+<button onclick="location.reload()" style="font-size:11px;margin-top:10px;background:#eee;padding:8px 12px;border-radius:8px">Volver al inicio</button>
 </div>
 
-<div id="lista" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px"><button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:800;margin-top:8px">Empleos</h2></div>
+<div id="lista" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
+<h2 style="font-weight:800;margin-top:8px">Empleos / Postulantes autorizados</h2>
+<div id="contLista" style="margin-top:10px"></div>
+</div>
 
-<div id="baja" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px;text-align:center">
+<div id="baja" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:14px;text-align:center">
 <button onclick="ver('inicio')" style="font-size:12px;display:block;text-align:left">← Volver</button>
-<h2 style="font-weight:800;margin-top:8px">Baja / Contacto</h2>
-<a href="https://wa.me/5492974092277?text=Darme%20de%20baja%20Bolsa%20Panadera" target="_blank" style="display:block;background:#25D366;color:white;padding:12px;border-radius:10px;margin-top:12px;text-decoration:none;font-weight:700">WhatsApp Admin</a>
+<h2 style="font-weight:800;margin-top:8px">Solicitar Baja / Contacto</h2>
+<p style="font-size:12px;color:#666;margin-top:6px">¿Te querés dar de baja? Escribí "Darme de baja"</p>
+<a href="https://wa.me/5492974092277?text=Hola%20Admin%20Bolsa%20Panadera%20quiero%20darme%20de%20baja" target="_blank" style="display:block;background:#25D366;color:white;padding:12px;border-radius:10px;margin-top:12px;text-decoration:none;font-weight:700">WhatsApp Admin - 2974092277</a>
 </div>
 
 </div>
 <script>
-const ciudades={Chubut:['Comodoro Rivadavia','Rada Tilly','Trelew','Puerto Madryn','Esquel'], 'Santa Cruz':['Caleta Olivia','Rio Gallegos'], 'Río Negro':['Viedma','Bariloche'], 'Neuquén':['Neuquen','Cutral Co'], 'Tierra del Fuego':['Ushuaia','Rio Grande']}
-function cargarCiudades(){let p=provincia.value; let s=ciudad; s.innerHTML=''; (ciudades[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;s.add(o)});}
-function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','lista','baja'].forEach(x=>{let e=document.getElementById(x); if(e) e.style.display='none'}); document.getElementById(id).style.display='block';}
-let count=1;
-function agregarPana(){count++; let div=document.createElement('div'); div.innerHTML=`<input placeholder="Otra panadería ${count}" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px"><input placeholder="Tel ref ${count}" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px">`; otrasPanas.appendChild(div);}
-function enviarEmpleo(){let txt=`*BUSCO TRABAJO*%0A${nombre.value}%0A${oficio.value}%0A${pan1.value}%0A${provincia.value} ${ciudad.value}%0ATel:${tel.value}`; window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank'); textoAutorizar.innerText=`Gracias ${nombre.value}!`; ver('autorizar');}
-function enviarEmpleado(){let txt=`*BUSCO EMPLEADO*%0A${resp.value}%0A${nombreP.value}%0A${puesto.value}%0ATel:${telP.value}`; window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank'); textoAutorizar.innerText=`Gracias ${resp.value} - ${nombreP.value}`; ver('autorizar');}
+const ciudadesData={Chubut:['Comodoro Rivadavia','Rada Tilly','Sarmiento','Trelew','Rawson','Puerto Madryn','Esquel','Trevelin','Gaiman'], 'Santa Cruz':['Río Gallegos','Caleta Olivia','Pico Truncado','Las Heras','Puerto Deseado','El Calafate','El Chaltén'], 'Río Negro':['Viedma','San Carlos de Bariloche','General Roca','Cipolletti','Villa Regina'], 'Neuquén':['Neuquén','Cutral Co','Zapala','San Martín de los Andes','Villa La Angostura'], 'Tierra del Fuego':['Ushuaia','Río Grande','Tolhuin'], 'La Pampa':['Santa Rosa','General Pico']}
+function cargarCiudades(){let p=document.getElementById('provincia').value; let s=document.getElementById('ciudad'); s.innerHTML='<option value="">Seleccioná ciudad</option>'; (ciudadesData[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;o.value=c;s.add(o)}); s.innerHTML+='<option value="Otra">Otra - escribir abajo</option>'}
+function cargarCiudadesP(){let p=document.getElementById('provinciaP').value; let s=document.getElementById('ciudadP'); s.innerHTML='<option value="">Ciudad</option>'; (ciudadesData[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;o.value=c;s.add(o)});}
+function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','lista','baja'].forEach(x=>{let e=document.getElementById(x); if(e) e.style.display='none'}); document.getElementById(id).style.display='block'; if(id==='lista') cargarLista()}
+let countOtras=0;
+function agregarPana(){
+ countOtras++;
+ let div=document.createElement('div'); div.style.marginTop='8px';
+ div.innerHTML=`<input class="otraPanNombre" placeholder="Nombre panadería ${countOtras+1}" style="border:1px solid #ddd;padding:10px;width:100%;border-radius:8px"><input class="otraPanTel" placeholder="Tel ref ${countOtras+1}" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:4px;border-radius:8px">`;
+ document.getElementById('otrasPanas').appendChild(div);
+}
+function enviarEmpleo(){
+ if(!nombre.value||!tel.value){alert('Faltan datos');return}
+ let otras=''; document.querySelectorAll('.otraPanNombre').forEach((el,i)=>{otras+=`%0AOtra${i+2}:${el.value} - ${document.querySelectorAll('.otraPanTel')[i].value}`});
+ let ciudadFinal=document.getElementById('ciudadManual').value||document.getElementById('ciudad').value;
+ let txt=`*BUSCO TRABAJO*%0ANombre:${nombre.value}%0AOficio:${oficio.value}%0AUltimo:${ultimoTrabajo.value}%0ARef:${telRef.value}%0AProv:${provincia.value} - ${ciudadFinal}${otras}%0ATel:${tel.value}`;
+ window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank');
+ textoAutorizar.innerText=`Gracias ${nombre.value}! Datos de ${oficio.value} enviados.`;
+ ver('autorizar');
+}
+function enviarEmpleado(){
+ if(!resp.value||!telP.value){alert('Faltan datos');return}
+ let txt=`*BUSCO EMPLEADO*%0AResp:${resp.value}%0APanaderia:${nombreP.value}%0APuesto:${puesto.value}%0AProv:${provinciaP.value} - ${ciudadP.value}%0ATel:${telP.value}`;
+ window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank');
+ textoAutorizar.innerText=`Gracias ${resp.value}! ${nombreP.value} buscando ${puesto.value}`;
+ ver('autorizar');
+}
+function cargarLista(){contLista.innerHTML='<div style="border-left:4px solid #2E7D32;padding:10px;background:#F1F8E9;border-radius:8px"><b>Demo:</b> Panadería autorizada - Comodoro</div>'}
 </script>
 </body></html>
