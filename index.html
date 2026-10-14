@@ -11,42 +11,63 @@
 <h1 style="font-weight:900;color:#0A1931">BOLSA PANADERA DE LA PATAGONIA</h1>
 </header>
 
-<div id="inicio" style="background:white;padding:20px;border-radius:18px;margin-top:16px;text-align:center">
-<button onclick="ver('formEmpleo')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:16px;width:100%;border-radius:14px">🔍 BUSCO TRABAJO</button>
-<button onclick="ver('formEmpleado')" style="background:#FFC947;color:#0A1931;font-weight:900;padding:16px;width:100%;margin-top:10px;border-radius:14px;border:2px solid #0A1931">🏪 BUSCO EMPLEADO</button>
-<button onclick="location.href='admin.html'" style="background:white;color:#0A1931;font-weight:800;padding:14px;width:100%;margin-top:10px;border-radius:14px;border:2px solid #0A1931">🔐 BOTÓN ADMIN</button>
-<button onclick="ver('baja')" style="background:#f5f5f5;padding:14px;width:100%;margin-top:10px;border-radius:14px;border:1px solid #ddd">📩 SOLICITAR BAJA / CONTACTO ADMIN</button>
+<div id="inicio" style="background:white;padding:22px;border-radius:18px;margin-top:16px;text-align:center">
+<button onclick="ver('formEmpleo')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:18px;width:100%;border-radius:14px;font-size:16px">🔍 BUSCO TRABAJO</button>
+<button onclick="ver('formEmpleado')" style="background:#FFC947;color:#0A1931;font-weight:900;padding:18px;width:100%;margin-top:12px;border-radius:14px;border:2px solid #0A1931;font-size:16px">🏪 BUSCO EMPLEADO</button>
+<button onclick="ver('baja')" style="background:#f3f4f6;color:#333;font-weight:700;padding:16px;width:100%;margin-top:12px;border-radius:14px;border:1px solid #ddd">📩 SOLICITAR BAJA / CONTACTO ADMIN</button>
+<p style="margin-top:18px"><a href="admin.html" style="font-size:10px;color:#aaa;text-decoration:none;letter-spacing:1px">admin •</a></p>
 </div>
 
 <div id="formEmpleo" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px">
-<button onclick="ver('inicio')">← Volver</button>
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
 <h2 style="font-weight:800;margin-top:8px">Busco Trabajo</h2>
-<input id="nombre" placeholder="Nombre completo" style="border:1px solid #ddd;padding:11px;width:100%;margin-top:10px;border-radius:10px">
-<input id="tel" placeholder="WhatsApp" style="border:1px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
-<button onclick="window.open('https://wa.me/5492974092277?text=BUSCO%20TRABAJO%20'+nombre.value+'%20'+tel.value,'_blank');ver('ok')" style="background:#0A1931;color:#FFC947;padding:12px;width:100%;margin-top:10px;border-radius:10px">ENVIAR</button>
+<input id="nombre" placeholder="Nombre completo" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:10px;border-radius:10px">
+<select id="oficio" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option>Panadero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Cocinero</option></select>
+<div style="border:1px solid #e5e7eb;padding:10px;border-radius:10px;margin-top:10px">
+<input id="pan1" placeholder="Último trabajo / trabajo actual" style="border:1px solid #ddd;padding:10px;width:100%;border-radius:8px">
+<input id="telRef1" placeholder="Tel de referencia" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px">
+<div id="otrasPanas"></div>
+<button onclick="agregarPana()" type="button" style="background:#f3f4f6;border:1px dashed #999;padding:8px;width:100%;margin-top:8px;border-radius:8px;font-size:12px">+ Agregar otra panadería</button>
+</div>
+<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option></select>
+<select id="ciudad" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option>Seleccioná provincia</option></select>
+<input id="ciudadManual" placeholder="Si no está, escribí tu ciudad" style="border:1px dashed #aaa;padding:11px;width:100%;margin-top:8px;border-radius:10px">
+<input id="tel" placeholder="Tu WhatsApp" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
+<button onclick="enviarEmpleo()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:12px;border-radius:12px">ENVIAR PARA AUTORIZACIÓN</button>
 </div>
 
 <div id="formEmpleado" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px">
-<button onclick="ver('inicio')">← Volver</button>
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
 <h2 style="font-weight:800">Busco Empleado</h2>
-<input id="nombreP" placeholder="Panadería" style="border:1px solid #ddd;padding:11px;width:100%;margin-top:10px;border-radius:10px">
-<input id="telP" placeholder="WhatsApp" style="border:1px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
-<button onclick="window.open('https://wa.me/5492974092277?text=BUSCO%20EMPLEADO%20'+nombreP.value,'_blank');ver('ok')" style="background:#FFC947;padding:12px;width:100%;margin-top:10px;border-radius:10px">PUBLICAR</button>
+<input id="resp" placeholder="Nombre completo responsable" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:10px;border-radius:10px">
+<input id="nombreP" placeholder="Nombre panadería" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
+<select id="puesto" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px"><option value="">Puesto a cubrir</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Cocinero</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option></select>
+<input id="telP" placeholder="WhatsApp panadería" style="border:1.5px solid #ddd;padding:11px;width:100%;margin-top:8px;border-radius:10px">
+<button onclick="enviarEmpleado()" style="background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:12px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
 </div>
 
-<div id="baja" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px">
-<button onclick="ver('inicio')">← Volver</button>
-<h2 style="font-weight:800">Baja / Contacto Admin</h2>
-<a href="https://wa.me/5492974092277?text=Darme%20de%20baja" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:10px;margin-top:10px;text-decoration:none">WhatsApp Admin - Darme de baja</a>
+<div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:16px;text-align:center">
+<h2 style="font-weight:900;color:#2E7D32">📲 SOLICITUD ENVIADA</h2>
+<p id="textoAutorizar" style="font-size:13px;margin-top:10px"></p>
+<button onclick="ver('lista')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:12px;border-radius:10px">👀 YA ESTOY AUTORIZADO - VER EMPLEOS</button>
 </div>
 
-<div id="ok" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px;text-align:center">
-<h2 style="color:green;font-weight:900">✔️ Enviado</h2>
-<button onclick="location.reload()" style="background:#0A1931;color:white;padding:10px 16px;border-radius:8px;margin-top:10px">Volver</button>
+<div id="lista" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px"><button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:800;margin-top:8px">Empleos</h2></div>
+
+<div id="baja" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:16px;text-align:center">
+<button onclick="ver('inicio')" style="font-size:12px;display:block;text-align:left">← Volver</button>
+<h2 style="font-weight:800;margin-top:8px">Baja / Contacto</h2>
+<a href="https://wa.me/5492974092277?text=Darme%20de%20baja%20Bolsa%20Panadera" target="_blank" style="display:block;background:#25D366;color:white;padding:12px;border-radius:10px;margin-top:12px;text-decoration:none;font-weight:700">WhatsApp Admin</a>
 </div>
 
 </div>
 <script>
-function ver(id){['inicio','formEmpleo','formEmpleado','baja','ok'].forEach(x=>{let e=document.getElementById(x); if(e) e.style.display='none'}); document.getElementById(id).style.display='block';}
+const ciudades={Chubut:['Comodoro Rivadavia','Rada Tilly','Trelew','Puerto Madryn','Esquel'], 'Santa Cruz':['Caleta Olivia','Rio Gallegos'], 'Río Negro':['Viedma','Bariloche'], 'Neuquén':['Neuquen','Cutral Co'], 'Tierra del Fuego':['Ushuaia','Rio Grande']}
+function cargarCiudades(){let p=provincia.value; let s=ciudad; s.innerHTML=''; (ciudades[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;s.add(o)});}
+function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','lista','baja'].forEach(x=>{let e=document.getElementById(x); if(e) e.style.display='none'}); document.getElementById(id).style.display='block';}
+let count=1;
+function agregarPana(){count++; let div=document.createElement('div'); div.innerHTML=`<input placeholder="Otra panadería ${count}" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px"><input placeholder="Tel ref ${count}" style="border:1px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px">`; otrasPanas.appendChild(div);}
+function enviarEmpleo(){let txt=`*BUSCO TRABAJO*%0A${nombre.value}%0A${oficio.value}%0A${pan1.value}%0A${provincia.value} ${ciudad.value}%0ATel:${tel.value}`; window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank'); textoAutorizar.innerText=`Gracias ${nombre.value}!`; ver('autorizar');}
+function enviarEmpleado(){let txt=`*BUSCO EMPLEADO*%0A${resp.value}%0A${nombreP.value}%0A${puesto.value}%0ATel:${telP.value}`; window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank'); textoAutorizar.innerText=`Gracias ${resp.value} - ${nombreP.value}`; ver('autorizar');}
 </script>
 </body></html>
