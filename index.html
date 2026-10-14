@@ -18,7 +18,7 @@ header h1{font-size:18px;font-weight:800;text-transform:uppercase;line-height:1.
 input,select,textarea{width:100%;padding:13px;border-radius:10px;border:1.5px solid #BCAAA4;margin:6px 0;font-size:15px;background:#fff;color:#000}
 label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--marron)}
 .legal-check{background:#FFF8E0;border:1.5px solid var(--pan);padding:12px;border-radius:10px;margin:12px 0;font-size:12px;line-height:1.4}
-.legal-check input{width:auto;display:inline;margin-right:8px}
+.legal-check input{width:auto;display:inline;margin-right:8px;vertical-align:middle}
 .legal-footer{font-size:10px;color:#8D6E63;text-align:justify;padding:12px;border-top:1px solid #D7CCC8;margin-top:20px;line-height:1.4}
 .exp-box{border:1px dashed var(--marron-claro);padding:12px;border-radius:10px;margin:8px 0;background:var(--beige)}
 .item{border-bottom:1px solid #E0E0E0;padding:14px 0}.badge{background:var(--marron-osc);color:var(--pan);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
@@ -34,7 +34,7 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <button class="btn btn-beige" onclick="show('acceso')">✅ Ya tengo clave de acceso para ver curriculum</button>
 <button class="btn btn-beige" onclick="show('contacto')">📩 Darme de baja o contactarme con admin</button>
 <div class="center" style="margin-top:18px"><button class="btn btn-chico btn-beige" onclick="show('admin')">🔐 Admin</button></div>
-<div class="legal-footer"><b>Aviso Legal y Privacidad Ley 25.326:</b> Esta plataforma actúa como simple intermediaria de empleo panadero patagónico. No es agencia ni garantiza contrataciones. Los datos son aportados voluntariamente. Titular de la base: Bolsa de Trabajo Panadera de la Patagonia - Admin 2974092277. Finalidad exclusiva: intermediación laboral. No se cederán a terceros. Derechos de acceso, rectificación y supresión: contactar al 2974092277. Uso exclusivo mayores de 18 años. Al cargar sus datos acepta estas condiciones.</div>
+<div class="legal-footer"><b>Aviso Legal Ley 25.326:</b> Plataforma intermediaria de empleo panadero patagónico. No es agencia ni garantiza contrataciones. Datos aportados voluntariamente. Titular: Bolsa Panadera Patagonia - Admin 2974092277. Finalidad: intermediación laboral. No se cede a terceros. Derechos acceso/rectificación/supresión: 2974092277. Mayores 18 años. Al cargar datos acepta condiciones.</div>
 </div>
 
 <div id="trabajador" class="card hidden">
@@ -47,10 +47,10 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <input id="t_ciu_man" placeholder="Escribí tu ciudad" class="hidden">
 <label>Oficio *</label><select id="t_of" onchange="toggleManual('t_of','t_of_man')"><option value="">-- Oficio --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero</option><option>Reventa</option><option value="OTROS">Otros</option></select>
 <input id="t_of_man" placeholder="Escribí tu oficio" class="hidden">
-<h4 style="margin-top:14px">Última experiencia en panadería o actual</h4>
+<h4 style="margin-top:14px">Última experiencia en panadería o actual (máx 5)</h4>
 <div id="exps"></div>
-<button class="btn btn-beige btn-chico" onclick="addExp()">+ Agregar otra panadería (hasta 5)</button>
-<div class="legal-check"><input type="checkbox" id="t_legal"><label style="display:inline;font-weight:400;font-size:12px" for="t_legal">Acepto que mis datos (nombre, WPP, ciudad, oficio, experiencias) sean almacenados para intermediación laboral entre trabajadores y comercios. Autorizo que mi perfil sea visible solo para comercios autorizados. Puedo pedir baja al 2974092277. Ley 25.326 *</label></div>
+<button class="btn btn-beige btn-chico" onclick="addExp()">+ Agregar otra panadería</button>
+<div class="legal-check"><input type="checkbox" id="t_legal"><label style="display:inline;font-weight:400;font-size:12px" for="t_legal">Acepto que mis datos sean almacenados para intermediación laboral. Autorizo que mi perfil sea visible solo para comercios autorizados. Puedo pedir baja al 2974092277. Ley 25.326 *</label></div>
 <button class="btn btn-verde" onclick="guardarT()">✅ GUARDAR</button>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 <div id="t_msg" style="font-weight:800;margin-top:8px"></div>
@@ -61,14 +61,14 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <label>Nombre completo *</label><input id="c_nombre">
 <label>Dirección *</label><input id="c_dir">
 <label>Nombre del comercio *</label><input id="c_com">
-<label>WhatsApp para autorizar *</label><input id="c_wsp" placeholder="Tu WPP será tu clave">
+<label>WhatsApp para autorizar (será tu clave) *</label><input id="c_wsp" placeholder="2974...">
 <label>Provincia *</label><select id="c_prov" onchange="cargarCiudades('c_prov','c_ciu','c_ciu_man','c_prov_man')"><option value="">-- Provincia --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option><option value="OTRA">OTRA</option></select>
 <input id="c_prov_man" class="hidden" placeholder="Escribí provincia">
 <label>Ciudad *</label><select id="c_ciu"><option>Primero elegí provincia</option></select>
 <input id="c_ciu_man" class="hidden" placeholder="Escribí ciudad">
 <label>Puesto que estás buscando *</label><select id="c_puesto" onchange="toggleManual('c_puesto','c_puesto_man')"><option value="">-- Puesto --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero</option><option>Reventa</option><option value="OTROS">Otros</option></select>
 <input id="c_puesto_man" class="hidden" placeholder="Escribí puesto">
-<div class="legal-check"><input type="checkbox" id="c_legal"><label style="display:inline;font-weight:400;font-size:12px" for="c_legal">Acepto que mis datos de comercio sean almacenados para solicitar autorización para ver CVs. Entiendo que el admin validará mi comercio. Ley 25.326 *</label></div>
+<div class="legal-check"><input type="checkbox" id="c_legal"><label style="display:inline;font-weight:400;font-size:12px" for="c_legal">Acepto que mis datos de comercio sean almacenados para solicitar autorización para ver CVs. Ley 25.326 *</label></div>
 <button class="btn btn-pan" onclick="solicitarAutorizacion()">📨 SOLICITAR AUTORIZACION PARA VER POSTULANTES</button>
 <div id="c_msg" style="margin-top:10px;font-weight:800"></div>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
@@ -79,15 +79,15 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <div id="acceso_login">
 <label>Ingresá tu número de WPP autorizado *</label><input id="a_wsp" placeholder="Ej: 2974092277">
 <button class="btn btn-pan" onclick="validarAcceso()">INGRESAR</button>
-<div id="a_login_msg" style="color:#c62828;font-weight:800"></div>
+<div id="a_login_msg" style="color:#c62828;font-weight:800;margin-top:8px"></div>
 </div>
 <div id="acceso_ok" class="hidden">
 <div class="filtros">
 <label>Provincia</label><select id="f_prov" onchange="cargarCiudades('f_prov','f_ciu','f_ciu_man','f_prov_man');filtrar()"><option value="">Todas</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option><option value="OTRA">OTRA</option></select>
-<input id="f_prov_man" class="hidden" placeholder="Provincia manual">
+<input id="f_prov_man" class="hidden">
 <label>Ciudad</label><select id="f_ciu" onchange="filtrar()"><option value="">Todas</option></select>
-<input id="f_ciu_man" class="hidden" placeholder="Ciudad manual">
-<label>Puesto que estás buscando</label><select id="f_of" onchange="filtrar()"><option value="">Todos</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero</option><option>Reventa</option><option>Otros</option></select>
+<input id="f_ciu_man" class="hidden">
+<label>Puesto</label><select id="f_of" onchange="filtrar()"><option value="">Todos</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero</option><option>Reventa</option><option>Otros</option></select>
 </div>
 <button class="btn btn-verde" onclick="cargarTrabajadores()">🔄 CARGAR DESDE SHEET</button>
 <div id="lista"></div>
@@ -100,8 +100,7 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <button class="btn btn-beige" onclick="contactar('baja')">Quiero darme de baja</button>
 <button class="btn btn-beige" onclick="contactar('consulta')">Contactarme con admin</button>
 <div id="contacto_form" class="hidden" style="margin-top:10px">
-<label>Tu WPP</label><input id="ct_wsp">
-<label>Mensaje</label><textarea id="ct_msg" rows="4"></textarea>
+<label>Tu WPP</label><input id="ct_wsp"><label>Mensaje</label><textarea id="ct_msg" rows="4"></textarea>
 <button class="btn btn-wsp" onclick="enviarContacto()">Enviar por WhatsApp al admin</button>
 </div>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
@@ -110,13 +109,9 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <div id="admin" class="card hidden">
 <h3>🔐 Admin</h3>
 <div id="admin_login"><input id="admin_pass" type="password" placeholder="Clave"><button class="btn btn-pan" onclick="loginAdmin()">Entrar</button><div id="admin_login_msg" style="color:red;font-weight:800"></div></div>
-<div id="admin_panel" class="hidden">
-<h4>1) Solicitudes de autorización</h4><div id="admin_aut"></div>
-<h4 style="margin-top:16px">2) Todos los postulantes</h4><div id="admin_trab"></div>
-</div>
+<div id="admin_panel" class="hidden"><h4>1) Solicitudes</h4><div id="admin_aut"></div><h4 style="margin-top:16px">2) Postulantes</h4><div id="admin_trab"></div></div>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 </div>
-
 </div>
 <script>
 const URL_SHEET="https://script.google.com/macros/s/AKfycbxk_Nu95od1nYf85ItKr1SEmsE2DLFN2DfQlT6P1HK0kYl1JL0ulFpMDHs1r_Z8gy5m/exec";
@@ -126,90 +121,45 @@ let DATA_TRAB=[]; let DATA_COM=[]; let TIPO_CONTACTO=""; let EXP_COUNT=0;
 function show(id){document.querySelectorAll('#trabajador,#comercio,#acceso,#contacto,#admin,#menu').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo(0,0);}
 function toggleManual(idSel,idMan){let v=document.getElementById(idSel).value;document.getElementById(idMan).classList.toggle('hidden', v!=='OTROS' && v!=='OTRA');}
 function cargarCiudades(idProv,idCiu,idCiuMan,idProvMan){
- let prov=document.getElementById(idProv).value;
- let sel=document.getElementById(idCiu);
- let manC=document.getElementById(idCiuMan);
- let manP=idProvMan?document.getElementById(idProvMan):null;
+ let prov=document.getElementById(idProv).value; let sel=document.getElementById(idCiu); let manC=document.getElementById(idCiuMan); let manP=idProvMan?document.getElementById(idProvMan):null;
  if(manP) manP.classList.toggle('hidden', prov!=='OTRA');
  if(!prov || prov==='OTRA'){sel.innerHTML='<option value="">--</option><option value="OTRA">OTRA - Escribir manual</option>'; if(manC) manC.classList.remove('hidden'); sel.onchange=function(){ if(manC) manC.classList.toggle('hidden', this.value!=='OTRA'); }; return;}
  let lista=CIUDADES[prov]||[]; sel.innerHTML='<option value="">Todas / Seleccionar</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('')+'<option value="OTRA">OTRA - Escribir manual</option>';
  if(manC){ sel.onchange=function(){ manC.classList.toggle('hidden', this.value!=='OTRA'); }; manC.classList.add('hidden');}
 }
-function addExp(){
- if(EXP_COUNT>=5){alert('Máximo 5');return;}
- EXP_COUNT++; let div=document.createElement('div'); div.className='exp-box'; div.id='exp_'+EXP_COUNT;
- div.innerHTML=`<b>Panadería ${EXP_COUNT}</b> <button class="btn btn-chico btn-rojo" onclick="this.parentElement.remove();EXP_COUNT--" style="float:right">X</button><label>Nombre</label><input id="exp_nom_${EXP_COUNT}"><label>Dirección</label><input id="exp_dir_${EXP_COUNT}"><label>Tel contacto</label><input id="exp_tel_${EXP_COUNT}">`;
- document.getElementById('exps').appendChild(div);
-}
+function addExp(){ if(EXP_COUNT>=5){alert('Máximo 5');return;} EXP_COUNT++; let div=document.createElement('div'); div.className='exp-box'; div.id='exp_'+EXP_COUNT; div.innerHTML=`<b>Panadería ${EXP_COUNT}</b> <button class="btn btn-chico btn-rojo" onclick="this.parentElement.remove();EXP_COUNT--" style="float:right">X</button><label>Nombre panadería *</label><input id="exp_nom_${EXP_COUNT}"><label>Dirección panadería *</label><input id="exp_dir_${EXP_COUNT}"><label>Tel contacto panadería *</label><input id="exp_tel_${EXP_COUNT}">`; document.getElementById('exps').appendChild(div); }
 addExp();
 function guardarT(){
- if(!document.getElementById('t_legal').checked){alert('Tenés que aceptar el consentimiento de datos Ley 25.326');return;}
+ if(!document.getElementById('t_legal').checked){alert('Tenés que aceptar el consentimiento Ley 25.326');return;}
  let prov=document.getElementById('t_prov').value==='OTRA'?document.getElementById('t_prov_man').value:document.getElementById('t_prov').value;
  let ciu=document.getElementById('t_ciu').value; if(ciu==='OTRA') ciu=document.getElementById('t_ciu_man').value;
  let of=document.getElementById('t_of').value==='OTROS'?document.getElementById('t_of_man').value:document.getElementById('t_of').value;
- let exps=[];
- for(let i=1;i<=5;i++){ let n=document.getElementById('exp_nom_'+i); if(n && n.value){ exps.push({nombre:n.value, dir:document.getElementById('exp_dir_'+i).value, tel:document.getElementById('exp_tel_'+i).value}); } }
- let d={tipo:"trabajador", nombre:document.getElementById('t_nombre').value, wsp:document.getElementById('t_wsp').value, provincia:prov, ciudad:ciu, oficio:of, experiencias:JSON.stringify(exps), consentimiento:"SI"};
+ let exps=[]; for(let i=1;i<=10;i++){ let n=document.getElementById('exp_nom_'+i); if(n && n.value){ exps.push({nombre:n.value, dir:document.getElementById('exp_dir_'+i).value, tel:document.getElementById('exp_tel_'+i).value}); } }
+ let d={tipo:"trabajador", nombre:document.getElementById('t_nombre').value, wsp:document.getElementById('t_wsp').value, provincia:prov, ciudad:ciu, oficio:of, experiencias:JSON.stringify(exps)};
  if(!d.nombre||!d.wsp||!prov||!ciu||!of){alert('Falta nombre, wpp, provincia, ciudad, oficio');return;}
  document.getElementById('t_msg').innerText='Enviando al Sheet...';
  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerText='✅ Guardado en Sheet'; setTimeout(()=>show('menu'),1200);});
 }
 function solicitarAutorizacion(){
- if(!document.getElementById('c_legal').checked){alert('Tenés que aceptar el consentimiento de datos Ley 25.326');return;}
+ if(!document.getElementById('c_legal').checked){alert('Tenés que aceptar el consentimiento Ley 25.326');return;}
  let prov=document.getElementById('c_prov').value==='OTRA'?document.getElementById('c_prov_man').value:document.getElementById('c_prov').value;
  let ciu=document.getElementById('c_ciu').value==='OTRA'?document.getElementById('c_ciu_man').value:document.getElementById('c_ciu').value;
  let puesto=document.getElementById('c_puesto').value==='OTROS'?document.getElementById('c_puesto_man').value:document.getElementById('c_puesto').value;
- let d={tipo:"comercio_solicitud", nombre:document.getElementById('c_nombre').value, direccion:document.getElementById('c_dir').value, comercio:document.getElementById('c_com').value, wsp:document.getElementById('c_wsp').value, provincia:prov, ciudad:ciu, puesto:puesto, consentimiento:"SI"};
+ let d={tipo:"comercio_solicitud", nombre:document.getElementById('c_nombre').value, direccion:document.getElementById('c_dir').value, comercio:document.getElementById('c_com').value, wsp:document.getElementById('c_wsp').value, provincia:prov, ciudad:ciu, puesto:puesto};
  if(!d.nombre||!d.comercio||!d.wsp||!prov||!ciu||!puesto){alert('Completa todos los *');return;}
  document.getElementById('c_msg').innerText='Enviando solicitud...';
- fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('c_msg').innerHTML='✅ Solicitud enviada.<br><b>En breve serás autorizado, ingresá al botón de "Ya tengo clave de acceso para ver curriculum" de la pantalla inicial.</b>';});
+ fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('c_msg').innerHTML='✅ Solicitud enviada.<br><b>En breve serás autorizado, ingresá al botón de "Ya tengo clave" de la pantalla inicial.</b>';});
 }
-function validarAcceso(){
- let wsp=document.getElementById('a_wsp').value.replace(/\D/g,'');
- if(!wsp){alert('Ingresá WPP');return;}
- document.getElementById('a_login_msg').innerText='Verificando...';
- fetch(URL_SHEET).then(r=>r.json()).then(j=>{
-   DATA_COM=j.comercios||[]; DATA_TRAB=j.trabajadores||[];
-   let aut=DATA_COM.find(c=> (c.wsp+'').replace(/\D/g,'').includes(wsp) && c.estado==='AUTORIZADO');
-   if(aut){document.getElementById('acceso_login').classList.add('hidden');document.getElementById('acceso_ok').classList.remove('hidden'); document.getElementById('a_login_msg').innerText=''; cargarTrabajadores();}
-   else{document.getElementById('a_login_msg').innerText='❌ WPP no autorizado aún. Solicitá autorización primero.';}
- });
-}
+function validarAcceso(){ let wsp=document.getElementById('a_wsp').value.replace(/\D/g,''); if(!wsp){alert('Ingresá WPP');return;} document.getElementById('a_login_msg').innerText='Verificando...'; fetch(URL_SHEET).then(r=>r.json()).then(j=>{ DATA_COM=j.comercios||[]; DATA_TRAB=j.trabajadores||[]; let aut=DATA_COM.find(c=> (c.wsp+'').replace(/\D/g,'').includes(wsp) && c.estado==='AUTORIZADO'); if(aut){document.getElementById('acceso_login').classList.add('hidden');document.getElementById('acceso_ok').classList.remove('hidden'); document.getElementById('a_login_msg').innerText=''; cargarTrabajadores();} else{document.getElementById('a_login_msg').innerText='❌ WPP no autorizado aún. Solicitá autorización primero.';}});}
 function cargarTrabajadores(){ fetch(URL_SHEET).then(r=>r.json()).then(j=>{DATA_TRAB=j.trabajadores||[]; filtrar();}); }
-function filtrar(){
- let prov=document.getElementById('f_prov').value==='OTRA'?document.getElementById('f_prov_man').value:document.getElementById('f_prov').value;
- let ciu=document.getElementById('f_ciu').value==='OTRA'?document.getElementById('f_ciu_man').value:document.getElementById('f_ciu').value;
- let puesto=document.getElementById('f_of').value;
- let lista=DATA_TRAB.filter(t=>(!prov||t.provincia===prov)&&(!ciu||t.ciudad===ciu));
- let pri=lista.filter(t=>!puesto||t.oficio.toLowerCase().includes(puesto.toLowerCase()));
- let resto=lista.filter(t=>puesto &&!t.oficio.toLowerCase().includes(puesto.toLowerCase()));
- let orden=[...pri,...resto];
- render(orden, pri.length);
-}
-function render(l, cantPri){
- if(!l.length){document.getElementById('lista').innerHTML='Vacío - Sheet en cero';return;}
- let html=''; if(cantPri>0) html+=`<div style="background:#E8F5E9;padding:8px;border-radius:8px;margin:8px 0"><b>${cantPri} coinciden con tu búsqueda</b></div>`;
- html+=l.map((t,i)=>`<div class="item" style="${i<cantPri?'border-left:4px solid #4CAF50;padding-left:8px':''}"><b>${t.nombre}</b> <span class="badge">${t.oficio}</span><br>📍 ${t.ciudad} - ${t.provincia}<br>📱 ${t.wsp} <a href="https://wa.me/549${(t.wsp+'').replace(/\D/g,'')}" target="_blank"><button class="btn btn-wsp btn-chico">WhatsApp</button></a><br>${t.experiencias?'<small>Exp: '+t.experiencias.substring(0,120)+'</small>':''}</div>`).join('');
- document.getElementById('lista').innerHTML=html;
-}
-function contactar(tipo){TIPO_CONTACTO=tipo; document.getElementById('contacto_form').classList.remove('hidden'); document.getElementById('ct_msg').value=tipo==='baja'?'Hola, quiero darme de baja de la bolsa. Mi WPP es: ':'';}
-function enviarContacto(){
- let wsp=document.getElementById('ct_wsp').value; let msg=document.getElementById('ct_msg').value;
- let texto=`[${TIPO_CONTACTO.toUpperCase()}] WPP:${wsp} - ${msg}`;
- window.open(`https://wa.me/${ADMIN_WPP}?text=${encodeURIComponent(texto)}`,'_blank');
- fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"contacto", wsp:wsp, mensaje:texto})});
-}
-function loginAdmin(){
- if(document.getElementById('admin_pass').value!=='chanchadas'){document.getElementById('admin_login_msg').innerText='Clave mal';return;}
- document.getElementById('admin_login').classList.add('hidden');document.getElementById('admin_panel').classList.remove('hidden');
- fetch(URL_SHEET).then(r=>r.json()).then(j=>{
-   let com=j.comercios||[]; let trab=j.trabajadores||[];
-   document.getElementById('admin_aut').innerHTML=com.map((c)=>`<div class="item">${c.comercio} - ${c.nombre} - ${c.wsp} - ${c.provincia}/${c.ciudad} - ${c.puesto} - <b>${c.estado}</b> ${c.estado!=='AUTORIZADO'?`<button class="btn btn-verde btn-chico" onclick="autorizar('${c.wsp}')">AUTORIZAR</button>`:''} <button class="btn btn-rojo btn-chico" onclick="borrarCom('${c.wsp}')">X</button></div>`).join('') || 'Sin solicitudes';
-   document.getElementById('admin_trab').innerHTML=trab.map((t)=>`<div class="item">${t.nombre} | ${t.ciudad} | ${t.oficio} | ${t.wsp} <button class="btn btn-rojo btn-chico" onclick="borrarTrab('${t.wsp}','${t.nombre}')">X Borrar</button></div>`).join('') || 'Vacío';
- });
-}
+function filtrar(){ let prov=document.getElementById('f_prov').value==='OTRA'?document.getElementById('f_prov_man').value:document.getElementById('f_prov').value; let ciu=document.getElementById('f_ciu').value==='OTRA'?document.getElementById('f_ciu_man').value:document.getElementById('f_ciu').value; let puesto=document.getElementById('f_of').value; let lista=DATA_TRAB.filter(t=>(!prov||t.provincia===prov)&&(!ciu||t.ciudad===ciu)); let pri=lista.filter(t=>!puesto||t.oficio.toLowerCase().includes(puesto.toLowerCase())); let resto=lista.filter(t=>puesto &&!t.oficio.toLowerCase().includes(puesto.toLowerCase())); let orden=[...pri,...resto]; render(orden, pri.length); }
+function render(l, cantPri){ if(!l.length){document.getElementById('lista').innerHTML='Vacío - Sheet en cero';return;} let html=''; if(cantPri>0) html+=`<div style="background:#E8F5E9;padding:8px;border-radius:8px;margin:8px 0"><b>${cantPri} coinciden con tu búsqueda</b></div>`; html+=l.map((t,i)=>`<div class="item" style="${i<cantPri?'border-left:4px solid #4CAF50;padding-left:8px':''}"><b>${t.nombre}</b> <span class="badge">${t.oficio}</span><br>📍 ${t.ciudad} - ${t.provincia}<br>📱 ${t.wsp} <a href="https://wa.me/549${(t.wsp+'').replace(/\D/g,'')}" target="_blank"><button class="btn btn-wsp btn-chico">WhatsApp</button></a><br>${t.panaderia_nombre?'<small>Pan: '+t.panaderia_nombre+' | Dir: '+t.panaderia_direccion+' | Tel: '+t.panaderia_contacto+'</small>':''}</div>`).join(''); document.getElementById('lista').innerHTML=html; }
+function contactar(tipo){TIPO_CONTACTO=tipo; document.getElementById('contacto_form').classList.remove('hidden'); document.getElementById('ct_msg').value=tipo==='baja'?'Hola, quiero darme de baja. Mi WPP es: ':'';}
+function enviarContacto(){ let wsp=document.getElementById('ct_wsp').value; let msg=document.getElementById('ct_msg').value; let texto=`[${TIPO_CONTACTO.toUpperCase()}] WPP:${wsp} - ${msg}`; window.open(`https://wa.me/${ADMIN_WPP}?text=${encodeURIComponent(texto)}`,'_blank'); fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"contacto", wsp:wsp, mensaje:texto})}); }
+function loginAdmin(){ if(document.getElementById('admin_pass').value!=='chanchadas'){document.getElementById('admin_login_msg').innerText='Clave mal';return;} document.getElementById('admin_login').classList.add('hidden');document.getElementById('admin_panel').classList.remove('hidden'); fetch(URL_SHEET).then(r=>r.json()).then(j=>{ let com=j.comercios||[]; let trab=j.trabajadores||[]; document.getElementById('admin_aut').innerHTML=com.map((c)=>`<div class="item">${c.comercio} - ${c.nombre} - ${c.wsp} - ${c.provincia}/${c.ciudad} - ${c.puesto} - <b>${c.estado}</b> ${c.estado!=='AUTORIZADO'?`<button class="btn btn-verde btn-chico" onclick="autorizar('${c.wsp}')">AUTORIZAR</button>`:''} <button class="btn btn-rojo btn-chico" onclick="borrarCom('${c.wsp}')">X</button></div>`).join('') || 'Sin solicitudes'; document.getElementById('admin_trab').innerHTML=trab.map((t)=>`<div class="item">${t.nombre} | ${t.ciudad} | ${t.oficio} | ${t.wsp} | Pan:${t.panaderia_nombre||''} <button class="btn btn-rojo btn-chico" onclick="borrarTrab('${t.wsp}','${t.nombre}')">X Borrar</button></div>`).join('') || 'Vacío'; }); }
 function autorizar(wsp){fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"autorizar", wsp:wsp})}).then(()=>{alert('Autorizado '+wsp); loginAdmin();});}
 function borrarTrab(wsp,nombre){if(!confirm('Borrar '+nombre+'?'))return; fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"borrar_trab", wsp:wsp, nombre:nombre})}).then(()=>{alert('Borrado'); loginAdmin();});}
 function borrarCom(wsp){if(!confirm('Borrar comercio '+wsp+'?'))return; fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"borrar_com", wsp:wsp})}).then(()=>{loginAdmin();});}
 </script>
-</div></body></html>
+</body>
+</html>
