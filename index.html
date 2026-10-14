@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bolsa Panadera Patagonia v19 FILTRO</title><script src="https://cdn.tailwindcss.com"></script></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bolsa Panadera Patagonia v20 FILTROS DESPLEGABLES</title><script src="https://cdn.tailwindcss.com"></script></head>
 <body style="background:#0A1931;font-family:system-ui"><div style="max-width:500px;margin:0 auto;padding:14px">
 <header style="background:#FFC947;padding:16px;border-radius:18px;text-align:center"><h1 style="font-weight:900;color:#0A1931;font-size:19px">BOLSA PANADERA DE LA PATAGONIA</h1></header>
 <div id="inicio" style="background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
@@ -24,9 +24,19 @@
 
 <div style="background:#FFF3CD;padding:12px;border-radius:12px;margin-top:12px;border:2px solid #0A1931">
 <p style="font-weight:900;font-size:13px;color:#0A1931">🔍 FILTRO DE BÚSQUEDA</p>
-<select id="filtroOficio" onchange="aplicarFiltro()" style="border:2px solid #0A1931;padding:10px;width:100%;margin-top:8px;border-radius:8px;background:white;font-weight:600"><option value="">Todos los oficios</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option></select>
-<input id="filtroCiudad" oninput="aplicarFiltro()" placeholder="Filtrar por ciudad - Ej: Comodoro" style="border:2px solid #0A1931;padding:10px;width:100%;margin-top:8px;border-radius:8px">
-<input id="filtroNombre" oninput="aplicarFiltro()" placeholder="Buscar por nombre" style="border:2px solid #0A1931;padding:10px;width:100%;margin-top:8px;border-radius:8px">
+
+<select id="filtroOficio" onchange="aplicarFiltro()" style="border:2px solid #0A1931;padding:10px;width:100%;margin-top:8px;border-radius:8px;background:white;font-weight:600">
+<option value="">Todos los oficios</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option>
+</select>
+
+<select id="filtroCiudad" onchange="aplicarFiltro()" style="border:2px solid #0A1931;padding:10px;width:100%;margin-top:8px;border-radius:8px;background:white;font-weight:600">
+<option value="">Todas las ciudades</option>
+</select>
+
+<select id="filtroNombre" onchange="aplicarFiltro()" style="border:2px solid #0A1931;padding:10px;width:100%;margin-top:8px;border-radius:8px;background:white;font-weight:600">
+<option value="">Todos los postulantes</option>
+</select>
+
 <p id="contadorFiltro" style="font-size:11px;color:#000;margin-top:8px;font-weight:700"></p>
 <button onclick="limpiarFiltro()" style="font-size:11px;color:#0A1931;text-decoration:underline;background:none;border:none;margin-top:4px;font-weight:800">Limpiar filtros</button>
 </div>
@@ -80,8 +90,18 @@ function verificarAcceso(){
  if(!encontrado.autorizado){msgAcceso.innerText='⏳ PENDIENTE. No estás autorizado aún.';return;}
  empleadorActual=encontrado;msgAcceso.innerText='';bienvenidaPana.innerText=`✅ Hola ${encontrado.nombreP} - Acceso autorizado`;
  postulantesGlobal=JSON.parse(localStorage.getItem('postulantes')||'[]').slice().reverse();
- document.getElementById('filtroOficio').value='';document.getElementById('filtroCiudad').value='';document.getElementById('filtroNombre').value='';
+ cargarOpcionesFiltros();
  renderLista(postulantesGlobal);ver('listaPublica');
+}
+function cargarOpcionesFiltros(){
+ let selCiudad=document.getElementById('filtroCiudad');
+ let selNombre=document.getElementById('filtroNombre');
+ let ciudadesUnicas=[...new Set(postulantesGlobal.map(p=>p.ciudad).filter(Boolean))].sort();
+ selCiudad.innerHTML='<option value="">Todas las ciudades</option>';
+ ciudadesUnicas.forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;selCiudad.appendChild(o);});
+ let nombresUnicos=[...new Set(postulantesGlobal.map(p=>p.nombre).filter(Boolean))].sort();
+ selNombre.innerHTML='<option value="">Todos los postulantes</option>';
+ nombresUnicos.forEach(n=>{let o=document.createElement('option');o.value=n;o.textContent=n;selNombre.appendChild(o);});
 }
 function renderLista(lista){
  let html='';
@@ -99,8 +119,8 @@ function aplicarFiltro(){
  let nombre=document.getElementById('filtroNombre').value.toLowerCase();
  let filtrados=postulantesGlobal.filter(x=>{
   let okOficio=!oficio||x.oficio.toLowerCase().includes(oficio);
-  let okCiudad=!ciudad||(x.ciudad||'').toLowerCase().includes(ciudad);
-  let okNombre=!nombre||x.nombre.toLowerCase().includes(nombre);
+  let okCiudad=!ciudad||(x.ciudad||'').toLowerCase()===ciudad;
+  let okNombre=!nombre||x.nombre.toLowerCase()===nombre;
   return okOficio&&okCiudad&&okNombre;
  });
  renderLista(filtrados);
