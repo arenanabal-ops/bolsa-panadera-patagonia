@@ -6,8 +6,15 @@
 <div id="inicio" style="background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
 <button onclick="ver('formEmpleo')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:18px;width:100%;border-radius:14px">🔍 BUSCO TRABAJO</button>
 <button onclick="ver('formEmpleado')" style="background:#FFC947;color:#0A1931;font-weight:900;padding:18px;width:100%;margin-top:12px;border-radius:14px;border:2px solid #0A1931">🏪 BUSCO EMPLEADO</button>
+<button onclick="abrirListaPublica()" style="background:white;color:#0A1931;font-weight:900;padding:16px;width:100%;margin-top:12px;border-radius:14px;border:2px solid #0A1931">👀 VER POSTULANTES (WhatsApp directo)</button>
 <p style="margin-top:18px"><button onclick="ver('loginAdmin')" style="font-size:11px;color:#666;background:none;border:none;text-decoration:underline">admin •</button></p>
 </div>
+
+<div id="listaPublica" style="display:none;background:white;padding:14px;border-radius:18px;margin-top:14px">
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:900;margin-top:8px">PANADEROS DISPONIBLES - Toca para WhatsApp</h2>
+<div id="contenidoListaPublica" style="margin-top:12px"></div>
+</div>
+
 <div id="formEmpleo" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:800;margin-top:8px">Busco Trabajo</h2>
 <input id="nombre" placeholder="Nombre completo" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
@@ -30,6 +37,7 @@
 <select id="puesto" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:white"><option value="">Puesto buscado</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Mostrador</option><option>Cajero/a</option><option>Repartidor</option><option>Encargado</option></select>
 <input id="telP" placeholder="Teléfono panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
 <button onclick="enviarEmpleado()" style="background:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
+<p style="font-size:11px;margin-top:10px;color:#555">Después de registrarte podés ver los postulantes con WhatsApp directo tocando "VER POSTULANTES" en el inicio.</p>
 </div>
 <div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center"><h2 style="font-weight:900;color:#2E7D32">✅ ¡YA QUEDASTE CARGADO!</h2><p id="textoAutorizar" style="font-size:14px;margin-top:12px"></p><button onclick="ver('inicio')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:14px;border-radius:10px">VOLVER AL INICIO</button></div>
 <div id="loginAdmin" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
@@ -46,13 +54,36 @@
 <script>
 const ciudadesData={Chubut:['Comodoro Rivadavia','Rada Tilly','Trelew','Puerto Madryn'], 'Santa Cruz':['Caleta Olivia','Rio Gallegos'], 'Río Negro':['Viedma','Bariloche'], 'Neuquén':['Neuquen'], 'Tierra del Fuego':['Ushuaia']};
 function cargarCiudades(){let p=provincia.value;let s=ciudad;s.innerHTML='<option value="">Ciudad</option>';(ciudadesData[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;o.value=c;s.add(o)});}
-function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','loginAdmin','panelAdmin'].forEach(x=>{document.getElementById(x).style.display='none'});document.getElementById(id).style.display='block';}
+function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','loginAdmin','panelAdmin','listaPublica'].forEach(x=>{document.getElementById(x).style.display='none'});document.getElementById(id).style.display='block';}
 let totalPanas=1;function agregarPana(){if(totalPanas>=5)return;totalPanas++;let d=document.createElement('div');d.style.cssText='border:1px solid #ddd;padding:8px;border-radius:10px;margin-top:6px;background:#fafafa';d.innerHTML=`<small>Panadería ${totalPanas}</small> <span onclick="this.parentElement.remove();totalPanas--" style="color:red;float:right;cursor:pointer">✕</span><input class="panExtra" placeholder="Panadería" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:4px;border-radius:8px"><input class="telExtra" placeholder="Tel ref" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:4px;border-radius:8px">`;contenedorPanas.appendChild(d);}
 function guardarTrabajo(){if(!nombre.value||!oficio.value||!tel.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('postulantes')||'[]');lista.push({nombre:nombre.value,oficio:oficio.value,pan1:pan1.value,ref1:telRef1.value,prov:provincia.value,ciudad:ciudadManual.value||ciudad.value,tel:tel.value,fecha:new Date().toLocaleString()});localStorage.setItem('postulantes',JSON.stringify(lista));textoAutorizar.innerHTML=`${nombre.value} ya quedaste cargado.`;ver('autorizar');}
-function enviarEmpleado(){if(!resp.value||!telP.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('empleadores')||'[]');lista.push({resp:resp.value,nombreP:nombreP.value,direccion:direccionP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false});localStorage.setItem('empleadores',JSON.stringify(lista));let txt=`SOLICITUD:${nombreP.value} Dir:${direccionP.value} Puesto:${puesto.value} Tel:${telP.value}`;window.open(`https://wa.me/5492974092277?text=${encodeURIComponent(txt)}`,'_blank');textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> enviada.`;ver('autorizar');}
+function enviarEmpleado(){if(!resp.value||!telP.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('empleadores')||'[]');lista.push({resp:resp.value,nombreP:nombreP.value,direccion:direccionP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false});localStorage.setItem('empleadores',JSON.stringify(lista));let txt=`SOLICITUD:${nombreP.value} Dir:${direccionP.value} Puesto:${puesto.value} Tel:${telP.value}`;window.open(`https://wa.me/5492974092277?text=${encodeURIComponent(txt)}`,'_blank');textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> enviada. Ahora podes ver los postulantes.`;ver('autorizar');}
+function abrirListaPublica(){
+ let t=JSON.parse(localStorage.getItem('postulantes')||'[]');
+ let html='';
+ if(t.length==0){html='<p style="font-size:13px;color:#666">Todavía no hay postulantes cargados. Cuando un panadero se anote, acá aparece con botón directo a WhatsApp.</p>'}
+ else{t.slice().reverse().forEach(x=>{
+  let telLimpio = x.tel.replace(/[^0-9]/g,'');
+  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} ${x.prov?'- '+x.prov:''} • Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, te vi en Bolsa Panadera de la Patagonia. Te contacto por el puesto de ${encodeURIComponent(x.oficio)}" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
+ });}
+ document.getElementById('contenidoListaPublica').innerHTML=html;
+ ver('listaPublica');
+}
 function entrar(){if(clave.value==='chanchadas'){ver('panelAdmin');cargarAdmin();}else{alert('Clave incorrecta');}}
-function cargarAdmin(){let t=JSON.parse(localStorage.getItem('postulantes')||'[]');let h='';t.forEach((x,i)=>{h+=`<div style="border:1px solid #ddd;padding:6px;margin-top:6px;font-size:12px"><b>${x.nombre}</b> ${x.oficio} - ${x.ciudad} <span onclick="borrarT(${i})" style="color:red;float:right">Borrar</span></div>`});listaTrabajo.innerHTML=h||'Vacio';let e=JSON.parse(localStorage.getItem('empleadores')||'[]');let h2='';e.forEach((x,i)=>{h2+=`<div style="border:1px solid #ddd;padding:6px;margin-top:6px;font-size:12px"><b>${x.nombreP}</b> ${x.puesto} Dir:${x.direccion} <span onclick="borrarE(${i})" style="color:red;float:right">Borrar</span> ${x.autorizado?'AUTORIZADO':`<button onclick="autorizar(${i})" style="background:green;color:white;padding:2px 6px;border-radius:4px">AUTORIZAR</button>`}</div>`});listaEmpleador.innerHTML=h2||'Vacio';}
+function cargarAdmin(){
+ let t=JSON.parse(localStorage.getItem('postulantes')||'[]');
+ let h='';t.forEach((x,i)=>{
+  let telLimpio = x.tel.replace(/[^0-9]/g,'');
+  h+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombre}</b> - ${x.oficio}<br><a href="https://wa.me/549${telLimpio}" target="_blank" style="color:#25D366;font-weight:700">WhatsApp</a> <span onclick="borrarT(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`
+ });
+ listaTrabajo.innerHTML=h||'Vacio';
+ let e=JSON.parse(localStorage.getItem('empleadores')||'[]');
+ let h2='';e.forEach((x,i)=>{
+  h2+=`<div style="border:1px solid #ddd;padding:6px;margin-top:6px;font-size:12px"><b>${x.nombreP}</b> Dir:${x.direccion}<br><span style="float:right">${x.autorizado?'<b style="color:green">OK</b>':`<button onclick="autorizar(${i})" style="background:green;color:white;padding:2px 6px;border-radius:4px">AUTORIZAR</button>`} <span onclick="borrarE(${i})" style="color:red;cursor:pointer">Borrar</span></span></div>`
+ });
+ listaEmpleador.innerHTML=h2||'Vacio';
+}
 function autorizar(i){let l=JSON.parse(localStorage.getItem('empleadores')||'[]');l[i].autorizado=true;localStorage.setItem('empleadores',JSON.stringify(l));cargarAdmin();}
-function borrarT(i){let l=JSON.parse(localStorage.getItem('postulantes')||'[]');l.splice(i,1);localStorage.setItem('postulantes',JSON.stringify(l));cargarAdmin();}
+function borrarT(i){let l=JSON.parse(localStorage.getItem('postulantes')||'[]');l.splice(i,1);localStorage.setItem('postulantes',JSON.stringify(l));cargarAdmin();abrirListaPublica();}
 function borrarE(i){let l=JSON.parse(localStorage.getItem('empleadores')||'[]');l.splice(i,1);localStorage.setItem('empleadores',JSON.stringify(l));cargarAdmin();}
 </script></body></html>
