@@ -11,16 +11,16 @@
 </div>
 
 <div id="accesoEmpleador" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
-<button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:900;margin-top:8px">Acceso Panaderías Autorizadas</h2>
-<p style="font-size:12px;margin-top:6px;color:#555">Ingresá el WhatsApp con el que pediste autorización. Si ya estás autorizado, vas a ver la lista.</p>
-<input id="telAcceso" placeholder="Tu WhatsApp de panadería - Ej: 297..." style="border:2px solid #0A1931;padding:12px;width:100%;margin-top:12px;border-radius:10px;background:#FFFBE6">
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:900;margin-top:8px">Acceso Panaderías</h2>
+<p style="font-size:12px;margin-top:6px;color:#555">Ingresá el WhatsApp con el que te registraste. Solo las autorizadas pueden ver.</p>
+<input id="telAcceso" placeholder="Tu WhatsApp - Ej: 297..." style="border:2px solid #0A1931;padding:12px;width:100%;margin-top:12px;border-radius:10px;background:#FFFBE6">
 <button onclick="verificarAcceso()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:10px;border-radius:10px">INGRESAR A LA BOLSA</button>
-<p id="msgAcceso" style="font-size:12px;color:red;margin-top:8px"></p>
+<p id="msgAcceso" style="font-size:13px;font-weight:700;color:red;margin-top:10px"></p>
 </div>
 
 <div id="listaPublica" style="display:none;background:white;padding:14px;border-radius:18px;margin-top:14px">
-<button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:900;margin-top:8px">PANADEROS DISPONIBLES</h2>
-<p id="bienvenidaPana" style="font-size:12px;color:#2E7D32;margin-top:4px"></p>
+<button onclick="ver('inicio')" style="font-size:12px">← Volver al inicio</button><h2 style="font-weight:900;margin-top:8px">PANADEROS DISPONIBLES - BLOQUEADO SIN AUTORIZACIÓN</h2>
+<p id="bienvenidaPana" style="font-size:12px;color:#2E7D32;margin-top:4px;font-weight:700"></p>
 <div id="contenidoListaPublica" style="margin-top:12px"></div>
 </div>
 
@@ -38,6 +38,7 @@
 <input id="tel" placeholder="Tu WhatsApp" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
 <button onclick="guardarTrabajo()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px">GUARDAR</button>
 </div>
+
 <div id="formEmpleado" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px">← Volver</button><h2 style="font-weight:800;margin-top:8px">Busco Empleado</h2>
 <input id="resp" placeholder="Nombre del responsable" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
@@ -47,7 +48,9 @@
 <input id="telP" placeholder="Teléfono WhatsApp de la panadería" style="border:2px solid #0A1931;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:#FFFBE6">
 <button onclick="enviarEmpleado()" style="background:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
 </div>
+
 <div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center"><h2 style="font-weight:900;color:#2E7D32">✅ ¡YA QUEDASTE CARGADO!</h2><p id="textoAutorizar" style="font-size:14px;margin-top:12px"></p><button onclick="ver('inicio')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:14px;border-radius:10px">VOLVER AL INICIO</button></div>
+
 <div id="loginAdmin" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
 <button onclick="ver('inicio')" style="display:block;text-align:left;font-size:12px">← Volver</button><h2 style="font-weight:900;margin-top:10px">ADMIN - Bolsa Panadera</h2>
 <input id="clave" type="password" placeholder="Clave admin" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
@@ -65,40 +68,41 @@ function cargarCiudades(){let p=provincia.value;let s=ciudad;s.innerHTML='<optio
 function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','loginAdmin','panelAdmin','listaPublica','accesoEmpleador'].forEach(x=>{document.getElementById(x).style.display='none'});document.getElementById(id).style.display='block';}
 let totalPanas=1;function agregarPana(){if(totalPanas>=5)return;totalPanas++;let d=document.createElement('div');d.style.cssText='border:1px solid #ddd;padding:8px;border-radius:10px;margin-top:6px;background:#fafafa';d.innerHTML=`<small>Panadería ${totalPanas}</small> <span onclick="this.parentElement.remove();totalPanas--" style="color:red;float:right;cursor:pointer">✕</span><input class="panExtra" placeholder="Panadería" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:4px;border-radius:8px"><input class="telExtra" placeholder="Tel ref" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:4px;border-radius:8px">`;contenedorPanas.appendChild(d);}
 function guardarTrabajo(){if(!nombre.value||!oficio.value||!tel.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('postulantes')||'[]');lista.push({nombre:nombre.value,oficio:oficio.value,pan1:pan1.value,ref1:telRef1.value,prov:provincia.value,ciudad:ciudadManual.value||ciudad.value,tel:tel.value,fecha:new Date().toLocaleString()});localStorage.setItem('postulantes',JSON.stringify(lista));textoAutorizar.innerHTML=`${nombre.value} ya quedaste cargado.`;ver('autorizar');}
-function enviarEmpleado(){if(!resp.value||!telP.value||!nombreP.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('empleadores')||'[]');lista.push({resp:resp.value,nombreP:nombreP.value,direccion:direccionP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false});localStorage.setItem('empleadores',JSON.stringify(lista));let txt=`SOLICITUD:${nombreP.value} Dir:${direccionP.value} Puesto:${puesto.value} Tel:${telP.value}`;window.open(`https://wa.me/5492974092277?text=${encodeURIComponent(txt)}`,'_blank');textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> enviada. Cuando sea autorizada, podrás entrar con tu WhatsApp ${telP.value} en el botón "SOY PANADERÍA AUTORIZADA".`;ver('autorizar');}
+function enviarEmpleado(){if(!resp.value||!telP.value||!nombreP.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('empleadores')||'[]');lista.push({resp:resp.value,nombreP:nombreP.value,direccion:direccionP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false});localStorage.setItem('empleadores',JSON.stringify(lista));let txt=`SOLICITUD:${nombreP.value} Dir:${direccionP.value} Puesto:${puesto.value} Tel:${telP.value}`;window.open(`https://wa.me/5492974092277?text=${encodeURIComponent(txt)}`,'_blank');textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> enviada. Cuando sea autorizada, podrás entrar con tu WhatsApp.`;ver('autorizar');}
+
 function verificarAcceso(){
  let telIngresado = telAcceso.value.replace(/[^0-9]/g,'');
+ if(telIngresado.length < 6){msgAcceso.innerText='Poné tu número completo';return;}
  let empleadores = JSON.parse(localStorage.getItem('empleadores')||'[]');
  let encontrado = empleadores.find(e=> e.tel.replace(/[^0-9]/g,'')===telIngresado );
- if(!encontrado){msgAcceso.innerText='Ese número no pidió autorización. Primero registrate en BUSCO EMPLEADO.';return;}
- if(!encontrado.autorizado){msgAcceso.innerText='Tu solicitud está pendiente. Todavía no estás autorizado por el admin.';return;}
+ if(!encontrado){
+   msgAcceso.innerText='❌ Ese número no pidió autorización. Primero registrate en BUSCO EMPLEADO.';
+   return;
+ }
+ if(!encontrado.autorizado){
+   msgAcceso.innerText='⏳ Tu solicitud está PENDIENTE. Todavía no estás autorizado por el admin. Contactá al administrador.';
+   return;
+ }
+ // ESTA AUTORIZADO - MOSTRAR LISTA
  msgAcceso.innerText='';
- bienvenidaPana.innerText=`Hola ${encontrado.nombreP} - ${encontrado.direccion} - Acceso autorizado`;
- abrirListaPublicaDirecto();
-}
-function abrirListaPublicaDirecto(){
+ bienvenidaPana.innerText=`✅ Hola ${encontrado.nombreP} - ${encontrado.direccion} - Acceso autorizado`;
  let t=JSON.parse(localStorage.getItem('postulantes')||'[]');
  let html='';
  if(t.length==0){html='<p style="font-size:13px;color:#666">Todavía no hay postulantes.</p>'}
  else{t.slice().reverse().forEach(x=>{
   let telLimpio = x.tel.replace(/[^0-9]/g,'');
-  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} ${x.prov?'- '+x.prov:''} • Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, soy de Panaderia autorizada te vi en Bolsa Panadera por ${encodeURIComponent(x.oficio)}" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
+  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} - Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, soy de ${encodeURIComponent(encontrado.nombreP)} te vi en Bolsa Panadera" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
  });}
  document.getElementById('contenidoListaPublica').innerHTML=html;
  ver('listaPublica');
 }
+
 function entrar(){if(clave.value==='chanchadas'){ver('panelAdmin');cargarAdmin();}else{alert('Clave incorrecta');}}
 function cargarAdmin(){
  let t=JSON.parse(localStorage.getItem('postulantes')||'[]');
- let h='';t.forEach((x,i)=>{
-  h+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombre}</b> - ${x.oficio}<br><a href="https://wa.me/549${x.tel.replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;font-weight:700">WhatsApp</a> <span onclick="borrarT(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`
- });
- listaTrabajo.innerHTML=h||'Vacio';
+ let h='';t.forEach((x,i)=>{h+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombre}</b> - ${x.oficio}<br><a href="https://wa.me/549${x.tel.replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;font-weight:700">WhatsApp</a> <span onclick="borrarT(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`});listaTrabajo.innerHTML=h||'Vacio';
  let e=JSON.parse(localStorage.getItem('empleadores')||'[]');
- let h2='';e.forEach((x,i)=>{
-  h2+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombreP}</b> Dir:${x.direccion} Tel:${x.tel}<br><span style="float:right">${x.autorizado?'<b style="color:green">AUTORIZADO</b>':`<button onclick="autorizar(${i})" style="background:green;color:white;padding:4px 8px;border-radius:4px">AUTORIZAR</button>`} <span onclick="borrarE(${i})" style="color:red;cursor:pointer;margin-left:6px">Borrar</span></span></div>`
- });
- listaEmpleador.innerHTML=h2||'Vacio';
+ let h2='';e.forEach((x,i)=>{h2+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombreP}</b> Dir:${x.direccion} Tel:${x.tel}<br><span style="float:right">${x.autorizado?'<b style="color:green">AUTORIZADO</b>':`<button onclick="autorizar(${i})" style="background:green;color:white;padding:4px 8px;border-radius:4px">AUTORIZAR</button>`} <span onclick="borrarE(${i})" style="color:red;cursor:pointer;margin-left:6px">Borrar</span></span></div>`});listaEmpleador.innerHTML=h2||'Vacio';
 }
 function autorizar(i){let l=JSON.parse(localStorage.getItem('empleadores')||'[]');l[i].autorizado=true;localStorage.setItem('empleadores',JSON.stringify(l));cargarAdmin();}
 function borrarT(i){let l=JSON.parse(localStorage.getItem('postulantes')||'[]');l.splice(i,1);localStorage.setItem('postulantes',JSON.stringify(l));cargarAdmin();}
