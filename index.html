@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bolsa Panadera de la Patagonia</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="background:#0A1931;font-family:system-ui">
 <div style="max-width:500px;margin:0 auto;padding:14px">
 <header style="background:#FFC947;padding:16px;border-radius:18px;text-align:center">
-<h1 style="font-weight:900;color:#0A1931;font-size:19px">BOLSA PANADERA DE LA PATAGONIA</h1>
+<h1 style="font-weight:900;color:#0A1931;font-size:19px;line-height:1.1">BOLSA PANADERA DE LA PATAGONIA</h1>
+<p style="font-size:11px;color:#0A1931;margin-top:4px;font-weight:600">Chubut - Santa Cruz - Río Negro - Neuquén - Tierra del Fuego</p>
 </header>
 
 <div id="inicio" style="background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
@@ -18,12 +20,14 @@
 <p style="margin-top:18px"><a href="admin.html" style="font-size:10px;color:#bbb;text-decoration:none">admin •</a></p>
 </div>
 
+<!-- BUSCO TRABAJO - SOLO GUARDAR -->
 <div id="formEmpleo" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px;font-weight:600">← Volver</button>
-<h2 style="font-weight:800;margin-top:8px">Busco Trabajo - Cargar datos</h2>
+<h2 style="font-weight:800;margin-top:8px;font-size:18px">Busco Trabajo</h2>
 <input id="nombre" placeholder="Nombre completo" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
 <select id="oficio" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:white">
-<option value="">Oficio - Seleccioná</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option>
+<option value="">Oficio - Seleccioná</option>
+<option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option>
 </select>
 <div style="border:1.5px solid #e5e7eb;padding:10px;border-radius:12px;margin-top:10px;background:#fafafa">
 <input id="pan1" placeholder="Panadería donde trabajaste (1)" style="border:1.5px solid #ddd;padding:12px;width:100%;border-radius:10px">
@@ -31,23 +35,27 @@
 </div>
 <div id="contenedorPanas"></div>
 <button id="btnAgregar" onclick="agregarPana()" type="button" style="background:white;border:2px dashed #0A1931;color:#0A1931;padding:11px;width:100%;margin-top:10px;border-radius:10px;font-weight:800;font-size:13px">+ Agregar panadería (hasta 5)</button>
-<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:10px;border-radius:10px;background:white"><option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option></select>
+<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:10px;border-radius:10px;background:white">
+<option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option><option>La Pampa</option>
+</select>
 <select id="ciudad" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:6px;border-radius:10px;background:white"><option value="">Ciudad</option></select>
-<input id="ciudadManual" placeholder="Si no está tu ciudad, escribila" style="border:1px dashed #aaa;padding:12px;width:100%;margin-top:6px;border-radius:10px">
+<input id="ciudadManual" placeholder="Si no está tu ciudad, escribila acá" style="border:1px dashed #aaa;padding:12px;width:100%;margin-top:6px;border-radius:10px">
 <input id="tel" placeholder="Tu WhatsApp" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
 <button onclick="guardarTrabajo()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px">GUARDAR</button>
 </div>
 
+<!-- BUSCO EMPLEADO - CON AUTORIZACION -->
 <div id="formEmpleado" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
 <h2 style="font-weight:800;margin-top:8px">Busco Empleado</h2>
-<input id="resp" placeholder="Nombre responsable" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
-<input id="nombreP" placeholder="Nombre panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
+<input id="resp" placeholder="Nombre completo del responsable" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
+<input id="nombreP" placeholder="Nombre de la panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
 <select id="puesto" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:white">
-<option value="">Puesto buscado - Seleccioná</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Cocinero</option><option>Mostrador</option><option>Cajero/a</option><option>Repartidor</option><option>Encargado</option>
+<option value="">Puesto buscado - Seleccioná</option>
+<option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Mostrador</option><option>Cajero/a</option><option>Repartidor</option><option>Encargado</option>
 </select>
 <input id="telP" placeholder="Teléfono panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
-<button onclick="enviarEmpleado()" style="background:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
+<button onclick="enviarEmpleado()" style="background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
 </div>
 
 <div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
@@ -83,7 +91,6 @@ function guardarTrabajo(){
  localStorage.setItem('postulantes',JSON.stringify(lista));
  textoAutorizar.innerHTML=`${nombre.value}, tus datos de <b>${oficio.value}</b> se guardaron correctamente.<br><br>Ya quedaste cargado en la Bolsa Panadera.`;
  ver('autorizar');
- // limpiar
  nombre.value='';pan1.value='';telRef1.value='';tel.value='';contenedorPanas.innerHTML='';totalPanas=1;btnAgregar.style.display='block';
 }
 function enviarEmpleado(){
