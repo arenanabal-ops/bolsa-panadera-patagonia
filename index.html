@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bolsa Panadera de la Patagonia</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="background:#0A1931;font-family:system-ui">
 <div style="max-width:500px;margin:0 auto;padding:14px">
 <header style="background:#FFC947;padding:16px;border-radius:18px;text-align:center">
-<h1 style="font-weight:900;color:#0A1931;font-size:19px;line-height:1.1">BOLSA PANADERA DE LA PATAGONIA</h1>
-<p style="font-size:11px;color:#0A1931;margin-top:4px;font-weight:600">Chubut - Santa Cruz - Río Negro - Neuquén - Tierra del Fuego</p>
+<h1 style="font-weight:900;color:#0A1931;font-size:19px">BOLSA PANADERA DE LA PATAGONIA</h1>
 </header>
 
 <div id="inicio" style="background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
 <button onclick="ver('formEmpleo')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:18px;width:100%;border-radius:14px;font-size:16px">🔍 BUSCO TRABAJO</button>
 <button onclick="ver('formEmpleado')" style="background:#FFC947;color:#0A1931;font-weight:900;padding:18px;width:100%;margin-top:12px;border-radius:14px;border:2px solid #0A1931;font-size:16px">🏪 BUSCO EMPLEADO</button>
-<button onclick="ver('baja')" style="background:#f3f4f6;padding:16px;width:100%;margin-top:12px;border-radius:14px;border:1px solid #ddd">📩 SOLICITAR BAJA / CONTACTO</button>
-<p style="margin-top:18px"><a href="admin.html" style="font-size:10px;color:#bbb;text-decoration:none">admin •</a></p>
+<button onclick="ver('baja')" style="background:#f3f4f6;padding:16px;width:100%;margin-top:12px;border-radius:14px;border:1px solid #ddd">📩 CONTACTO / BAJA</button>
+<p style="margin-top:18px"><button onclick="ver('loginAdmin')" style="font-size:10px;color:#999;background:none;border:none">admin •</button></p>
 </div>
 
-<!-- BUSCO TRABAJO - SOLO GUARDAR -->
 <div id="formEmpleo" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px;font-weight:600">← Volver</button>
-<h2 style="font-weight:800;margin-top:8px;font-size:18px">Busco Trabajo</h2>
+<h2 style="font-weight:800;margin-top:8px">Busco Trabajo</h2>
 <input id="nombre" placeholder="Nombre completo" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
 <select id="oficio" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:white">
-<option value="">Oficio - Seleccioná</option>
-<option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option>
+<option value="">Oficio - Seleccioná</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option>
 </select>
 <div style="border:1.5px solid #e5e7eb;padding:10px;border-radius:12px;margin-top:10px;background:#fafafa">
 <input id="pan1" placeholder="Panadería donde trabajaste (1)" style="border:1.5px solid #ddd;padding:12px;width:100%;border-radius:10px">
@@ -35,27 +31,22 @@
 </div>
 <div id="contenedorPanas"></div>
 <button id="btnAgregar" onclick="agregarPana()" type="button" style="background:white;border:2px dashed #0A1931;color:#0A1931;padding:11px;width:100%;margin-top:10px;border-radius:10px;font-weight:800;font-size:13px">+ Agregar panadería (hasta 5)</button>
-<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:10px;border-radius:10px;background:white">
-<option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option><option>La Pampa</option>
-</select>
+<select id="provincia" onchange="cargarCiudades()" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:10px;border-radius:10px;background:white"><option value="">Provincia</option><option>Chubut</option><option>Santa Cruz</option><option>Río Negro</option><option>Neuquén</option><option>Tierra del Fuego</option></select>
 <select id="ciudad" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:6px;border-radius:10px;background:white"><option value="">Ciudad</option></select>
 <input id="ciudadManual" placeholder="Si no está tu ciudad, escribila acá" style="border:1px dashed #aaa;padding:12px;width:100%;margin-top:6px;border-radius:10px">
 <input id="tel" placeholder="Tu WhatsApp" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
 <button onclick="guardarTrabajo()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px">GUARDAR</button>
 </div>
 
-<!-- BUSCO EMPLEADO - CON AUTORIZACION -->
 <div id="formEmpleado" style="display:none;background:white;padding:18px;border-radius:18px;margin-top:14px">
 <button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
 <h2 style="font-weight:800;margin-top:8px">Busco Empleado</h2>
-<input id="resp" placeholder="Nombre completo del responsable" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
-<input id="nombreP" placeholder="Nombre de la panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
-<select id="puesto" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:white">
-<option value="">Puesto buscado - Seleccioná</option>
-<option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Cocinero</option><option>Ayudante de Cocina</option><option>Mostrador</option><option>Cajero/a</option><option>Repartidor</option><option>Encargado</option>
-</select>
+<input id="resp" placeholder="Nombre responsable" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
+<input id="nombreP" placeholder="Nombre panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
+<input id="direccionP" placeholder="Dirección del comercio" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
+<select id="puesto" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px;background:white"><option value="">Puesto buscado</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante</option><option>Pastelero</option><option>Mostrador</option><option>Cajero/a</option><option>Repartidor</option><option>Encargado</option></select>
 <input id="telP" placeholder="Teléfono panadería" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:8px;border-radius:10px">
-<button onclick="enviarEmpleado()" style="background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
+<button onclick="enviarEmpleado()" style="background:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px;border:2px solid #0A1931">ENVIAR PARA AUTORIZACIÓN</button>
 </div>
 
 <div id="autorizar" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
@@ -66,43 +57,37 @@
 
 <div id="baja" style="display:none;background:white;padding:20px;border-radius:18px;margin-top:14px;text-align:center">
 <button onclick="ver('inicio')" style="display:block;text-align:left;font-size:12px">← Volver</button>
-<a href="https://wa.me/5492974092277" target="_blank" style="display:block;background:#25D366;color:white;padding:12px;border-radius:10px;margin-top:12px;text-decoration:none;font-weight:700">WhatsApp Admin 2974092277</a>
+<a href="https://wa.me/5492974092277" target="_blank" style="display:block;background:#25D366;color:white;padding:12px;border-radius:10px;margin-top:12px;text-decoration:none;font-weight:700">WhatsApp Admin</a>
+</div>
+
+<div id="loginAdmin" style="display:none;background:white;padding:22px;border-radius:18px;margin-top:14px;text-align:center">
+<button onclick="ver('inicio')" style="display:block;text-align:left;font-size:12px">← Volver</button>
+<h2 style="font-weight:900;margin-top:10px">ADMIN - Bolsa Panadera</h2>
+<input id="clave" type="password" placeholder="Clave admin" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:12px;border-radius:10px">
+<button onclick="entrar()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:12px;width:100%;margin-top:10px;border-radius:10px">ENTRAR</button>
+</div>
+
+<div id="panelAdmin" style="display:none;background:white;padding:14px;border-radius:18px;margin-top:14px">
+<button onclick="ver('inicio')" style="font-size:12px">← Salir del Admin</button>
+<h2 style="font-weight:900;margin-top:8px">PANEL ADMIN</h2>
+<div style="margin-top:12px"><h3 style="font-weight:800;font-size:13px">Postulantes (Busco Trabajo)</h3><div id="listaTrabajo"></div></div>
+<div style="margin-top:16px"><h3 style="font-weight:800;font-size:13px">Empleadores (Pendientes)</h3><div id="listaEmpleador"></div></div>
 </div>
 </div>
 
 <script>
-const ciudadesData={Chubut:['Comodoro Rivadavia','Rada Tilly','Trelew','Puerto Madryn','Esquel'], 'Santa Cruz':['Caleta Olivia','Rio Gallegos'], 'Río Negro':['Viedma','Bariloche'], 'Neuquén':['Neuquen','Cutral Co'], 'Tierra del Fuego':['Ushuaia','Rio Grande']}
-function cargarCiudades(){let p=provincia.value; let s=ciudad; s.innerHTML='<option value="">Seleccioná ciudad</option>'; (ciudadesData[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;o.value=c;s.add(o)});}
-function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','baja'].forEach(x=>{document.getElementById(x).style.display='none'}); document.getElementById(id).style.display='block';}
+const ciudadesData={Chubut:['Comodoro Rivadavia','Rada Tilly','Trelew','Puerto Madryn','Esquel'], 'Santa Cruz':['Caleta Olivia','Rio Gallegos'], 'Río Negro':['Viedma','Bariloche'], 'Neuquén':['Neuquen'], 'Tierra del Fuego':['Ushuaia','Rio Grande']}
+function cargarCiudades(){let p=provincia.value; let s=ciudad; s.innerHTML='<option value="">Ciudad</option>'; (ciudadesData[p]||[]).forEach(c=>{let o=document.createElement('option');o.text=c;o.value=c;s.add(o)});}
+function ver(id){['inicio','formEmpleo','formEmpleado','autorizar','baja','loginAdmin','panelAdmin'].forEach(x=>{document.getElementById(x).style.display='none'}); document.getElementById(id).style.display='block';}
 let totalPanas=1;
-function agregarPana(){
- if(totalPanas>=5){alert('Máximo 5'); return;} totalPanas++;
- let div=document.createElement('div'); div.style.cssText='border:1.5px solid #e5e7eb;padding:10px;border-radius:12px;margin-top:8px;background:#fafafa';
- div.innerHTML=`<small style="font-weight:700;font-size:11px">Panadería ${totalPanas}</small> <span onclick="this.parentElement.parentElement.remove();totalPanas--;btnAgregar.style.display='block'" style="color:red;font-size:11px;float:right;cursor:pointer;font-weight:700">✕ Quitar</span>
- <input class="panExtra" placeholder="Panadería (${totalPanas})" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:6px;border-radius:10px">
- <input class="telExtra" placeholder="Tel ref (${totalPanas})" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:6px;border-radius:10px">`;
- contenedorPanas.appendChild(div); if(totalPanas>=5) btnAgregar.style.display='none';
-}
-function guardarTrabajo(){
- if(!nombre.value||!oficio.value||!tel.value){alert('Faltan datos');return;}
- let lista=JSON.parse(localStorage.getItem('postulantes')||'[]');
- let extras=[]; document.querySelectorAll('.panExtra').forEach((el,i)=>{extras.push({pan:el.value,tel:document.querySelectorAll('.telExtra')[i].value})});
- lista.push({nombre:nombre.value,oficio:oficio.value,pan1:pan1.value,ref1:telRef1.value,extras,prov:provincia.value,ciudad:ciudadManual.value||ciudad.value,tel:tel.value,fecha:new Date().toLocaleString()});
- localStorage.setItem('postulantes',JSON.stringify(lista));
- textoAutorizar.innerHTML=`${nombre.value}, tus datos de <b>${oficio.value}</b> se guardaron correctamente.<br><br>Ya quedaste cargado en la Bolsa Panadera.`;
- ver('autorizar');
- nombre.value='';pan1.value='';telRef1.value='';tel.value='';contenedorPanas.innerHTML='';totalPanas=1;btnAgregar.style.display='block';
-}
-function enviarEmpleado(){
- if(!resp.value||!telP.value){alert('Faltan datos');return;}
- let lista=JSON.parse(localStorage.getItem('empleadores')||'[]');
- lista.push({resp:resp.value,nombreP:nombreP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false});
- localStorage.setItem('empleadores',JSON.stringify(lista));
- let txt=`*SOLICITUD EMPLEADOR*%0AResp:${resp.value}%0APanaderia:${nombreP.value}%0APuesto:${puesto.value}%0ATel:${telP.value}`;
- window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank');
- textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> buscando ${puesto.value} enviada al Admin para autorización.`;
- ver('autorizar');
-}
+function agregarPana(){ if(totalPanas>=5){alert('Máximo 5'); return;} totalPanas++; let div=document.createElement('div'); div.style.cssText='border:1.5px solid #e5e7eb;padding:10px;border-radius:12px;margin-top:8px;background:#fafafa'; div.innerHTML=`<small style="font-weight:700;font-size:11px">Panadería ${totalPanas}</small> <span onclick="this.parentElement.parentElement.remove();totalPanas--;btnAgregar.style.display='block'" style="color:red;font-size:11px;float:right;cursor:pointer;font-weight:700">✕ Quitar</span><input class="panExtra" placeholder="Panadería (${totalPanas})" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:6px;border-radius:10px"><input class="telExtra" placeholder="Tel ref (${totalPanas})" style="border:1.5px solid #ddd;padding:12px;width:100%;margin-top:6px;border-radius:10px">`; contenedorPanas.appendChild(div); if(totalPanas>=5) btnAgregar.style.display='none';}
+function guardarTrabajo(){ if(!nombre.value||!oficio.value||!tel.value){alert('Faltan datos');return;} let lista=JSON.parse(localStorage.getItem('postulantes')||'[]'); let extras=[]; document.querySelectorAll('.panExtra').forEach((el,i)=>{extras.push({pan:el.value,tel:document.querySelectorAll('.telExtra')[i].value})}); lista.push({nombre:nombre.value,oficio:oficio.value,pan1:pan1.value,ref1:telRef1.value,extras,prov:provincia.value,ciudad:ciudadManual.value||ciudad.value,tel:tel.value,fecha:new Date().toLocaleString()}); localStorage.setItem('postulantes',JSON.stringify(lista)); textoAutorizar.innerHTML=`${nombre.value}, tus datos de <b>${oficio.value}</b> se guardaron. Ya quedaste cargado en la Bolsa.`; ver('autorizar'); nombre.value='';pan1.value='';telRef1.value='';tel.value='';contenedorPanas.innerHTML='';totalPanas=1;}
+function enviarEmpleado(){ if(!resp.value||!telP.value){alert('Faltan datos');return;} let lista=JSON.parse(localStorage.getItem('empleadores')||'[]'); lista.push({resp:resp.value,nombreP:nombreP.value,direccion:direccionP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false}); localStorage.setItem('empleadores',JSON.stringify(lista)); let txt=`*SOLICITUD EMPLEADOR*%0AResp:${resp.value}%0APanaderia:${nombreP.value}%0ADireccion:${direccionP.value}%0APuesto:${puesto.value}%0ATel:${telP.value}`; window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank'); textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> enviada al Admin.`; ver('autorizar');}
+function entrar(){ if(clave.value==='chanchadas'){ ver('panelAdmin'); cargarAdmin(); } else { alert('Clave incorrecta'); } }
+function cargarAdmin(){ let trabajos=JSON.parse(localStorage.getItem('postulantes')||'[]'); let html=''; trabajos.forEach((t,i)=>{html+=`<div style="border:1px solid #ddd;padding:8px;border-radius:8px;margin-top:6px;font-size:12px"><b>${t.nombre}</b> - ${t.oficio}<br>${t.pan1} Ref:${t.ref1}<br>${t.prov} ${t.ciudad} - ${t.tel}<br><small>${t.fecha}</small> <span onclick="borrarT(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`}); listaTrabajo.innerHTML=html||'Sin postulantes'; let emples=JSON.parse(localStorage.getItem('empleadores')||'[]'); let html2=''; emples.forEach((e,i)=>{html2+=`<div style="border:1px solid #ddd;padding:8px;border-radius:8px;margin-top:6px;font-size:12px;${e.autorizado?'background:#E8F5E9':''}"><b>${e.nombreP}</b> - ${e.puesto}<br>Dir:${e.direccion}<br>Resp:${e.resp} Tel:${e.tel}<br><small>${e.fecha}</small><br>${e.autorizado?'<b style="color:green">AUTORIZADO</b>':`<button onclick="autorizar(${i})" style="background:green;color:white;padding:4px 8px;border-radius:6px">AUTORIZAR</button>`} <span onclick="borrarE(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`}); listaEmpleador.innerHTML=html2||'Sin solicitudes';}
+function autorizar(i){let l=JSON.parse(localStorage.getItem('empleadores')||'[]'); l[i].autorizado=true; localStorage.setItem('empleadores',JSON.stringify(l)); cargarAdmin();}
+function borrarT(i){let l=JSON.parse(localStorage.getItem('postulantes')||'[]'); l.splice(i,1); localStorage.setItem('postulantes',JSON.stringify(l)); cargarAdmin();}
+function borrarE(i){let l=JSON.parse(localStorage.getItem('empleadores')||'[]'); l.splice(i,1); localStorage.setItem('empleadores',JSON.stringify(l)); cargarAdmin();}
 </script>
 </body>
 </html>
