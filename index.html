@@ -8,52 +8,97 @@
 </head>
 <body style="background:#0A1931;font-family:system-ui">
 <div style="max-width:480px;margin:0 auto;padding:16px">
+
 <header style="background:#FFC947;padding:20px;border-radius:18px;text-align:center">
-<h1 style="font-weight:900;font-size:22px;color:#0A1931">🥖 BOLSA PANADERA<br>PATAGONIA</h1>
-<p style="font-size:13px;color:#0A1931;margin-top:6px">Conectamos panaderías con panaderos de Chubut y Santa Cruz</p>
+<h1 style="font-weight:900;font-size:22px;color:#0A1931;line-height:1.1">🥖 BOLSA PANADERA<br>PATAGONIA</h1>
+<p style="font-size:13px;color:#0A1931;margin-top:6px;font-weight:600">Chubut y Santa Cruz - Panaderos y Panaderías</p>
 </header>
 
-<div id="inicio" style="margin-top:20px">
-<div style="background:white;padding:20px;border-radius:18px;text-align:center">
-<h2 style="font-weight:800">¿Qué querés hacer?</h2>
-<button onclick="mostrarForm()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:14px;border-radius:12px">🥖 SOY PANADERO - Buscar trabajo</button>
-<a href="https://wa.me/5492974092277?text=Hola%20soy%20panaderia%20y%20quiero%20publicar%20empleo" style="display:block;background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:10px;border-radius:12px;text-decoration:none;text-align:center">🏪 SOY PANADERÍA - Ofrecer trabajo</a>
-<p style="font-size:11px;color:#666;margin-top:12px">📍 Comodoro Rivadavia - Rada Tilly - Caleta Olivia</p>
-</div>
-<div style="background:white;padding:16px;border-radius:14px;margin-top:12px">
-<p style="font-size:12px;font-weight:700">¿Cómo funciona?</p>
-<p style="font-size:11px;margin-top:4px">1. Te registrás<br>2. Te validamos por WhatsApp al 2974092277<br>3. Las panaderías te contactan</p>
+<!-- INICIO CON 4 BOTONES -->
+<div id="inicio">
+<div style="background:white;padding:20px;border-radius:18px;margin-top:20px">
+<h2 style="font-weight:800;text-align:center">¿Qué querés hacer?</h2>
+
+<button onclick="ver('formPanadero')" style="background:#0A1931;color:#FFC947;font-weight:900;padding:16px;width:100%;margin-top:14px;border-radius:14px;font-size:15px">🥖 1. SOY PANADERO<br><span style="font-size:11px;font-weight:400;color:#fff">Buscar trabajo</span></button>
+
+<button onclick="ver('formPanaderia')" style="background:#FFC947;color:#0A1931;font-weight:900;padding:16px;width:100%;margin-top:10px;border-radius:14px;font-size:15px;border:2px solid #0A1931">🏪 2. SOY PANADERÍA<br><span style="font-size:11px;font-weight:400">Publicar empleo</span></button>
+
+<button onclick="ver('listaEmpleos')" style="background:white;color:#0A1931;font-weight:800;padding:14px;width:100%;margin-top:10px;border-radius:14px;border:2px solid #0A1931">📋 3. VER EMPLEOS DISPONIBLES</button>
+
+<a href="https://wa.me/5492974092277?text=Hola%20Bolsa%20Panadera%20Patagonia" target="_blank" style="display:block;background:#25D366;color:white;font-weight:800;padding:14px;width:100%;margin-top:10px;border-radius:14px;text-align:center;text-decoration:none">💬 4. CONTACTO WHATSAPP</a>
+
+<p style="font-size:10px;color:#999;margin-top:14px;text-align:center">📍 Comodoro - Rada Tilly - Caleta - Sarmiento<br>Validación en 24hs al 2974092277</p>
 </div>
 </div>
 
-<div id="formBox" style="display:none;background:white;margin-top:20px;padding:22px;border-radius:18px">
-<button onclick="inicio.style.display='block';formBox.style.display='none'" style="font-size:12px">← Volver al inicio</button>
-<h2 style="font-weight:800;font-size:18px;margin-top:10px">Registrate como panadero</h2>
-<input id="nombre" placeholder="Tu nombre y apellido" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:14px">
-<input id="panaderia" placeholder="Experiencia (ej: Maestro, Ayudante)" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
-<input id="direccion" placeholder="Localidad (ej: Comodoro)" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
-<input id="telefono" placeholder="Tu WhatsApp" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
-<button onclick="registrar()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:16px;border-radius:12px">ENVIAR SOLICITUD</button>
+<!-- FORM PANADERO -->
+<div id="formPanadero" style="display:none;background:white;margin-top:20px;padding:22px;border-radius:18px">
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
+<h2 style="font-weight:800;font-size:18px;margin-top:8px">Registro de Panadero</h2>
+<input id="nombre" placeholder="Nombre y apellido" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:14px">
+<input id="exp" placeholder="Experiencia: Maestro / Ayudante / Pastelero" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
+<input id="loc" placeholder="Localidad: Comodoro, Caleta, etc" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
+<input id="tel" placeholder="Tu WhatsApp" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
+<button onclick="registrarPanadero()" style="background:#0A1931;color:#FFC947;font-weight:900;padding:14px;width:100%;margin-top:16px;border-radius:12px">ENVIAR SOLICITUD</button>
 </div>
 
+<!-- FORM PANADERIA -->
+<div id="formPanaderia" style="display:none;background:white;margin-top:20px;padding:22px;border-radius:18px">
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
+<h2 style="font-weight:800;font-size:18px;margin-top:8px">Publicar Empleo</h2>
+<p style="font-size:12px;color:#666">¿Sos dueño de panadería? Publicá acá</p>
+<input id="nombreP" placeholder="Nombre panadería" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:14px">
+<input id="puesto" placeholder="Puesto: Ej: Maestro panadero turno noche" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
+<input id="telP" placeholder="WhatsApp de la panadería" style="border:2px solid #e5e7eb;padding:12px;border-radius:10px;width:100%;margin-top:10px">
+<button onclick="registrarPanaderia()" style="background:#FFC947;color:#0A1931;font-weight:900;padding:14px;width:100%;margin-top:16px;border-radius:12px;border:2px solid #0A1931">PUBLICAR</button>
+</div>
+
+<!-- LISTA EMPLEOS -->
+<div id="listaEmpleos" style="display:none;background:white;margin-top:20px;padding:18px;border-radius:18px">
+<button onclick="ver('inicio')" style="font-size:12px">← Volver</button>
+<h2 style="font-weight:900;margin-top:8px">📋 Empleos y Panaderos</h2>
+<div id="contenidoLista" style="margin-top:12px"></div>
+</div>
+
+<!-- OK -->
 <div id="okBox" style="display:none;background:white;margin-top:20px;padding:22px;border-radius:18px;text-align:center">
-<h2 style="font-weight:900;color:#10b981;font-size:20px">✔️ ¡Solicitud enviada!</h2>
-<p style="font-size:13px;margin-top:8px">Te escribimos al WhatsApp para validarte.</p>
-<div style="background:#f3f4f6;padding:12px;border-radius:10px;margin-top:14px;text-align:left;font-size:13px" id="resumen"></div>
+<h2 style="font-weight:900;color:#10b981;font-size:20px">✔️ ¡Enviado!</h2>
+<p style="font-size:13px;margin-top:8px">Te validamos por WhatsApp en 24hs.<br>Tu número: 2974092277 recibe el aviso.</p>
+<div id="resumen" style="background:#f3f4f6;padding:12px;border-radius:10px;margin-top:14px;text-align:left;font-size:13px"></div>
 <button onclick="localStorage.clear();location.reload()" style="background:#0A1931;color:white;padding:10px 16px;border-radius:8px;margin-top:14px;font-size:12px">Volver al inicio</button>
 </div>
+
 </div>
 <script>
-function mostrarForm(){inicio.style.display='none';formBox.style.display='block'}
-function registrar(){
- let d={nombre:nombre.value, panaderia:panaderia.value, direccion:direccion.value, telefono:telefono.value, fecha:new Date().toLocaleString()}
- if(!d.nombre||!d.telefono){alert('Completá nombre y WhatsApp');return}
- localStorage.setItem('empPatagonia', JSON.stringify(d));
- localStorage.setItem('empEstado','pendiente');
- let texto = `*NUEVA SOLICITUD*%0A${d.nombre}%0A${d.panaderia}%0A${d.direccion}%0ATel:${d.telefono}`;
- window.open(`https://wa.me/5492974092277?text=${texto}`,'_blank');
- formBox.style.display='none'; okBox.style.display='block';
- resumen.innerHTML=`<b>${d.nombre}</b><br>${d.panaderia}<br>${d.direccion}<br>${d.telefono}`;
+function ver(id){
+ ['inicio','formPanadero','formPanaderia','listaEmpleos','okBox'].forEach(x=>{let e=document.getElementById(x); if(e) e.style.display='none'});
+ document.getElementById(id).style.display='block';
+ if(id==='listaEmpleos') cargarLista();
+}
+function registrarPanadero(){
+ let d={tipo:'panadero', nombre:nombre.value, exp:exp.value, loc:loc.value, tel:tel.value, fecha:new Date().toLocaleDateString()}
+ if(!d.nombre||!d.tel){alert('Falta nombre y WhatsApp');return}
+ localStorage.setItem('empPatagonia',JSON.stringify(d));
+ let txt=`*PANADERO NUEVO - BOLSA PATAGONIA*%0A%0ANombre: ${d.nombre}%0AExp: ${d.exp}%0ALoc: ${d.loc}%0ATel: ${d.tel}`;
+ window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank');
+ document.getElementById('okBox').style.display='block'; document.getElementById('formPanadero').style.display='none';
+ resumen.innerHTML=`<b>${d.nombre}</b><br>${d.exp}<br>${d.loc}<br>${d.tel}`;
+}
+function registrarPanaderia(){
+ let d={tipo:'panaderia', nombre:nombreP.value, puesto:puesto.value, tel:telP.value, fecha:new Date().toLocaleDateString()}
+ if(!d.nombre||!d.tel){alert('Falta datos');return}
+ let txt=`*PANADERIA PUBLICA EMPLEO*%0A%0A${d.nombre}%0APuesto: ${d.puesto}%0ATel: ${d.tel}`;
+ window.open(`https://wa.me/5492974092277?text=${txt}`,'_blank');
+ alert('¡Publicado! Te contactamos al WhatsApp para validar el aviso');
+ ver('inicio');
+}
+function cargarLista(){
+ let d=JSON.parse(localStorage.getItem('empPatagonia')||'null');
+ let html=`<div style="border:1px solid #eee;padding:12px;border-radius:10px;margin-top:8px"><b>🥖 Panadería El Sol - Comodoro</b><br><small style="color:#666">Busca Maestro Panadero turno mañana - 2974000000</small></div>
+ <div style="border:1px solid #eee;padding:12px;border-radius:10px;margin-top:8px"><b>🏪 Panadería Patagonia - Rada Tilly</b><br><small style="color:#666">Busca Ayudante Pastelero - 2975000000</small></div>`;
+ if(d){ html+=`<div style="border:2px solid #FFC947;padding:12px;border-radius:10px;margin-top:12px;background:#fffbeb"><b>✅ ${d.nombre}</b> (Vos)<br><small>${d.exp||d.puesto} - ${d.loc} - ${d.tel}</small><br><small style="color:#10b981;font-weight:700">Estado: REGISTRADO - En validación</small></div>`; }
+ html+=`<p style="font-size:11px;color:#999;margin-top:12px">Los nuevos registros te llegan por WhatsApp al 2974092277. Próximamente lista automática.</p>`;
+ document.getElementById('contenidoLista').innerHTML=html;
 }
 </script>
 </body></html>
