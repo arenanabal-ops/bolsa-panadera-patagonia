@@ -19,8 +19,19 @@
 </div>
 
 <div id="listaPublica" style="display:none;background:white;padding:14px;border-radius:18px;margin-top:14px">
-<button onclick="ver('inicio')" style="font-size:12px">← Volver al inicio</button><h2 style="font-weight:900;margin-top:8px">PANADEROS DISPONIBLES - BLOQUEADO SIN AUTORIZACIÓN</h2>
+<button onclick="ver('inicio')" style="font-size:12px">← Volver al inicio</button>
+<h2 style="font-weight:900;margin-top:8px">PANADEROS DISPONIBLES</h2>
 <p id="bienvenidaPana" style="font-size:12px;color:#2E7D32;margin-top:4px;font-weight:700"></p>
+
+<div style="background:#F3F4F6;padding:10px;border-radius:10px;margin-top:12px;border:2px solid #0A1931">
+<p style="font-weight:800;font-size:12px">🔍 FILTRO DE BÚSQUEDA</p>
+<select id="filtroOficio" onchange="aplicarFiltro()" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px;background:white"><option value="">Todos los oficios</option><option>Maestro Panadero</option><option>Panadero</option><option>Ayudante Panadero</option><option>Pastelero</option><option>Facturero</option><option>Mostrador</option><option>Cajero</option><option>Repartidor</option></select>
+<input id="filtroCiudad" oninput="aplicarFiltro()" placeholder="Filtrar por ciudad - Ej: Comodoro" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px">
+<input id="filtroNombre" oninput="aplicarFiltro()" placeholder="Buscar por nombre" style="border:1.5px solid #ddd;padding:10px;width:100%;margin-top:6px;border-radius:8px">
+<p id="contadorFiltro" style="font-size:11px;color:#666;margin-top:6px"></p>
+<button onclick="limpiarFiltro()" style="font-size:11px;color:#0A1931;text-decoration:underline;background:none;border:none;margin-top:4px">Limpiar filtros</button>
+</div>
+
 <div id="contenidoListaPublica" style="margin-top:12px"></div>
 </div>
 
@@ -70,6 +81,9 @@ let totalPanas=1;function agregarPana(){if(totalPanas>=5)return;totalPanas++;let
 function guardarTrabajo(){if(!nombre.value||!oficio.value||!tel.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('postulantes')||'[]');lista.push({nombre:nombre.value,oficio:oficio.value,pan1:pan1.value,ref1:telRef1.value,prov:provincia.value,ciudad:ciudadManual.value||ciudad.value,tel:tel.value,fecha:new Date().toLocaleString()});localStorage.setItem('postulantes',JSON.stringify(lista));textoAutorizar.innerHTML=`${nombre.value} ya quedaste cargado.`;ver('autorizar');}
 function enviarEmpleado(){if(!resp.value||!telP.value||!nombreP.value){alert('Faltan datos');return;}let lista=JSON.parse(localStorage.getItem('empleadores')||'[]');lista.push({resp:resp.value,nombreP:nombreP.value,direccion:direccionP.value,puesto:puesto.value,tel:telP.value,fecha:new Date().toLocaleString(),autorizado:false});localStorage.setItem('empleadores',JSON.stringify(lista));let txt=`SOLICITUD:${nombreP.value} Dir:${direccionP.value} Puesto:${puesto.value} Tel:${telP.value}`;window.open(`https://wa.me/5492974092277?text=${encodeURIComponent(txt)}`,'_blank');textoAutorizar.innerHTML=`Solicitud de <b>${nombreP.value}</b> enviada. Cuando sea autorizada, podrás entrar con tu WhatsApp.`;ver('autorizar');}
 
+let empleadorActual = null;
+let postulantesGlobal = [];
+
 function verificarAcceso(){
  let telIngresado = telAcceso.value.replace(/[^0-9]/g,'');
  if(telIngresado.length < 6){msgAcceso.innerText='Poné tu número completo';return;}
@@ -80,27 +94,55 @@ function verificarAcceso(){
    return;
  }
  if(!encontrado.autorizado){
-   msgAcceso.innerText='⏳ Tu solicitud está PENDIENTE. Todavía no estás autorizado por el admin. Contactá al administrador.';
+   msgAcceso.innerText='⏳ Tu solicitud está PENDIENTE. Todavía no estás autorizado por el admin.';
    return;
  }
- // ESTA AUTORIZADO - MOSTRAR LISTA
+ empleadorActual = encontrado;
  msgAcceso.innerText='';
  bienvenidaPana.innerText=`✅ Hola ${encontrado.nombreP} - ${encontrado.direccion} - Acceso autorizado`;
- let t=JSON.parse(localStorage.getItem('postulantes')||'[]');
+ postulantesGlobal = JSON.parse(localStorage.getItem('postulantes')||'[]').slice().reverse();
+ // limpiar filtros
+ document.getElementById('filtroOficio').value='';
+ document.getElementById('filtroCiudad').value='';
+ document.getElementById('filtroNombre').value='';
+ renderLista(postulantesGlobal);
+ ver('listaPublica');
+}
+
+function renderLista(lista){
  let html='';
- if(t.length==0){html='<p style="font-size:13px;color:#666">Todavía no hay postulantes.</p>'}
- else{t.slice().reverse().forEach(x=>{
+ if(lista.length==0){html='<p style="font-size:13px;color:#666;margin-top:10px">No se encontraron resultados con ese filtro.</p>'}
+ else{lista.forEach(x=>{
   let telLimpio = x.tel.replace(/[^0-9]/g,'');
-  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} - Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, soy de ${encodeURIComponent(encontrado.nombreP)} te vi en Bolsa Panadera" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
+  html+=`<div style="border:2px solid #0A1931;padding:10px;margin-top:10px;border-radius:12px;background:#FFFBE6"><b>${x.nombre}</b> - ${x.oficio}<br><small>${x.ciudad} ${x.prov?'- '+x.prov:''} • Trabajó en: ${x.pan1||'s/d'}</small><br><a href="https://wa.me/549${telLimpio}?text=Hola ${encodeURIComponent(x.nombre)}, soy de ${encodeURIComponent(empleadorActual?empleadorActual.nombreP:'Panaderia autorizada')} te vi en Bolsa Panadera por ${encodeURIComponent(x.oficio)}" target="_blank" style="display:block;background:#25D366;color:white;text-align:center;padding:12px;border-radius:8px;margin-top:8px;text-decoration:none;font-weight:900">📲 CONTACTAR POR WHATSAPP</a></div>`
  });}
  document.getElementById('contenidoListaPublica').innerHTML=html;
- ver('listaPublica');
+ document.getElementById('contadorFiltro').innerText=`Mostrando ${lista.length} de ${postulantesGlobal.length} postulantes`;
+}
+
+function aplicarFiltro(){
+ let oficio = document.getElementById('filtroOficio').value.toLowerCase();
+ let ciudad = document.getElementById('filtroCiudad').value.toLowerCase();
+ let nombre = document.getElementById('filtroNombre').value.toLowerCase();
+ let filtrados = postulantesGlobal.filter(x=>{
+  let okOficio =!oficio || x.oficio.toLowerCase().includes(oficio);
+  let okCiudad =!ciudad || (x.ciudad||'').toLowerCase().includes(ciudad);
+  let okNombre =!nombre || x.nombre.toLowerCase().includes(nombre);
+  return okOficio && okCiudad && okNombre;
+ });
+ renderLista(filtrados);
+}
+function limpiarFiltro(){
+ document.getElementById('filtroOficio').value='';
+ document.getElementById('filtroCiudad').value='';
+ document.getElementById('filtroNombre').value='';
+ renderLista(postulantesGlobal);
 }
 
 function entrar(){if(clave.value==='chanchadas'){ver('panelAdmin');cargarAdmin();}else{alert('Clave incorrecta');}}
 function cargarAdmin(){
  let t=JSON.parse(localStorage.getItem('postulantes')||'[]');
- let h='';t.forEach((x,i)=>{h+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombre}</b> - ${x.oficio}<br><a href="https://wa.me/549${x.tel.replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;font-weight:700">WhatsApp</a> <span onclick="borrarT(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`});listaTrabajo.innerHTML=h||'Vacio';
+ let h='';t.forEach((x,i)=>{h+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombre}</b> - ${x.oficio} - ${x.ciudad}<br><a href="https://wa.me/549${x.tel.replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;font-weight:700">WhatsApp</a> <span onclick="borrarT(${i})" style="color:red;float:right;cursor:pointer">Borrar</span></div>`});listaTrabajo.innerHTML=h||'Vacio';
  let e=JSON.parse(localStorage.getItem('empleadores')||'[]');
  let h2='';e.forEach((x,i)=>{h2+=`<div style="border:1px solid #ddd;padding:8px;margin-top:8px;border-radius:8px;font-size:12px"><b>${x.nombreP}</b> Dir:${x.direccion} Tel:${x.tel}<br><span style="float:right">${x.autorizado?'<b style="color:green">AUTORIZADO</b>':`<button onclick="autorizar(${i})" style="background:green;color:white;padding:4px 8px;border-radius:4px">AUTORIZAR</button>`} <span onclick="borrarE(${i})" style="color:red;cursor:pointer;margin-left:6px">Borrar</span></span></div>`});listaEmpleador.innerHTML=h2||'Vacio';
 }
