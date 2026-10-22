@@ -11,8 +11,10 @@ body{background:#FFF7ED;font-family:system-ui;margin:0;padding:10px}
 .b1{background:#EA580C}.b2{background:#CA8A04}.b3{background:#15803D}.b4{background:#1E293B}
 .card{background:#fff;border-radius:12px;padding:18px;max-width:800px;margin:0 auto;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:12px}
 input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #E7E5E4;margin:7px 0;font-size:16px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.checks label{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;background:#FFF7ED;padding:6px;border-radius:8px}
 label{font-weight:800;font-size:13px;margin-top:12px;display:block}
-.hidden{display:none}.item{border-bottom:1px solid #eee;padding:12px 0;position:relative}.badge{background:#0A1931;color:#FFC947;padding:3px 8px;border-radius:8px;font-size:11px}
+.hidden{display:none}.item{border-bottom:1px solid #eee;padding:12px 0}.badge{background:#0A1931;color:#FFC947;padding:3px 8px;border-radius:8px;font-size:11px}
 button.verde{background:#27ae60;color:#fff;border:0;padding:14px;border-radius:10px;font-weight:900;width:100%;margin-top:12px;font-size:16px}
 button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:800}
 .error{color:#DC2626;font-weight:800}.ok{color:#15803D;font-weight:800}
@@ -23,7 +25,7 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 <div class="header">🥖 Bolsa de Panaderos - Patagonia</div>
 <div class="btns">
 <button class="b1" onclick="show('trabajador')">👷 Soy Trabajador</button>
-<button class="b2" onclick="show('panaderia')">🏪 Soy Panadería</button>
+<button class="b2" onclick="show('panaderia')">🏪 Tengo Comercio</button>
 <button class="b3" onclick="show('bolsa')">📋 Ver Bolsa</button>
 <button class="b4" onclick="show('admin')">🔐 Admin</button>
 </div>
@@ -35,14 +37,28 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 <select id="t_prov" onchange="cargarCiudades('t_prov','t_ciu')"><option value="">-- Provincia * --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
 <select id="t_ciu" onchange="checkOtraCiudad('t_ciu','t_ciu_otra')"><option value="">-- Ciudad * --</option></select>
 <input id="t_ciu_otra" class="hidden" placeholder="Escribí tu ciudad manualmente *">
-<select id="t_oficio" onchange="checkOtrosOficio()"><option value="">-- Oficio * --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero</option><option>Administrativo</option><option>Maestranza</option><option>Atención al público</option><option>Sanwichera</option><option>Otros</option></select>
+<label>Oficios * (podés elegir varios)</label>
+<div class="checks" id="t_oficios_checks">
+<label><input type="checkbox" value="Panadero"> Panadero</label>
+<label><input type="checkbox" value="Facturero"> Facturero</label>
+<label><input type="checkbox" value="Pastelero"> Pastelero</label>
+<label><input type="checkbox" value="Maestro Panadero"> Maestro Panadero</label>
+<label><input type="checkbox" value="Ayudante"> Ayudante</label>
+<label><input type="checkbox" value="Repartidor"> Repartidor</label>
+<label><input type="checkbox" value="Cajero"> Cajero</label>
+<label><input type="checkbox" value="Administrativo"> Administrativo</label>
+<label><input type="checkbox" value="Maestranza"> Maestranza</label>
+<label><input type="checkbox" value="Atención al público"> Atención al público</label>
+<label><input type="checkbox" value="Sanwichera"> Sanwichera</label>
+<label><input type="checkbox" value="Otros" onchange="checkOtrosOficio()"> Otros</label>
+</div>
 <input id="t_oficio_otros" class="hidden" placeholder="¿Qué otro oficio? Escribí manualmente *">
 <div id="exp_box">
-<label>Experiencia 1 - 3 campos obligatorios si sos panadero/pastelero</label>
+<label>Experiencia 1 - 3 campos obligatorios si elegiste oficio de panadería</label>
 <input id="t_exp1_nom" placeholder="Nombre del comercio *">
 <input id="t_exp1_dir" placeholder="Dirección del comercio *">
 <input id="t_exp1_tel" placeholder="Teléfono del comercio *">
-<label>Experiencia 2 - Opcional (si la cargas, los 3 campos)</label>
+<label>Experiencia 2 - Opcional</label>
 <input id="t_exp2_nom" placeholder="Nombre del comercio">
 <input id="t_exp2_dir" placeholder="Dirección del comercio">
 <input id="t_exp2_tel" placeholder="Teléfono del comercio">
@@ -52,25 +68,36 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 </div>
 
 <div id="panaderia" class="card hidden">
-<h3>Registro Panadería</h3>
-<input id="p_nombre" placeholder="Nombre Panadería *">
-<input id="p_resp" placeholder="Responsable">
-<input id="p_dir" placeholder="Dirección *">
-<input id="p_ciu" placeholder="Ciudad *">
-<input id="p_prov" value="Chubut">
-<select id="p_puesto" onchange="checkOtrosPuesto()"><option value="">-- Puesto buscado --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Cajero</option><option>Administrativo</option><option>Maestranza</option><option>Atención al público</option><option>Otros</option></select>
+<h3>Tengo Comercio - Solicitud de Autorización * Obligatorio</h3>
+<input id="p_nombre" placeholder="Nombre del Comercio *">
+<input id="p_resp" placeholder="Responsable / Dueño *">
+<input id="p_dir" placeholder="Dirección del Comercio *">
+<select id="p_prov" onchange="cargarCiudades('p_prov','p_ciu')"><option value="">-- Provincia * --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
+<select id="p_ciu" onchange="checkOtraCiudad('p_ciu','p_ciu_otra')"><option value="">-- Ciudad * --</option></select>
+<input id="p_ciu_otra" class="hidden" placeholder="Escribí tu ciudad manualmente *">
+<input id="p_tel" placeholder="WhatsApp del comercio * ej 2974123456" type="tel">
+<label>Puesto que buscás (podés elegir varios)</label>
+<div class="checks" id="p_oficios_checks">
+<label><input type="checkbox" value="Panadero"> Panadero</label>
+<label><input type="checkbox" value="Facturero"> Facturero</label>
+<label><input type="checkbox" value="Pastelero"> Pastelero</label>
+<label><input type="checkbox" value="Cajero"> Cajero</label>
+<label><input type="checkbox" value="Administrativo"> Administrativo</label>
+<label><input type="checkbox" value="Maestranza"> Maestranza</label>
+<label><input type="checkbox" value="Atención al público"> Atención al público</label>
+<label><input type="checkbox" value="Otros" onchange="checkOtrosPuesto()"> Otros</label>
+</div>
 <input id="p_puesto_otros" class="hidden" placeholder="¿Qué otro puesto?">
-<input id="p_tel" placeholder="WhatsApp / Tel *">
-<button class="verde" onclick="guardarP()">✅ REGISTRAR EMPRESA</button>
+<button class="verde" onclick="guardarP()">🔐 Solicitar autorización para ver empleados</button>
 <div id="p_msg"></div>
 </div>
 
 <div id="bolsa" class="card hidden">
-<h3>Ver Bolsa - Solo Empresas AUTORIZADAS</h3>
+<h3>Ver Bolsa - Solo Comercios AUTORIZADOS</h3>
 <div style="background:#0A1931;color:#FFC947;padding:14px;border-radius:10px;margin-bottom:12px">
-<label style="color:#FFC947;">Tu WSP de empresa autorizado</label>
-<input id="login_wsp" value="2974007317">
-<button class="verde" onclick="loginBolsa()">ENTRAR</button>
+<label style="color:#FFC947;">Ingresá tu WSP de comercio (el que cargaste en Tengo Comercio)</label>
+<input id="login_wsp" placeholder="Ej: 2974123456 - Sin número fijo, poné el tuyo">
+<button class="verde" onclick="loginBolsa()">ENTRAR A VER EMPLEADOS</button>
 <div id="login_msg"></div>
 </div>
 <div id="bolsa_panel" class="hidden">
@@ -86,9 +113,9 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 
 <div id="admin" class="card hidden">
 <h3>Admin</h3>
-<input id="a_pass" type="password" placeholder="Clave: chanchadas">
+<input id="a_pass" type="password" placeholder="Ingresar clave">
 <button class="verde" onclick="loginAdmin()">ENTRAR</button>
-<div id="a_panel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:12px;border-radius:8px;margin:8px 0;font-weight:800"></div><select id="admin_filtro" onchange="cargarAdmin()"><option value="todo">Ver todo</option><option value="panaderias">Solo empresas</option><option value="trabajadores">Solo trabajadores</option><option value="autorizados">Solo autorizados</option></select><div id="a_lista"></div></div>
+<div id="a_panel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:12px;border-radius:8px;margin:8px 0;font-weight:800"></div><select id="admin_filtro" onchange="cargarAdmin()"><option value="todo">Ver todo</option><option value="panaderias">Solo comercios</option><option value="trabajadores">Solo trabajadores</option><option value="autorizados">Solo autorizados</option></select><div id="a_lista"></div></div>
 </div>
 
 <script>
@@ -99,19 +126,62 @@ let DATA=[]; let MI_WSP="";
 function show(id){document.querySelectorAll('#trabajador,#panaderia,#bolsa,#admin').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
 function cargarCiudades(idProv,idCiu){let prov=document.getElementById(idProv).value;let sel=document.getElementById(idCiu);if(!prov){sel.innerHTML='<option>-- Ciudad --</option>';return;}let lista=CIUDADES[prov]||[];sel.innerHTML='<option value="">-- Ciudad * --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('');}
 function checkOtraCiudad(idCiu,idOtra){let val=document.getElementById(idCiu).value;document.getElementById(idOtra).classList.toggle('hidden', val!=='OTRA');}
-function checkOtrosOficio(){let val=document.getElementById('t_oficio').value;document.getElementById('t_oficio_otros').classList.toggle('hidden', val!=='Otros');}
-function checkOtrosPuesto(){let val=document.getElementById('p_puesto').value;document.getElementById('p_puesto_otros').classList.toggle('hidden', val!=='Otros');}
+function checkOtrosOficio(){let chk=document.querySelector('#t_oficios_checks input[value="Otros"]');document.getElementById('t_oficio_otros').classList.toggle('hidden', !chk.checked);}
+function checkOtrosPuesto(){let chk=document.querySelector('#p_oficios_checks input[value="Otros"]');document.getElementById('p_puesto_otros').classList.toggle('hidden', !chk.checked);}
+function getCheckedOficios(idDiv){return Array.from(document.querySelectorAll('#'+idDiv+' input:checked')).map(c=>c.value);}
 function validarNombreApellido(n){return n.trim().split(' ').filter(x=>x.length>1).length>=2;}
 function validarWSP(w){return w.replace(/\D/g,'').length>=10;}
-function loginBolsa(){let num=document.getElementById('login_wsp').value.trim();if(!validarWSP(num)){document.getElementById('login_msg').innerHTML='<span class=error>❌ WSP inválido</span>';return;}document.getElementById('login_msg').innerText='Verificando...';fetch(URL_SHEET+"?accion=verificar&num="+encodeURIComponent(num)).then(r=>r.json()).then(j=>{if(j.autorizado){MI_WSP=num;document.getElementById('login_msg').innerHTML='<span class=ok>✅ AUTORIZADO: '+j.nombre+'</span>';document.getElementById('bolsa_panel').classList.remove('hidden');cargarDesdeSheet();}else{document.getElementById('login_msg').innerHTML='<span class=error>❌ NO AUTORIZADO - Solo empresas con AUTORIZADO</span>';}});}
-function guardarT(){let nombre=document.getElementById('t_nombre').value.trim();let wsp=document.getElementById('t_wsp').value.trim();let prov=document.getElementById('t_prov').value;let ciuSel=document.getElementById('t_ciu').value;let ciuOtra=document.getElementById('t_ciu_otra').value.trim();let ciu= ciuSel=='OTRA'?ciuOtra:ciuSel;let oficioSel=document.getElementById('t_oficio').value;let oficioOtros=document.getElementById('t_oficio_otros').value.trim();let oficio= oficioSel=='Otros'?oficioOtros:oficioSel;let exp1_nom=document.getElementById('t_exp1_nom').value.trim();let exp1_dir=document.getElementById('t_exp1_dir').value.trim();let exp1_tel=document.getElementById('t_exp1_tel').value.trim();let exp2_nom=document.getElementById('t_exp2_nom').value.trim();let exp2_dir=document.getElementById('t_exp2_dir').value.trim();let exp2_tel=document.getElementById('t_exp2_tel').value.trim();if(!validarNombreApellido(nombre)){document.getElementById('t_msg').innerHTML='<span class=error>❌ Nombre y Apellido: dos palabras</span>';return;}if(!validarWSP(wsp)){document.getElementById('t_msg').innerHTML='<span class=error>❌ WhatsApp 10 números</span>';return;}if(!prov||!ciu){document.getElementById('t_msg').innerHTML='<span class=error>❌ Provincia y Ciudad obligatorias</span>';return;}if(!oficio){document.getElementById('t_msg').innerHTML='<span class=error>❌ Oficio obligatorio, si es Otros escribí cuál</span>';return;}if(ciuSel=='OTRA'&&!ciuOtra){document.getElementById('t_msg').innerHTML='<span class=error>❌ Escribí tu ciudad</span>';return;}let necesitaExp=!OFICIOS_NO_PANADERIA.includes(oficioSel);if(necesitaExp){if(!exp1_nom||!exp1_dir||!exp1_tel){document.getElementById('t_msg').innerHTML='<span class=error>❌ Experiencia 1: los 3 campos obligatorios - Nombre comercio, Dirección y Teléfono</span>';return;}}if(exp2_nom||exp2_dir||exp2_tel){if(!exp2_nom||!exp2_dir||!exp2_tel){document.getElementById('t_msg').innerHTML='<span class=error>❌ Experiencia 2: si cargas una, los 3 campos obligatorios</span>';return;}}let d={tipo:"trabajador",nombre:nombre,wsp:wsp,provincia:prov,ciudad:ciu,oficio:oficio,panaderia_nomb:exp1_nom,panaderia_direc:exp1_dir,panaderia_cont:exp1_tel,panaderia_nomb2:exp2_nom,panaderia_direc2:exp2_dir,panaderia_cont2:exp2_tel};document.getElementById('t_msg').innerText='Guardando...';fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerHTML='<span class=ok>✅ Guardado (si era duplicado por teléfono, no se duplicó)</span>';});}
-function guardarP(){let nombreP=document.getElementById('p_nombre').value.trim();let tel=document.getElementById('p_tel').value.trim();let ciu=document.getElementById('p_ciu').value.trim();let puestoSel=document.getElementById('p_puesto').value;let puestoOtros=document.getElementById('p_puesto_otros').value.trim();let puesto= puestoSel=='Otros'?puestoOtros:puestoSel;if(nombreP.length<3){document.getElementById('p_msg').innerHTML='<span class=error>❌ Nombre panadería obligatorio</span>';return;}if(!validarWSP(tel)){document.getElementById('p_msg').innerHTML='<span class=error>❌ WhatsApp obligatorio</span>';return;}if(!ciu){document.getElementById('p_msg').innerHTML='<span class=error>❌ Ciudad obligatoria</span>';return;}if(puestoSel=='Otros'&&!puestoOtros){document.getElementById('p_msg').innerHTML='<span class=error>❌ Escribí qué otro puesto</span>';return;}let d={tipo:"panaderia",nombreP:nombreP,responsable:document.getElementById('p_resp').value,direccion:document.getElementById('p_dir').value,provincia:document.getElementById('p_prov').value,ciudad:ciu,puesto:puesto,tel:tel};fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerHTML='<span class=ok>✅ Empresa registrada como PENDIENTE. Autorizala en Admin.</span>';});}
+function loginBolsa(){let num=document.getElementById('login_wsp').value.trim();if(!validarWSP(num)){document.getElementById('login_msg').innerHTML='<span class=error>❌ Ingresá tu WSP de comercio</span>';return;}document.getElementById('login_msg').innerText='Verificando autorización...';fetch(URL_SHEET+"?accion=verificar&num="+encodeURIComponent(num)).then(r=>r.json()).then(j=>{if(j.autorizado){MI_WSP=num;document.getElementById('login_msg').innerHTML='<span class=ok>✅ AUTORIZADO: '+j.nombre+'</span>';document.getElementById('bolsa_panel').classList.remove('hidden');cargarDesdeSheet();}else{document.getElementById('login_msg').innerHTML='<span class=error>❌ Aún no estás AUTORIZADO. Tenés que cargar tus datos en Tengo Comercio y esperar que te autoricen en Admin.</span>';}});}
+function guardarT(){
+  let nombre=document.getElementById('t_nombre').value.trim();
+  let wsp=document.getElementById('t_wsp').value.trim();
+  let prov=document.getElementById('t_prov').value;
+  let ciuSel=document.getElementById('t_ciu').value;
+  let ciuOtra=document.getElementById('t_ciu_otra').value.trim();
+  let ciu= ciuSel=='OTRA'?ciuOtra:ciuSel;
+  let oficios=getCheckedOficios('t_oficios_checks');
+  let oficioOtros=document.getElementById('t_oficio_otros').value.trim();
+  let oficioFinal= oficios.includes('Otros') ? oficios.filter(o=>o!=='Otros').concat(oficioOtros).join(', ') : oficios.join(', ');
+  let exp1_nom=document.getElementById('t_exp1_nom').value.trim();
+  let exp1_dir=document.getElementById('t_exp1_dir').value.trim();
+  let exp1_tel=document.getElementById('t_exp1_tel').value.trim();
+  if(!validarNombreApellido(nombre)){document.getElementById('t_msg').innerHTML='<span class=error>❌ Nombre y Apellido obligatorio</span>';return;}
+  if(!validarWSP(wsp)){document.getElementById('t_msg').innerHTML='<span class=error>❌ WhatsApp obligatorio</span>';return;}
+  if(!prov||!ciu){document.getElementById('t_msg').innerHTML='<span class=error>❌ Provincia y Ciudad obligatorias</span>';return;}
+  if(oficios.length==0){document.getElementById('t_msg').innerHTML='<span class=error>❌ Elegí al menos un oficio</span>';return;}
+  if(oficios.includes('Otros')&&!oficioOtros){document.getElementById('t_msg').innerHTML='<span class=error>❌ Escribí qué otro oficio</span>';return;}
+  let necesitaExp=oficios.some(o=>!OFICIOS_NO_PANADERIA.includes(o)&&o!=='Otros');
+  if(necesitaExp){if(!exp1_nom||!exp1_dir||!exp1_tel){document.getElementById('t_msg').innerHTML='<span class=error>❌ Experiencia 1: los 3 campos obligatorios</span>';return;}}
+  let d={tipo:"trabajador",nombre:nombre,wsp:wsp,provincia:prov,ciudad:ciu,oficio:oficioFinal,panaderia_nomb:exp1_nom,panaderia_direc:exp1_dir,panaderia_cont:exp1_tel};
+  document.getElementById('t_msg').innerText='Guardando...';fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerHTML='<span class=ok>✅ Guardado</span>';});
+}
+function guardarP(){
+  let nombreP=document.getElementById('p_nombre').value.trim();
+  let resp=document.getElementById('p_resp').value.trim();
+  let dir=document.getElementById('p_dir').value.trim();
+  let prov=document.getElementById('p_prov').value;
+  let ciuSel=document.getElementById('p_ciu').value;
+  let ciuOtra=document.getElementById('p_ciu_otra').value.trim();
+  let ciu= ciuSel=='OTRA'?ciuOtra:ciuSel;
+  let tel=document.getElementById('p_tel').value.trim();
+  let oficios=getCheckedOficios('p_oficios_checks');
+  let puestoOtros=document.getElementById('p_puesto_otros').value.trim();
+  let puestoFinal= oficios.includes('Otros') ? oficios.filter(o=>o!=='Otros').concat(puestoOtros).join(', ') : oficios.join(', ');
+  if(nombreP.length<3){document.getElementById('p_msg').innerHTML='<span class=error>❌ Nombre comercio obligatorio</span>';return;}
+  if(!resp){document.getElementById('p_msg').innerHTML='<span class=error>❌ Responsable obligatorio</span>';return;}
+  if(!dir){document.getElementById('p_msg').innerHTML='<span class=error>❌ Dirección obligatoria</span>';return;}
+  if(!prov||!ciu){document.getElementById('p_msg').innerHTML='<span class=error>❌ Provincia y Ciudad obligatorias</span>';return;}
+  if(!validarWSP(tel)){document.getElementById('p_msg').innerHTML='<span class=error>❌ WhatsApp obligatorio</span>';return;}
+  if(oficios.length==0){document.getElementById('p_msg').innerHTML='<span class=error>❌ Elegí al menos un puesto buscado</span>';return;}
+  let d={tipo:"panaderia",nombreP:nombreP,responsable:resp,direccion:dir,provincia:prov,ciudad:ciu,puesto:puestoFinal,tel:tel};
+  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerHTML='<span class=ok>✅ Solicitud enviada. Ahora estás en lista de espera hasta que te autoricen. Luego podrás entrar a Ver Bolsa con tu WSP.</span>';});
+}
 function cargarDesdeSheet(){document.getElementById('lista').innerHTML='Cargando...';fetch(URL_SHEET+"?accion=listar").then(r=>r.json()).then(j=>{DATA=j.trabajadores||[];render(DATA);});}
 function render(l){if(!l.length){document.getElementById('lista').innerHTML='Vacío';return;}document.getElementById('lista').innerHTML=l.map(t=>`<div class=item><b>${t.nombre}</b> <span class=badge>${t.puesto||''}</span><br>📍 ${t.ciudad} - ${t.provincia||''}<br>📱 ${t.wsp}<br><button class="wsp" onclick="contactar('${t.wsp}','${t.nombre}','${t.puesto}','${t.ciudad}')">📲 CONTACTAR</button></div>`).join('');}
-function filtrar(){let of=document.getElementById('f_of').value;let pr=document.getElementById('f_prov').value;let ci=document.getElementById('f_ciu').value;let f=DATA.filter(t=>(!of||t.puesto===of)&&(!pr||t.provincia===pr)&&(!ci||t.ciudad===ci));render(f);}
-function contactar(wspDestino,nombreDestino,oficio,ciudad){if(!MI_WSP){alert('Logueate como empresa autorizada');return;}fetch(URL_SHEET+"?accion=contacto&de="+encodeURIComponent(MI_WSP)+"&para="+encodeURIComponent(wspDestino)+"&nombre="+encodeURIComponent(nombreDestino)+"&oficio="+encodeURIComponent(oficio||'')+"&ciudad="+encodeURIComponent(ciudad||'')).then(()=>{});window.open("https://wa.me/549"+wspDestino.replace(/\D/g,''),'_blank');}
+function filtrar(){let of=document.getElementById('f_of').value;let pr=document.getElementById('f_prov').value;let ci=document.getElementById('f_ciu').value;let f=DATA.filter(t=>(!of||t.puesto.includes(of))&&(!pr||t.provincia===pr)&&(!ci||t.ciudad===ci));render(f);}
+function contactar(wspDestino,nombreDestino,oficio,ciudad){if(!MI_WSP){alert('Logueate');return;}fetch(URL_SHEET+"?accion=contacto&de="+encodeURIComponent(MI_WSP)+"&para="+encodeURIComponent(wspDestino)+"&nombre="+encodeURIComponent(nombreDestino)+"&oficio="+encodeURIComponent(oficio||'')+"&ciudad="+encodeURIComponent(ciudad||'')).then(()=>{});window.open("https://wa.me/549"+wspDestino.replace(/\D/g,''),'_blank');}
 function loginAdmin(){if(document.getElementById('a_pass').value!=='chanchadas'){alert('Clave mal');return;}document.getElementById('a_panel').classList.remove('hidden');cargarAdmin();}
-function cargarAdmin(){fetch(URL_SHEET+"?accion=listar_admin").then(r=>r.json()).then(j=>{document.getElementById('stats').innerText=`TOTAL: ${j.trabajadores.length} postulantes | ${j.panaderias.length} empresas | ${j.autorizados.length} autorizados`;let filtro=document.getElementById('admin_filtro').value;let html='';if(filtro=='todo'||filtro=='panaderias'){html+='<h4>🏪 EMPRESAS</h4>';html+=j.panaderias.map(p=>`<div class=item style="display:flex;justify-content:space-between;align-items:center"><div><b>${p.nombre}</b> | ${p.wsp} | <b>${p.estado}</b></div><div style="display:flex;gap:6px"><button class="verde" style="width:auto;padding:6px" onclick="accionAdmin('autorizar','panaderia',${p.fila})">✅</button><button style="background:#EAB308;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('desautorizar','panaderia',${p.fila})">⏸️</button><button style="background:#DC2626;color:#fff;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('borrar','panaderia',${p.fila})">🗑️</button></div></div>`).join('');}if(filtro=='todo'||filtro=='trabajadores'){html+='<h4>👷 TRABAJADORES</h4>';html+=j.trabajadores.map(t=>`<div class=item style="display:flex;justify-content:space-between"><div>${t.nombre} | ${t.wsp}</div><div><button style="background:#DC2626;color:#fff;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('borrar','trabajador',${t.fila})">🗑️</button></div></div>`).join('');}if(filtro=='todo'||filtro=='autorizados'){html+='<h4>✅ AUTORIZADOS</h4>';html+=j.autorizados.map(a=>`<div class=item style="display:flex;justify-content:space-between"><div>${a.wsp} - ${a.nombre}</div><div style="display:flex;gap:6px"><button class="verde" style="width:auto;padding:6px" onclick="accionAdmin('autorizar','autorizados',${a.fila})">✅</button><button style="background:#DC2626;color:#fff;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('borrar','autorizados',${a.fila})">🗑️</button></div></div>`).join('');}document.getElementById('a_lista').innerHTML=html;});}
+function cargarAdmin(){fetch(URL_SHEET+"?accion=listar_admin").then(r=>r.json()).then(j=>{document.getElementById('stats').innerText=`TOTAL: ${j.trabajadores.length} postulantes | ${j.panaderias.length} comercios | ${j.autorizados.length} autorizados`;let filtro=document.getElementById('admin_filtro').value;let html='';if(filtro=='todo'||filtro=='panaderias'){html+='<h4>🏪 COMERCIOS - Solicitudes</h4>';html+=j.panaderias.map(p=>`<div class=item style="display:flex;justify-content:space-between;align-items:center"><div><b>${p.nombre}</b> | ${p.wsp} | <b>${p.estado}</b></div><div style="display:flex;gap:6px"><button class="verde" style="width:auto;padding:6px" onclick="accionAdmin('autorizar','panaderia',${p.fila})">✅</button><button style="background:#EAB308;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('desautorizar','panaderia',${p.fila})">⏸️</button><button style="background:#DC2626;color:#fff;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('borrar','panaderia',${p.fila})">🗑️</button></div></div>`).join('');}if(filtro=='todo'||filtro=='trabajadores'){html+='<h4>👷 TRABAJADORES</h4>';html+=j.trabajadores.map(t=>`<div class=item style="display:flex;justify-content:space-between"><div>${t.nombre} | ${t.wsp}</div><div><button style="background:#DC2626;color:#fff;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('borrar','trabajador',${t.fila})">🗑️</button></div></div>`).join('');}if(filtro=='todo'||filtro=='autorizados'){html+='<h4>✅ AUTORIZADOS</h4>';html+=j.autorizados.map(a=>`<div class=item style="display:flex;justify-content:space-between"><div>${a.wsp} - ${a.nombre}</div><div style="display:flex;gap:6px"><button class="verde" style="width:auto;padding:6px" onclick="accionAdmin('autorizar','autorizados',${a.fila})">✅</button><button style="background:#DC2626;color:#fff;padding:6px;border-radius:6px;border:0" onclick="accionAdmin('borrar','autorizados',${a.fila})">🗑️</button></div></div>`).join('');}document.getElementById('a_lista').innerHTML=html;});}
 function accionAdmin(accion,tipo,fila){if(!confirm('¿Seguro '+accion+'?'))return;fetch(URL_SHEET+`?accion=${accion}&tipo=${tipo}&fila=${fila}`).then(()=>cargarAdmin());}
 </script>
 </body>
