@@ -22,11 +22,13 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 .legal-footer{font-size:10px;color:#8D6E63;text-align:justify;padding:12px;border-top:1px solid #D7CCC8;margin-top:20px;line-height:1.4}
 .exp-box{border:2px dashed #5D4037;padding:12px;border-radius:10px;margin:10px 0;background:var(--beige)}
 .hidden{display:none}
-#t_msg,#c_msg,#a_login_msg,#admin_login_msg{font-weight:800;margin:10px 0}
+#t_msg{font-weight:900;margin:12px 0;font-size:14px;padding:10px;border-radius:8px}
+.msg-error{background:#ffebee;color:#c62828;border:1.5px solid #c62828}
+.msg-ok{background:#e8f5e9;color:#2e7d32;border:1.5px solid #2e7d32}
 </style>
 </head>
 <body>
-<header><h1>BOLSA DE TRABAJO<br>PANADERA DE LA PATAGONIA</h1><div style="font-size:11px;margin-top:6px;opacity:0.8">PRUEBA v112 - COPIA 22/10</div></header>
+<header><h1>BOLSA DE TRABAJO<br>PANADERA DE LA PATAGONIA</h1><div style="font-size:11px;margin-top:6px;opacity:0.8">PRUEBA v113</div></header>
 <div class="wrap">
 
 <div id="menu">
@@ -35,21 +37,22 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 <button class="btn btn-beige" onclick="show('acceso')">✅ Ya tengo clave de acceso para ver curriculum</button>
 <button class="btn btn-beige" onclick="show('contacto')">📩 Darme de baja o contactarme con admin</button>
 <div style="margin-top:18px"><button class="btn btn-chico btn-beige" onclick="show('admin')">🔐 Admin</button></div>
-<div class="legal-footer"><b>Aviso Legal Ley 25.326:</b> Plataforma intermediaria. No es agencia de empleo. Datos voluntarios. Mayores 18 años. Los datos se guardan en Sheets COPIA para pruebas.</div>
+<div class="legal-footer"><b>Aviso Legal Ley 25.326:</b> Plataforma intermediaria. No es agencia de empleo. Datos voluntarios. Mayores 18 años.</div>
 </div>
 
 <div id="trabajador" class="card hidden">
-<h3>🥖 Busco trabajo - COPIA</h3>
-<label>Nombre y Apellido COMPLETO * OBLIGATORIO (Ej: Alfredo Lopez)</label><input id="t_nombre" placeholder="Ej: Alfredo Lopez - No se acepta solo un nombre">
+<h3>🥖 Busco trabajo</h3>
+<label>Nombre y Apellido COMPLETO * OBLIGATORIO (Ej: Alfredo Lopez)</label><input id="t_nombre" placeholder="Ej: Alfredo Lopez">
 <label>WSP *</label><input id="t_wsp" placeholder="Ej: 2974123456">
 <label>Provincia *</label><select id="t_prov" onchange="cargarCiudades('t_prov','t_ciu','t_ciu_man','t_prov_man')"><option value="">-- Provincia --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option><option value="OTRA">OTRA</option></select><input id="t_prov_man" class="hidden" placeholder="Escribí provincia">
 <label>Ciudad *</label><select id="t_ciu"><option>Primero elegí provincia</option></select><input id="t_ciu_man" class="hidden" placeholder="Escribí ciudad">
 <label>Oficio *</label><select id="t_of"><option value="">-- Oficio --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Repartidor</option><option>Cajero</option><option>Reventa</option><option value="OTROS">Otros</option></select><input id="t_of_man" class="hidden" placeholder="Escribí oficio">
-<div style="background:#FFF8E0;padding:10px;border-radius:8px;font-size:12px;margin:10px 0;border:1.5px solid #D7A86E"><b>ULTIMA PANADERIA DONDE TRABAJASTE * OBLIGATORIO</b><br>No puede quedar vacío. Si no tenés poné NO TENGO o X, con cualquier caracter vale pero no vacío.</div>
+<div style="background:#FFF8E0;padding:10px;border-radius:8px;font-size:12px;margin:10px 0;border:1.5px solid #D7A86E"><b>ULTIMA PANADERIA DONDE TRABAJASTE * OBLIGATORIO</b><br>No puede quedar vacío. Si no tenés poné NO TENGO.</div>
 <div id="exps"></div>
-<button class="btn btn-beige btn-chico" onclick="addExp()">+ Agregar otra panadería (opcional)</button>
+<button class="btn btn-beige btn-chico" onclick="addExp()">+ Agregar otra panadería</button>
 <div class="legal-check"><input type="checkbox" id="t_legal"><label style="display:inline;font-size:12px">Acepto Ley 25.326 - Mis datos son reales *</label></div>
-<button class="btn btn-verde" onclick="guardarT()">✅ GUARDAR EN COPIA</button><div id="t_msg"></div>
+<button class="btn btn-verde" onclick="guardarT()">✅ GUARDAR</button>
+<div id="t_msg"></div>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 </div>
 
@@ -68,20 +71,20 @@ label{font-weight:700;font-size:13px;margin-top:10px;display:block;color:var(--m
 </div>
 
 <div id="acceso" class="card hidden">
-<h3>✅ Acceso CVs (COPIA)</h3>
+<h3>✅ Acceso CVs</h3>
 <div id="acceso_login"><input id="a_wsp" placeholder="Tu WPP de comercio"><button class="btn btn-pan" onclick="validarAcceso()">INGRESAR</button><div id="a_login_msg"></div></div>
 <div id="acceso_ok" class="hidden"><div id="lista"></div></div>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 </div>
 
 <div id="contacto" class="card hidden">
-<h3>📩 Contacto / Baja</h3><p style="font-size:13px">Escribí al admin para baja Ley 25.326</p><textarea id="contacto_txt" rows="4" placeholder="Mensaje"></textarea><button class="btn btn-beige" onclick="alert('Mensaje enviado a COPIA (demo)')">ENVIAR</button><button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
+<h3>📩 Contacto / Baja</h3><p style="font-size:13px">Escribí al admin para baja Ley 25.326</p><textarea id="contacto_txt" rows="4" placeholder="Mensaje"></textarea><button class="btn btn-beige" onclick="alert('Mensaje demo')">ENVIAR</button><button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 </div>
 
 <div id="admin" class="card hidden">
-<h3>🔐 Admin - COPIA</h3>
+<h3>🔐 Admin</h3>
 <div id="admin_login"><input id="admin_pass" type="password" placeholder="Clave"><button class="btn btn-pan" onclick="loginAdmin()">Entrar</button><div id="admin_login_msg"></div></div>
-<div id="admin_panel" class="hidden"><h4>Solicitudes pendientes (COPIA)</h4><div id="admin_aut"></div></div>
+<div id="admin_panel" class="hidden"><h4>Solicitudes</h4><div id="admin_aut"></div></div>
 <button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 </div>
 
@@ -93,72 +96,81 @@ let EXP_COUNT=0;
 function show(id){document.querySelectorAll('#trabajador,#comercio,#acceso,#admin,#contacto,#menu').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo(0,0);}
 function toggleManual(s,m){let v=document.getElementById(s).value;let el=document.getElementById(m);if(v==='OTROS'||v==='OTRA'){el.classList.remove('hidden');}else{el.classList.add('hidden');el.value='';}}
 function cargarCiudades(idProv,idCiu,idCiuMan,idProvMan){let prov=document.getElementById(idProv).value;let sel=document.getElementById(idCiu);let manC=document.getElementById(idCiuMan);let manP=document.getElementById(idProvMan);if(manP){if(prov==='OTRA'){manP.classList.remove('hidden');}else{manP.classList.add('hidden');manP.value='';}}if(!prov||prov==='OTRA'){sel.innerHTML='<option value="">--</option><option value="OTRA">OTRA</option>';if(manC)manC.classList.remove('hidden');return;}let lista=CIUDADES[prov]||[];sel.innerHTML='<option value="">Seleccionar</option>'+lista.map(c=>`<option>${c}</option>`).join('')+'<option value="OTRA">OTRA</option>';if(manC){sel.onchange=function(){if(this.value==='OTRA'){manC.classList.remove('hidden');}else{manC.classList.add('hidden');manC.value='';}};manC.classList.add('hidden');}}
-function addExp(){if(EXP_COUNT>=5){alert('Máx 5 panaderías');return;}EXP_COUNT++;let div=document.createElement('div');div.className='exp-box';let btn=EXP_COUNT>1?`<button class="btn btn-chico btn-rojo" onclick="this.parentElement.remove();EXP_COUNT--" style="float:right">X</button>`:``;div.innerHTML=`<b>Panadería ${EXP_COUNT} ${EXP_COUNT==1?'* OBLIGATORIA':'(opcional)'} </b> ${btn}<label>Nombre panadería *</label><input id="exp_nom_${EXP_COUNT}" placeholder="Si no tenés poné NO TENGO"><label>Dirección panadería *</label><input id="exp_dir_${EXP_COUNT}" placeholder="Si no tenés poné NO TENGO"><label>Tel panadería *</label><input id="exp_tel_${EXP_COUNT}" placeholder="Si no tenés poné NO TENGO">`;document.getElementById('exps').appendChild(div);}
+function addExp(){if(EXP_COUNT>=5){alert('Máx 5');return;}EXP_COUNT++;let div=document.createElement('div');div.className='exp-box';let btn=EXP_COUNT>1?`<button class="btn btn-chico btn-rojo" onclick="this.parentElement.remove();EXP_COUNT--" style="float:right">X</button>`:``;div.innerHTML=`<b>Panadería ${EXP_COUNT} ${EXP_COUNT==1?'* OBLIGATORIA':'(opcional)'} </b> ${btn}<label>Nombre panadería *</label><input id="exp_nom_${EXP_COUNT}" placeholder="Si no tenés poné NO TENGO"><label>Dirección panadería *</label><input id="exp_dir_${EXP_COUNT}" placeholder="Si no tenés poné NO TENGO"><label>Tel panadería *</label><input id="exp_tel_${EXP_COUNT}" placeholder="Si no tenés poné NO TENGO">`;document.getElementById('exps').appendChild(div);}
 addExp();
 
+function mostrarMsg(texto, esError){
+ let el=document.getElementById('t_msg');
+ el.innerText=texto;
+ el.className = esError ? 'msg-error' : 'msg-ok';
+}
+
 async function guardarT(){
-let nombreCompleto=document.getElementById('t_nombre').value.trim();
-let partes=nombreCompleto.split(/\s+/).filter(p=>p.length>=2);
-if(nombreCompleto.length<5 || partes.length<2){
- alert('⛔ OBLIGATORIO: Tenés que poner Nombre y Apellido completo. No se acepta solo un nombre. Ej: Alfredo Lopez');
- document.getElementById('t_msg').innerText='❌ FALTA APELLIDO - Ej: Alfredo Lopez';
- return;
-}
-if(!document.getElementById('t_legal').checked){alert('Aceptá ley 25.326');return;}
-let provSel=document.getElementById('t_prov').value;
-let prov=provSel==='OTRA'?document.getElementById('t_prov_man').value.trim():provSel;
-let ciuSel=document.getElementById('t_ciu').value;
-let ciu=ciuSel==='OTRA'?document.getElementById('t_ciu_man').value.trim():ciuSel;
-let ofSel=document.getElementById('t_of').value;
-let of=ofSel==='OTROS'?document.getElementById('t_of_man').value.trim():ofSel;
-if(!prov||!ciu||!of){alert('Falta provincia, ciudad u oficio');return;}
-
-let exps=[]; let hayVacio=false;
-for(let i=1;i<=20;i++){
- let n=document.getElementById('exp_nom_'+i);
- if(!n) continue;
- let nom=n.value.trim(); let dir=document.getElementById('exp_dir_'+i).value.trim(); let tel=document.getElementById('exp_tel_'+i).value.trim();
- if(i===1){
-   if(!nom || !dir || !tel){ hayVacio=true; break; }
-   else{ exps.push({nombre:nom,dir:dir,tel:tel}); }
- } else {
-   if(nom||dir||tel){ if(!nom||!dir||!tel){hayVacio=true;break;} else exps.push({nombre:nom,dir:dir,tel:tel}); }
+ let nombreCompleto=document.getElementById('t_nombre').value.trim();
+ let partes=nombreCompleto.split(/\s+/).filter(p=>p.length>=2);
+ if(nombreCompleto.length<5 || partes.length<2){
+   mostrarMsg('⛔ Tenés que poner Nombre y Apellido completo. Ej: Alfredo Lopez', true);
+   return;
  }
-}
-if(hayVacio){alert('⛔ OBLIGATORIO: Tenés que llenar Nombre + Dirección + Teléfono de la última panadería. No puede quedar vacío. Si no tenés poné NO TENGO, con cualquier letra vale pero llenalo.');return;}
-if(exps.length===0){alert('Cargá al menos 1 panadería');return;}
+ if(!document.getElementById('t_legal').checked){mostrarMsg('Aceptá ley 25.326', true);return;}
+ let provSel=document.getElementById('t_prov').value;
+ let prov=provSel==='OTRA'?document.getElementById('t_prov_man').value.trim():provSel;
+ let ciuSel=document.getElementById('t_ciu').value;
+ let ciu=ciuSel==='OTRA'?document.getElementById('t_ciu_man').value.trim():ciuSel;
+ let ofSel=document.getElementById('t_of').value;
+ let of=ofSel==='OTROS'?document.getElementById('t_of_man').value.trim():ofSel;
+ if(!prov||!ciu||!of){mostrarMsg('Falta provincia, ciudad u oficio', true);return;}
 
-let wspRaw=document.getElementById('t_wsp').value.trim();
-let wspNorm=wspRaw.replace(/\D/g,'');
-if(wspNorm.length<8){alert('WSP inválido');return;}
-document.getElementById('t_msg').innerText='Verificando en COPIA...';
-try{
- let check=await fetch(URL_SHEET).then(r=>r.json());
- let existe=check.trabajadores.find(t=>(t.wsp+'').replace(/\D/g,'')===wspNorm);
- if(existe){document.getElementById('t_msg').innerText='❌ Ya existe ese WPP en COPIA';alert('Ya existe ese WPP');return;}
-}catch(e){}
+ let exps=[]; let hayVacio=false;
+ for(let i=1;i<=20;i++){
+  let n=document.getElementById('exp_nom_'+i);
+  if(!n) continue;
+  let nom=n.value.trim(); let dir=document.getElementById('exp_dir_'+i).value.trim(); let tel=document.getElementById('exp_tel_'+i).value.trim();
+  if(i===1){
+    if(!nom || !dir || !tel){ hayVacio=true; break; }
+    else{ exps.push({nombre:nom,dir:dir,tel:tel}); }
+  } else {
+    if(nom||dir||tel){ if(!nom||!dir||!tel){hayVacio=true;break;} else exps.push({nombre:nom,dir:dir,tel:tel}); }
+  }
+ }
+ if(hayVacio){mostrarMsg('⛔ Tenés que llenar Nombre + Dirección + Teléfono. Si no tenés poné NO TENGO, pero no dejes vacío.', true);return;}
+ if(exps.length===0){mostrarMsg('Cargá al menos 1 panadería', true);return;}
 
-let d={tipo:"trabajador",nombre:nombreCompleto,wsp:wspRaw,provincia:prov,ciudad:ciu,oficio:of,experiencias:JSON.stringify(exps)};
-document.getElementById('t_msg').innerText='Enviando a COPIA...';
-fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{
- document.getElementById('t_msg').innerText='✅ Guardado OK en COPIA';
- setTimeout(()=>show('menu'),1500);
-});
+ let wspRaw=document.getElementById('t_wsp').value.trim();
+ let wspNorm=wspRaw.replace(/\D/g,'');
+ if(wspNorm.length<8){mostrarMsg('WSP inválido', true);return;}
+
+ mostrarMsg('Verificando si el número ya existe...', false);
+ try{
+  let check=await fetch(URL_SHEET).then(r=>r.json());
+  let existe=check.trabajadores.find(t=>(t.wsp+'').replace(/\D/g,'')===wspNorm);
+  if(existe){
+    mostrarMsg('❌ Este número de WhatsApp ya fue cargado. No se puede volver a cargar.', true);
+    return;
+  }
+ }catch(e){}
+
+ let d={tipo:"trabajador",nombre:nombreCompleto,wsp:wspRaw,provincia:prov,ciudad:ciu,oficio:of,experiencias:JSON.stringify(exps)};
+ mostrarMsg('Guardando...', false);
+ fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{
+  mostrarMsg('✅ Guardado correctamente', false);
+  setTimeout(()=>show('menu'),1500);
+ });
 }
 
 function solicitarAutorizacion(){
-if(!document.getElementById('c_legal').checked){alert('Aceptá ley');return;}
-let provSel=document.getElementById('c_prov').value; let prov=provSel==='OTRA'?document.getElementById('c_prov_man').value.trim():provSel;
-let ciuSel=document.getElementById('c_ciu').value; let ciu=ciuSel==='OTRA'?document.getElementById('c_ciu_man').value.trim():ciuSel;
-let puesSel=document.getElementById('c_puesto').value; let pues=puesSel==='OTROS'?document.getElementById('c_puesto_man').value.trim():puesSel;
-let d={tipo:"comercio_solicitud",nombre:document.getElementById('c_nombre').value.trim(),direccion:document.getElementById('c_dir').value.trim(),comercio:document.getElementById('c_com').value.trim(),wsp:document.getElementById('c_wsp').value.trim(),provincia:prov,ciudad:ciu,puesto:pues};
-if(!d.nombre||!d.comercio||!d.wsp){alert('Falta nombre, comercio o wsp');return;}
-document.getElementById('c_msg').innerText='Enviando a COPIA...';
-fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('c_msg').innerText='✅ Solicitud enviada a COPIA - Esperá autorización';});
+ if(!document.getElementById('c_legal').checked){alert('Aceptá ley');return;}
+ let provSel=document.getElementById('c_prov').value; let prov=provSel==='OTRA'?document.getElementById('c_prov_man').value.trim():provSel;
+ let ciuSel=document.getElementById('c_ciu').value; let ciu=ciuSel==='OTRA'?document.getElementById('c_ciu_man').value.trim():ciuSel;
+ let puesSel=document.getElementById('c_puesto').value; let pues=puesSel==='OTROS'?document.getElementById('c_puesto_man').value.trim():puesSel;
+ let d={tipo:"comercio_solicitud",nombre:document.getElementById('c_nombre').value.trim(),direccion:document.getElementById('c_dir').value.trim(),comercio:document.getElementById('c_com').value.trim(),wsp:document.getElementById('c_wsp').value.trim(),provincia:prov,ciudad:ciu,puesto:pues};
+ if(!d.nombre||!d.comercio||!d.wsp){alert('Falta nombre, comercio o wsp');return;}
+ document.getElementById('c_msg').innerText='Enviando...';
+ fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('c_msg').innerText='✅ Solicitud enviada';});
 }
-function validarAcceso(){let wsp=document.getElementById('a_wsp').value.replace(/\D/g,'');if(!wsp){alert('Poné WSP');return;}document.getElementById('a_login_msg').innerText='Verificando en COPIA...';fetch(URL_SHEET).then(r=>r.json()).then(j=>{let aut=j.comercios.find(c=>(c.wsp+'').replace(/\D/g,'').includes(wsp)&&c.estado==='AUTORIZADO');if(aut){document.getElementById('acceso_login').classList.add('hidden');document.getElementById('acceso_ok').classList.remove('hidden');let trab=j.trabajadores||[];document.getElementById('lista').innerHTML=trab.length? trab.map(t=>`<div style="border-bottom:1px solid #ccc;padding:8px"><b>${t.nombre}</b> - ${t.oficio} - ${t.ciudad} - WSP:${t.wsp}<br><small>${t.experiencias}</small></div>`).join('') : 'No hay trabajadores en COPIA aun';}else{document.getElementById('a_login_msg').innerText='❌ No autorizado en COPIA (pedí autorización primero)';}}).catch(()=>{document.getElementById('a_login_msg').innerText='Error conectando a COPIA';});}
-function loginAdmin(){if(document.getElementById('admin_pass').value!=='chanchadas'){document.getElementById('admin_login_msg').innerText='Clave mal';return;}document.getElementById('admin_login').classList.add('hidden');document.getElementById('admin_panel').classList.remove('hidden');fetch(URL_SHEET).then(r=>r.json()).then(j=>{let com=j.comercios||[];document.getElementById('admin_aut').innerHTML=com.length? com.map(c=>`<div style="border:1px solid #ccc;padding:8px;margin:6px 0;border-radius:8px">${c.comercio} - ${c.nombre} - WSP:${c.wsp} - ${c.estado} <button class="btn btn-chico btn-verde" onclick="autorizar('${c.wsp}')">AUTORIZAR</button></div>`).join(''):'Sin comercios en COPIA';});}
-function autorizar(wsp){fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"autorizar",wsp:wsp})}).then(()=>{alert('Autorizado en COPIA - Recargá'); location.reload();});}
+function validarAcceso(){let wsp=document.getElementById('a_wsp').value.replace(/\D/g,'');if(!wsp){alert('Poné WSP');return;}document.getElementById('a_login_msg').innerText='Verificando...';fetch(URL_SHEET).then(r=>r.json()).then(j=>{let aut=j.comercios.find(c=>(c.wsp+'').replace(/\D/g,'').includes(wsp)&&c.estado==='AUTORIZADO');if(aut){document.getElementById('acceso_login').classList.add('hidden');document.getElementById('acceso_ok').classList.remove('hidden');let trab=j.trabajadores||[];document.getElementById('lista').innerHTML=trab.length? trab.map(t=>`<div style="border-bottom:1px solid #ccc;padding:8px"><b>${t.nombre}</b> - ${t.oficio} - ${t.ciudad} - WSP:${t.wsp}<br><small>${t.experiencias}</small></div>`).join('') : 'No hay trabajadores';}else{document.getElementById('a_login_msg').innerText='❌ No autorizado';}});}
+function loginAdmin(){if(document.getElementById('admin_pass').value!=='chanchadas'){document.getElementById('admin_login_msg').innerText='Clave mal';return;}document.getElementById('admin_login').classList.add('hidden');document.getElementById('admin_panel').classList.remove('hidden');fetch(URL_SHEET).then(r=>r.json()).then(j=>{let com=j.comercios||[];document.getElementById('admin_aut').innerHTML=com.length? com.map(c=>`<div style="border:1px solid #ccc;padding:8px;margin:6px 0;border-radius:8px">${c.comercio} - ${c.nombre} - WSP:${c.wsp} - ${c.estado} <button class="btn btn-chico btn-verde" onclick="autorizar('${c.wsp}')">AUTORIZAR</button></div>`).join(''):'Sin comercios';});}
+function autorizar(wsp){fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify({tipo:"autorizar",wsp:wsp})}).then(()=>{alert('Autorizado'); location.reload();});}
 </script>
 </body>
 </html>
