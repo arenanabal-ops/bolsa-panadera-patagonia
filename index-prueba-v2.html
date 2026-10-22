@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOLSA TRABAJO PANADERA PATAGONIA - PRUEBA V2</title>
+<style>
+body{font-family:Arial; max-width:900px; margin:20px auto; padding:15px}
+.card{border:1px solid #ddd; padding:15px; margin:10px 0; border-radius:8px}
+button{padding:10px 15px; background:#d2691e; color:white; border:none; border-radius:5px; cursor:pointer}
+input,select,textarea{width:100%; padding:8px; margin:5px 0; box-sizing:border-box}
+</style>
+</head>
+<body>
+<h1>PRUEBA V2 - 12 CAMBIOS - NO TOCA ORIGINAL</h1>
+<p><b>Rama:</b> prueba-v2-12-cambios | URL: PRUEBA</p>
+<p style="background:#ffffcc; padding:10px">Esta es la version de prueba. El original en Principal sigue intacto.</p>
+
+<h2>1) Registrarme como Trabajador</h2>
+<div class="card">
+Nombre: <input id="t_nombre" placeholder="Juan Perez">
+WhatsApp: <input id="t_wsp" placeholder="2974...">
+Provincia: <select id="t_prov"><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option></select>
+Ciudad: <input id="t_ciudad" placeholder="Comodoro">
+Oficio: <select id="t_oficio" onchange="togglePanaderia()"><option value="">--Elegir--</option><option>Panadero</option><option>Pastelero</option><option>Cajero</option><option>Repartidor</option><option>Ayudante</option><option>Vendedor</option><option>Maestro facturero</option></select>
+<div id="box_panaderia" style="display:none; background:#eee; padding:10px; margin-top:10px">
+<b>Experiencia en Panaderias (solo si oficio es panadero/pastelero/facturero)</b><br>
+Nombre Panaderia 1: <input id="pan1_nombre">
+Direccion Panaderia 1: <input id="pan1_dir">
+Tel Panaderia 1: <input id="pan1_tel">
+</div>
+<button onclick="enviarTrabajador()">Enviar Trabajador</button>
+<p id="msg_t"></p>
+</div>
+
+<h2>2) Ya tengo clave (Comercio)</h2>
+<div class="card">
+WhatsApp Comercio: <input id="c_login_wsp" placeholder="Tu WSP autorizado">
+<button onclick="loginComercio()">Ver Postulantes</button>
+<div id="lista_trab"></div>
+</div>
+
+<script>
+const URL_SHEET = "https://script.google.com/macros/s/AKfycbwzIW6oj6X7b5chi_oyzrDN30PnDqEQnsHFev0VN53h5vTykZw2MV1unHfMojzeGcB_/exec";
+
+function togglePanaderia(){
+  const of = document.getElementById('t_oficio').value.toLowerCase();
+  const box = document.getElementById('box_panaderia');
+  const necesita = ["panadero","pastelero","facturero","maestro"].some(x=> of.includes(x));
+  box.style.display = necesita ? "block" : "none";
+}
+
+async function enviarTrabajador(){
+  const nombre = document.getElementById('t_nombre').value.trim();
+  const wsp = document.getElementById('t_wsp').value.trim();
+  const provincia = document.getElementById('t_prov').value;
+  const ciudad = document.getElementById('t_ciudad').value.trim();
+  const oficio = document.getElementById('t_oficio').value;
+  
+  if(!nombre || !wsp || !ciudad || !oficio){
+    document.getElementById('msg_t').innerText="Completa todos los campos obligatorios";
+    return;
+  }
+  
+  let experiencias = [];
+  const ofLow = oficio.toLowerCase();
+  const necesitaPan = ["panadero","pastelero","facturero","maestro"].some(x=> ofLow.includes(x));
+  if(necesitaPan){
+    experiencias = [{
+      nombre: document.getElementById('pan1_nombre').value,
+      dir: document.getElementById('pan1_dir').value,
+      tel: document.getElementById('pan1_tel').value
+    }];
+  }
+
+  const data = {
+    tipo:"trabajador",
+    nombre, wsp, provincia, ciudad, oficio,
+    experiencias: JSON.stringify(experiencias)
+  };
+    document.getElementById('msg_t').innerText="Enviando...";
+  try{
+    const res = await fetch(URL_SHEET, {method:"POST", body: JSON.stringify(data)});
+    const j = await res.json();
+    if(j.ok===false && j.error==="duplicado"){
+      document.getElementById('msg_t').innerText="Ese numero de WhatsApp ya esta cargado";
+      return;
+    }
+    if(j.ok){
+      document.getElementById('msg_t').innerText="Cargado OK!";
+    } else {
+      document.getElementById('msg_t').innerText="Error: "+JSON.stringify(j);
+    }
+  }catch(e){
+    document.getElementById('msg_t').innerText="Error de red: "+e;
+  }
+}
+
+let comercioActualWsp = "";
+async function loginComercio(){
+  const wsp = document.getElementById('c_login_wsp').value.trim();
+  if(!wsp) return;
+  comercioActualWsp = wsp;
+  const res = await fetch(URL_SHEET);
+  const data = await res.json();
+  const lista = document.getElementById('lista_trab');
+  lista.innerHTML = "<h3>Postulantes:</h3>";
+  data.trabajadores.forEach(t=>{
+    const div = document.createElement('div');
+    div.className="card";
+    div.innerHTML = `<b>${t.nombre}</b> - ${t.oficio} - ${t.ciudad}<br>WSP: ${t.wsp}<br><button onclick="contactarWPP('${t.nombre}','${t.oficio}','${t.wsp}','${t.ciudad}')">Contactar por WhatsApp</button>`;
+    lista.appendChild(div);
+  });
+}
+
+async function contactarWPP(nombre, oficio, wsp_postulante, ciudad){
+  const ip = "navegador";
+  try{
+    await fetch(URL_SHEET, {
+      method:"POST",
+      body: JSON.stringify({
+        tipo:"wpp_click",
+        postulante_nombre: nombre,
+        postulante_oficio: oficio,
+        postulante_wsp: wsp_postulante,
+        postulante_ciudad: ciudad,
+        ip: ip,
+        wsp_comercio: comercioActualWsp
+      })
+    });
+  }catch(e){}
+  const num = wsp_postulante.replace(/\D/g,"");
+  window.open(`https://wa.me/${num}?text=Hola%20${nombre}%20vi%20tu%20perfil%20en%20Bolsa%20Panadera%20Patagonia`,"_blank");
+}
+</script>
+</body>
+</html>
