@@ -1,56 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>BOLSA</title>
-<style>:root{--m:#3E2723;--c:#FFF8F0}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--c)}header{background:var(--m);color:#fff;padding:20px;text-align:center}.wrap{max-width:500px;margin:auto;padding:14px}.card{background:#fff;border-radius:12px;padding:16px;margin:10px 0}.btn{width:100%;padding:14px;border:0;border-radius:10px;font-weight:800;margin:6px 0}.btn-pan{background:#5D4037;color:#fff}.btn-beige{background:#EFEBE9;border:1px solid #BCAAA4}.btn-verde{background:#4CAF50;color:#fff}input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #BCAAA4;margin:6px 0}label{font-weight:700;font-size:13px;margin-top:8px;display:block}.exp-box{border:1px dashed #BCAAA4;padding:10px;border-radius:8px;margin:8px 0;background:#EFEBE9}.hidden{display:none}</style>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>BOLSA PANADERA - PRUEBA</title>
+<style>:root{--m:#3E2723;--c:#FFF8F0}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--c)}header{background:var(--m);color:#fff;padding:20px;text-align:center}.wrap{max-width:500px;margin:auto;padding:14px}.card{background:#fff;border-radius:12px;padding:16px;margin:10px 0}.btn{width:100%;padding:14px;border:0;border-radius:10px;font-weight:800;margin:6px 0;cursor:pointer}.btn-pan{background:#5D4037;color:#fff}.btn-beige{background:#EFEBE9;border:1px solid #BCAAA4}.btn-verde{background:#4CAF50;color:#fff}input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #BCAAA4;margin:6px 0}label{font-weight:700;font-size:13px;margin-top:8px;display:block}.exp-box{border:1.5px dashed #5D4037;padding:12px;border-radius:10px;margin:10px 0;background:#EFEBE9}.hidden{display:none}</style>
 </head>
 <body>
-<header>BOLSA PANADERA PATAGONIA - PRUEBA</header>
+<header>BOLSA PANADERA PATAGONIA - PRUEBA v110</header>
 <div class="wrap">
-<div id="menu"><button class="btn btn-pan" onclick="show('trab')">BUSCO TRABAJO</button></div>
+<div id="menu"><button class="btn btn-pan" onclick="show('trab')">🥖 BUSCO TRABAJO - PRUEBA</button></div>
 <div id="trab" class="card hidden"><h3>BUSCO TRABAJO</h3>
-<input id="t_nombre" placeholder="Nombre *"><input id="t_wsp" placeholder="WSP *">
-<select id="t_prov" onchange="cargarCiudades()"><option value="">Provincia *</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option><option value="OTRA">OTRA</option></select><input id="t_prov_man" class="hidden" placeholder="Provincia">
-<select id="t_ciu"><option>Ciudad *</option></select><input id="t_ciu_man" class="hidden" placeholder="Ciudad">
-<select id="t_of"><option value="">Oficio *</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Cajero</option><option>Repartidor</option><option>Reventa</option><option>Otros</option></select>
-<div id="exps"></div><button class="btn btn-beige" onclick="addExp()">+ Agregar panaderia</button>
-<div><input type="checkbox" id="t_legal"> Acepto Ley 25.326 *</div>
-<button class="btn btn-verde" onclick="guardarT()">GUARDAR</button><div id="t_msg"></div><button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
+<label>Nombre y Apellido * OBLIGATORIO</label><input id="t_nombre" placeholder="Ej: Alfredo Lopez">
+<label>WSP *</label><input id="t_wsp" placeholder="Ej: 2974123456">
+<label>Provincia *</label><select id="t_prov" onchange="cargarCiudades()"><option value="">-- Provincia --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option><option value="OTRA">OTRA</option></select><input id="t_prov_man" class="hidden" placeholder="Escribi provincia">
+<label>Ciudad *</label><select id="t_ciu"><option>Primero elegi provincia</option></select><input id="t_ciu_man" class="hidden" placeholder="Escribi ciudad">
+<label>Oficio *</label><select id="t_of"><option value="">-- Oficio --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Ayudante</option><option>Cajero</option><option>Repartidor</option><option>Reventa</option><option>Otros</option></select>
+<div id="exps"></div>
+<div style="background:#FFF8E0;padding:10px;border-radius:8px;font-size:12px;margin:8px 0"><b>ULTIMA PANADERIA DONDE TRABAJO * OBLIGATORIO</b><br>Tenes que llenar los 3 campos. Si pones cualquier caracter vale, pero no puede quedar vacio.</div>
+<button class="btn btn-beige" onclick="addExp()">+ Agregar otra panaderia (opcional)</button>
+<div style="margin:12px 0"><input type="checkbox" id="t_legal" style="width:auto"> Acepto Ley 25.326 *</div>
+<button class="btn btn-verde" onclick="guardarT()">✅ GUARDAR EN COPIA</button><div id="t_msg" style="margin:10px 0;font-weight:800"></div><button class="btn btn-beige" onclick="show('menu')">VOLVER</button>
 </div></div>
 <script>
 const URL_SHEET="https://script.google.com/macros/s/AKfycbza4-TFsgE_wqvBDhOnKPMKniC9-UgLFrPPQtw3BHwAx0IYuj19a4EJMQ_u4LJhsAOetg/exec";
-const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn"],"Santa Cruz":["Rio Gallegos","Caleta Olivia"],"Rio Negro":["Bariloche","Roca"],"Neuquen":["Neuquen","Zapala"],"Tierra del Fuego":["Ushuaia","Rio Grande"]};
+const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado"],"Rio Negro":["Bariloche","Cipolletti","General Roca","Viedma"],"Neuquen":["Neuquen Capital","Centenario","Zapala","San Martin de los Andes"],"Tierra del Fuego":["Ushuaia","Rio Grande"]};
 let EXP_COUNT=0;
 function show(id){document.querySelectorAll('.card,#menu').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
-function cargarCiudades(){let prov=document.getElementById('t_prov').value;let sel=document.getElementById('t_ciu');let man=document.getElementById('t_ciu_man');let manP=document.getElementById('t_prov_man');if(prov==='OTRA'){manP.classList.remove('hidden');sel.innerHTML='<option>OTRA</option>';man.classList.remove('hidden');return;}else{manP.classList.add('hidden');}let lista=CIUDADES[prov]||[];sel.innerHTML='<option value="">Seleccionar *</option>'+lista.map(c=>`<option>${c}</option>`).join('')+'<option value="OTRA">OTRA</option>';sel.onchange=function(){if(this.value==='OTRA'){man.classList.remove('hidden');}else{man.classList.add('hidden');}};}
-function addExp(){if(EXP_COUNT>=5){alert('Max 5');return;}EXP_COUNT++;let d=document.createElement('div');d.className='exp-box';d.innerHTML=`<b>Panaderia ${EXP_COUNT} * OBLIGATORIO *</b><input id="exp_nom_${EXP_COUNT}" placeholder="Nombre panaderia * OBLIGATORIO - Si no tenes pone NO TENGO"><input id="exp_dir_${EXP_COUNT}" placeholder="Direccion panaderia * OBLIGATORIO - Si no tenes pone NO TENGO"><input id="exp_tel_${EXP_COUNT}" placeholder="Telefono panaderia * OBLIGATORIO - Si no tenes pone NO TENGO">`;document.getElementById('exps').appendChild(d);}
+function cargarCiudades(){let prov=document.getElementById('t_prov').value;let sel=document.getElementById('t_ciu');let man=document.getElementById('t_ciu_man');let manP=document.getElementById('t_prov_man');if(prov==='OTRA'){manP.classList.remove('hidden');sel.innerHTML='<option value="OTRA">OTRA</option>';man.classList.remove('hidden');return;}else{manP.classList.add('hidden');manP.value='';}let lista=CIUDADES[prov]||[];sel.innerHTML='<option value="">Seleccionar *</option>'+lista.map(c=>`<option>${c}</option>`).join('')+'<option value="OTRA">OTRA</option>';sel.onchange=function(){if(this.value==='OTRA'){man.classList.remove('hidden');}else{man.classList.add('hidden');man.value='';}};man.classList.add('hidden');}
+function addExp(){if(EXP_COUNT>=5){alert('Max 5');return;}EXP_COUNT++;let d=document.createElement('div');d.className='exp-box';d.id='box_'+EXP_COUNT;let txt = EXP_COUNT==1 ? '<b>PANADERIA 1 - OBLIGATORIA *</b>' : '<b>Panaderia '+EXP_COUNT+' (opcional)</b> <button onclick="this.parentElement.remove();EXP_COUNT--" style="float:right;background:#c62828;color:#fff;border:0;padding:4px 8px;border-radius:6px">X</button>';d.innerHTML= txt + `<label>Nombre de la panaderia *</label><input id="exp_nom_${EXP_COUNT}" placeholder="Ej: La Flor o NO TENGO"><label>Direccion *</label><input id="exp_dir_${EXP_COUNT}" placeholder="Ej: San Martin 123 o NO TENGO"><label>Telefono *</label><input id="exp_tel_${EXP_COUNT}" placeholder="Ej: 2974... o NO TENGO">`;document.getElementById('exps').appendChild(d);}
 addExp();
 async function guardarT(){
-if(!document.getElementById('t_legal').checked){alert('Acepta ley');return;}
-let prov=document.getElementById('t_prov').value==='OTRA'?document.getElementById('t_prov_man').value:document.getElementById('t_prov').value;
-let ciu=document.getElementById('t_ciu').value==='OTRA'?document.getElementById('t_ciu_man').value:document.getElementById('t_ciu').value;
+let nombreCompleto=document.getElementById('t_nombre').value.trim();
+if(nombreCompleto.split(/\s+/).length < 2){alert('⛔ Tenes que poner Nombre y Apellido. Ej: Alfredo Lopez');return;}
+if(!document.getElementById('t_legal').checked){alert('Acepta ley 25.326');return;}
+let provSel=document.getElementById('t_prov').value;
+let prov=provSel==='OTRA'?document.getElementById('t_prov_man').value.trim():provSel;
+let ciuSel=document.getElementById('t_ciu').value;
+let ciu=ciuSel==='OTRA'?document.getElementById('t_ciu_man').value.trim():ciuSel;
 let of=document.getElementById('t_of').value;
-if(!prov||!ciu||!of||!document.getElementById('t_nombre').value||!document.getElementById('t_wsp').value){alert('Falta Nombre, WSP, Provincia, Ciudad u Oficio');return;}
+let wspRaw=document.getElementById('t_wsp').value.trim();
+if(!prov||!ciu||!of||!wspRaw||!nombreCompleto){alert('Falta completar algun campo obligatorio');return;}
 
-// VALIDACION NUEVA OBLIGATORIA NOMBRE+DIR+TEL
-let exps=[]; let falta=false;
-for(let i=1;i<=EXP_COUNT;i++){
+// ACA ESTA LA VALIDACION QUE PEDISTE: NO DEJA VACIO
+let exps=[]; let hayVacio=false;
+for(let i=1;i<=20;i++){
  let n=document.getElementById('exp_nom_'+i);
  if(!n) continue;
  let nom=n.value.trim();
  let dir=document.getElementById('exp_dir_'+i).value.trim();
  let tel=document.getElementById('exp_tel_'+i).value.trim();
- if(!nom || !dir || !tel){ falta=true; }
- else { exps.push({nombre:nom,dir:dir,tel:tel}); }
+ // Solo controlamos la primera que es obligatoria
+ if(i===1){
+   if(!nom || !dir || !tel){
+     hayVacio=true;
+     break;
+   }else{
+     exps.push({nombre:nom,dir:dir,tel:tel});
+   }
+ } else {
+   // Las opcionales si estan llenas a medias tambien exigimos todo
+   if(nom || dir || tel){
+     if(!nom || !dir || !tel){ hayVacio=true; break; }
+     else { exps.push({nombre:nom,dir:dir,tel:tel}); }
+   }
+ }
 }
-if(falta || exps.length===0){
- alert('⛔ OBLIGATORIO: Tenes que completar Nombre + Direccion + Telefono de la panaderia. Si no tenes experiencia escribi NO TENGO en los 3 campos. Si no, no te deja guardar.');
+if(hayVacio){
+ alert('⛔ OBLIGATORIO: Tenes que llenar Nombre + Direccion + Telefono de la ULTIMA panaderia donde trabajaste. No puede quedar vacio. Si no tenes pone NO TENGO o una X, pero llenalo. Con cualquier caracter lo damos por bueno.');
  return;
 }
+if(exps.length===0){ alert('Carga al menos 1 panaderia'); return; }
 
-let wspRaw=document.getElementById('t_wsp').value.trim();
 document.getElementById('t_msg').innerText='Enviando a COPIA...';
-let d={tipo:"trabajador",nombre:document.getElementById('t_nombre').value.trim(),wsp:wspRaw,provincia:prov,ciudad:ciu,oficio:of,experiencias:JSON.stringify(exps)};
-fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerText='✅ Guardado en COPIA';setTimeout(()=>show('menu'),1200);});
+let d={tipo:"trabajador",nombre:nombreCompleto,wsp:wspRaw,provincia:prov,ciudad:ciu,oficio:of,experiencias:JSON.stringify(exps)};
+fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{
+ document.getElementById('t_msg').innerText='✅ GUARDADO EN COPIA - Ya podes verificar en tu Sheets COPIA';
+ setTimeout(()=>show('menu'),1500);
+});
 }
 </script>
 </body>
