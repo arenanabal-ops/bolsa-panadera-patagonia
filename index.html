@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bolsa Panadera Patagonia</title>
 <style>
 body{background:#FFF7CC;font-family:system-ui;margin:0;padding:12px}
@@ -10,28 +10,29 @@ body{background:#FFF7CC;font-family:system-ui;margin:0;padding:12px}
 .btn{width:100%;padding:14px;border-radius:12px;border:0;font-weight:800;margin:8px 0;cursor:pointer}
 .brown{background:#6B3F00;color:#fff}.yellow{background:#FFD23F;color:#1a1a1a}.black{background:#1a1a1a;color:#FFD23F}
 .card{background:#fff;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.phone{font-weight:900;color:#0a7e07;font-size:18px}
-.exp{background:#fafafa;border-left:4px solid #FFD23F;border-radius:8px;padding:10px;margin-top:10px}
+.phone{font-weight:900;color:#0a7e07;font-size:18px;margin-top:6px}
+.exp{background:#FFFBEB;border:1px solid #FFD23F;border-left:4px solid #FFD23F;border-radius:8px;padding:10px;margin-top:10px;line-height:1.5}
 .hidden{display:none}
-input,select{width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;margin:5px 0}
-label{font-weight:700;font-size:13px;margin-top:6px;display:block}
+input,select{width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;margin:5px 0;box-sizing:border-box}
+label{font-weight:700;font-size:13px;margin-top:8px;display:block}
 </style>
 </head>
 <body>
 <div class="header">🥖 BOLSA PANADERA PATAGONIA</div>
+
 <div id="home">
 <button class="btn brown" onclick="show('emp')">🥖 Busco Trabajo</button>
 <button class="btn yellow" onclick="show('com')">🏪 Soy Comercio</button>
-<button class="btn black" onclick="verBolsa()">👀 Ver Bolsa de Empleados</button>
+<button class="btn black" onclick="verBolsa()">👀 Ver Bolsa</button>
 </div>
 
 <div id="formEmp" class="hidden"><div class="card">
-<h3>Registro Empleado</h3>
+<h3>Busco Trabajo</h3>
 <label>Nombre</label><input id="e_nombre">
 <label>WhatsApp</label><input id="e_tel">
-<label>Provincia</label><select id="e_prov"><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option></select>
+<label>Provincia</label><select id="e_prov"><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
 <label>Ciudad</label><input id="e_ciu" value="Comodoro Rivadavia">
-<label>Oficio</label><select id="e_ofi"><option>Cajero</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Atención al público</option><option>Ayudante</option><option>Repartidor</option></select>
+<label>Oficio</label><select id="e_ofi"><option>Cajero</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Atencion al publico</option><option>Ayudante</option><option>Repartidor</option></select>
 <label>Nombre panadería último empleo</label><input id="e_pan_nom">
 <label>Dirección panadería</label><input id="e_pan_dir">
 <label>Contacto / Tel panadería</label><input id="e_pan_cont">
@@ -40,13 +41,12 @@ label{font-weight:700;font-size:13px;margin-top:6px;display:block}
 </div></div>
 
 <div id="bolsa" class="hidden">
-<div class="card"><div id="status">Cargando...</div><div id="lista"></div></div>
+<div class="card"><h3>Bolsa</h3><div id="status">Cargando...</div><div id="lista"></div></div>
 <button class="btn" style="background:#eee" onclick="goHome()">Volver</button>
 </div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwcf6ovrDXhAWmUw8uPdMEwTVjnOSvTMKrcmk01B32rfjScyd3-QfTa-Kat54pTpFIM/exec";
-
 function goHome(){document.getElementById('formEmp').classList.add('hidden');document.getElementById('bolsa').classList.add('hidden');document.getElementById('home').classList.remove('hidden');}
 function show(t){goHome();document.getElementById('home').classList.add('hidden');if(t=='emp')document.getElementById('formEmp').classList.remove('hidden');}
 
@@ -55,29 +55,36 @@ async function verBolsa(){
  document.getElementById('bolsa').classList.remove('hidden');
  document.getElementById('status').innerText="Cargando...";
  try{
-   // TU SCRIPT ORIGINAL USA accion=listar
    const r=await fetch(SCRIPT_URL+"?accion=listar");
-   const json=await r.json();
-   console.log(json);
-   let data = Array.isArray(json) ? json : (json.data || json.empleados || json.lista || []);
+   const data=await r.json();
    document.getElementById('status').innerText="Se encontraron "+data.length+" trabajadores";
    render(data);
- }catch(e){document.getElementById('status').innerText="Error: "+e.message;}
+ }catch(e){document.getElementById('status').innerText="Error: "+e;}
 }
 
 function render(data){
  const cont=document.getElementById('lista');
- cont.innerHTML=data.map(row=>{
-   let nombre=row[0], wsp=row[1], prov=row[2], ciudad=row[3], oficio=row[4], panNom=row[5], panDir=row[6], panCont=row[7];
-   if(!Array.isArray(row)){ nombre=row.nombre||row[0]; wsp=row.wsp||row[1]; prov=row.provincia; ciudad=row.ciudad; oficio=row.oficio; panNom=row.panaderia_nombre; panDir=row.panaderia_direc; panCont=row.panaderia_cont; }
-   const noCarga=(v)=>!v||String(v).toLowerCase().includes('no carg')||String(v).trim()=='';
+ const noCarga=(v)=>!v||String(v).toLowerCase().includes('no carg')||String(v).toLowerCase().includes('no cargo')||String(v).trim()==''||String(v).trim()=='-';
+ 
+ cont.innerHTML=data.map(o=>{
    let htmlExp="";
-   if(!noCarga(panNom)||!noCarga(panDir)||!noCarga(panCont)){
-     htmlExp=`<div class="exp"><b>📋 ÚLTIMO EMPLEO</b><br>${!noCarga(panNom)?`🏪 Panadería: ${panNom}<br>`:''}${!noCarga(panDir)?`📍 Dirección: ${panDir}<br>`:''}${!noCarga(panCont)?`📞 Tel: ${panCont}`:''}</div>`;
+   if(!noCarga(o.panaderia_nombre)||!noCarga(o.panaderia_direc)||!noCarga(o.panaderia_cont)){
+     htmlExp=`<div class="exp"><div style="font-weight:900;font-size:12px">📋 ÚLTIMO EMPLEO</div>
+     ${!noCarga(o.panaderia_nombre)?`🏪 <b>Panadería:</b> ${o.panaderia_nombre}<br>`:''}
+     ${!noCarga(o.panaderia_direc)?`📍 <b>Dirección:</b> ${o.panaderia_direc}<br>`:''}
+     ${!noCarga(o.panaderia_cont)?`📞 <b>Tel:</b> ${o.panaderia_cont}`:''}
+     </div>`;
    } else {
-     htmlExp=`<div class="exp" style="border-left-color:#ddd">No cargó datos de empleo anterior</div>`;
+     htmlExp=`<div class="exp" style="border-color:#ddd;background:#fafafa"><span style="color:#888;font-size:13px">Sin datos de empleo anterior</span></div>`;
    }
-   return `<div class="card"><strong>${nombre}</strong> - ${oficio}<br><small>📍 ${ciudad} - ${prov}</small><div class="phone">📱 ${wsp}</div>${htmlExp}<a href="https://wa.me/${String(wsp).replace(/\D/g,'')}" target="_blank" class="btn black" style="display:block;text-align:center;text-decoration:none;margin-top:8px">WhatsApp</a></div>`;
+
+   return `<div class="card">
+     <strong>${o.nombre}</strong> - ${o.puesto||o.oficio||''}<br>
+     <small>📍 ${o.ciudad||''} - ${o.provincia||''}</small>
+     <div class="phone">📱 ${o.wsp||''}</div>
+     ${htmlExp}
+     <a href="https://wa.me/${String(o.wsp||'').replace(/\D/g,'')}" target="_blank" class="btn black" style="display:block;text-align:center;text-decoration:none;margin-top:10px">WhatsApp</a>
+   </div>`;
  }).join('');
 }
 
