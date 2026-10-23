@@ -3,122 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolsa de Trabajo Panaderos Patagonia</title>
+<title>Bolsa Trabajo Panaderos Patagonia</title>
 <style>
-body{font-family:Arial,sans-serif;background:#fff8e1;margin:0;padding:15px}
-.card{background:white;max-width:600px;margin:auto;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-input,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;font-size:16px}
+body{font-family:Arial,sans-serif;background:#fff8e1;margin:0;padding:12px}
+.card{background:white;max-width:650px;margin:auto;padding:18px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+input,button{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #ccc;font-size:16px;box-sizing:border-box}
 button{background:#ff6f00;color:white;border:none;font-weight:bold;cursor:pointer}
 .oculto{display:none}
-.item{border-bottom:1px solid #eee;padding:10px 0}
-.etiqueta{background:#ffe0b2;padding:2px 6px;border-radius:4px;font-size:12px}
-.admin{margin-top:20px;background:#fff3e0;padding:15px;border-radius:10px}
+.item{border-bottom:1px solid #eee;padding:12px 0}
+.etiqueta{background:#ffe0b2;padding:2px 6px;border-radius:4px;font-size:12px;margin-right:4px}
+.ultima{background:#fff3e0;padding:8px;border-radius:8px;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="card">
-<h2>🥖 Bolsa de Trabajo - Panaderos Patagonia</h2>
+<h2>🥖 Bolsa Panaderos Patagonia</h2>
 
 <div id="login">
 <p>Si sos panadería autorizada, ingresá tu WhatsApp</p>
 <input id="telInput" placeholder="Ej: 2974007317" type="number">
 <button onclick="verificar()">Ya estoy autorizado, ver bolsa</button>
 <p id="msg"></p>
-<p style="font-size:13px">¿No estás autorizado? <a href="https://forms.gle/..." target="_blank">Solicitar autorización</a></p>
 </div>
 
 <div id="bolsa" class="oculto">
-<h3>✅ Hola <span id="nombreAut"></span></h3>
-<button onclick="cargarTrabajadores()">Ver trabajadores disponibles</button>
-<button onclick="cargarAutorizados()" style="background:#6d4c41">Ver solo Autorizados (Admin)</button>
+<h3>✅ Hola <span id="nombreAut"></span> - <span id="comercioAut"></span></h3>
+<button onclick="cargarTrabajadores()">Ver trabajadores</button>
+<button onclick="cargarAutorizados()" style="background:#6d4c41">Ver Solo Autorizados (Admin)</button>
 <div id="lista"></div>
 <button onclick="location.reload()" style="background:#ccc;color:#333;margin-top:20px">Salir</button>
 </div>
-
 </div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGj5IeGWMkOrSoUe-tXdVvcwusHdGGNDVvzzE2lW6EuSy4qJp8ov7Zt1mBXayuzOAk/exec";
-
 function normTel(t){ return String(t||"").replace(/\D/g,"").slice(-10); }
 
 async function verificar(){
   let tel = normTel(document.getElementById("telInput").value);
-  if(tel.length < 10){ document.getElementById("msg").innerText="Ingresá un número válido"; return; }
+  if(tel.length < 10){ document.getElementById("msg").innerText="Ingresá un número válido (10 dígitos)"; return; }
   document.getElementById("msg").innerText="Verificando...";
   try{
     let res = await fetch(`${SCRIPT_URL}?accion=verificar&telefono=${tel}`);
     let texto = await res.text();
-    console.log("Respuesta verificar:", texto);
-    
-    let autorizado = false;
-    let nombre = "";
-    try{
-      let json = JSON.parse(texto);
-      if(json === true || json.autorizado === true || json.ok === true) autorizado = true;
-      if(json.nombre) nombre = json.nombre;
-      if(json.data && json.data.nombre) nombre = json.data.nombre;
-    }catch(e){
-      if(texto.toLowerCase().includes("true")) autorizado = true;
-    }
-    
-    if(autorizado){
+    let data;
+    try{ data = JSON.parse(texto); } catch(e){ data = {autorizado: texto.includes("true")} }
+    if(data.autorizado){
       document.getElementById("login").classList.add("oculto");
       document.getElementById("bolsa").classList.remove("oculto");
-      document.getElementById("nombreAut").innerText = nombre || tel;
-      document.getElementById("msg").innerText="";
+      document.getElementById("nombreAut").innerText = data.nombre || tel;
+      document.getElementById("comercioAut").innerText = data.comercio || "";
       cargarTrabajadores();
     }else{
-      document.getElementById("msg").innerText="❌ No estás autorizado. Tu número no figura en la pestaña Autorizados.";
+      document.getElementById("msg").innerText="❌ No autorizado. No figura en Autorizados.";
     }
-  }catch(err){
-    document.getElementById("msg").innerText="Error de conexión, probá de nuevo";
+  }catch(e){
+    document.getElementById("msg").innerText="Error de conexión";
   }
 }
 
 async function cargarTrabajadores(){
-  document.getElementById("lista").innerHTML="Cargando trabajadores...";
-  try{
-    let res = await fetch(`${SCRIPT_URL}?accion=lista_trabajadores`);
-    let data = await res.json();
-    // data viene como array de arrays desde el Sheet
-    let html = "<h3>👷 Trabajadores</h3>";
-    // Saltamos encabezado fila 0
-    for(let i=1;i<data.length;i++){
-      let f = data[i];
-      if(!f[0]) continue;
-      html += `<div class="item">
-        <b>${f[0]||""} ${f[1]||""}</b> <span class="etiqueta">${f[3]||""} ${f[4]||""}</span><br>
-        📞 ${f[2]||""} | ${f[5]||""}<br>
-        <small>${f[6]||""}</small>
-      </div>`;
-    }
-    document.getElementById("lista").innerHTML=html;
-  }catch(e){
-    document.getElementById("lista").innerHTML="Error cargando trabajadores";
+  document.getElementById("lista").innerHTML="Cargando...";
+  let res = await fetch(`${SCRIPT_URL}?accion=lista_trabajadores`);
+  let data = await res.json();
+  let html = "<h3>👷 Trabajadores</h3>";
+  for(let i=1;i<data.length;i++){
+    let f = data[i];
+    if(!f[0]) continue;
+    // A=0 nombre B=1 wsp C=2 prov D=3 ciudad E=4 oficio F=5 panad_nom G=6 panad_dire H=7 panad_cont I=8 fecha
+    let ultNom = f[5]||""; let ultDir = f[6]||""; let ultCont = f[7]||"";
+    if(String(ultNom).toLowerCase().includes("no cargó")){ ultNom = "No informó última panadería"; ultDir=""; ultCont=""; }
+    html += `<div class="item">
+      <b>${f[0]}</b> - ${f[4]||""} <span class="etiqueta">${f[2]||""} - ${f[3]||""}</span><br>
+      📱 ${f[1]||""}<br>
+      <div class="ultima">
+        <b>Última panadería:</b> ${ultNom}<br>
+        ${ultDir ? `📍 ${ultDir}<br>` : ""}
+        ${ultCont ? `📞 ${ultCont}` : ""}
+      </div>
+      <small>${f[8]||""}</small>
+    </div>`;
   }
+  document.getElementById("lista").innerHTML=html;
 }
 
 async function cargarAutorizados(){
   document.getElementById("lista").innerHTML="Cargando autorizados...";
-  try{
-    let res = await fetch(`${SCRIPT_URL}?accion=lista_autorizados`);
-    let data = await res.json();
-    let html = "<h3>✅ Solo Autorizados</h3>";
-    // Tu orden real: A=nombre B=direccion C=comercio D=wsp E=provincia F=ciudad G=puesto H=estado I=fecha
-    data.forEach(p=>{
-      html += `<div class="item">
-        <b>${p.nombre||""}</b> - ${p.comercio||""}<br>
-        📱 <b style="color:#ff6f00">${p.wsp||""}</b><br>
-        📍 ${p.direccion||""} - ${p.ciudad||""}, ${p.provincia||""}<br>
-        <span class="etiqueta">${p.puesto||""}</span> <span class="etiqueta">${p.estado||""}</span><br>
-        <small>${p.fecha||""}</small>
-      </div>`;
-    });
-    document.getElementById("lista").innerHTML=html;
-  }catch(e){
-    document.getElementById("lista").innerHTML="Error cargando autorizados: "+e;
+  let res = await fetch(`${SCRIPT_URL}?accion=lista_autorizados`);
+  let data = await res.json();
+  let html = "<h3>✅ Solo Autorizados</h3>";
+  // Foto Autorizados: A=0 nombre B=1 direccion C=2 comercio D=3 wsp E=4 prov F=5 ciudad G=6 puesto H=7 estado I=8 fecha
+  for(let i=1;i<data.length;i++){
+    let f = data[i];
+    if(!f[3]) continue;
+    html += `<div class="item">
+      <b>${f[0]||""}</b> - ${f[2]||""}<br>
+      📱 <b style="color:#ff6f00;font-size:18px">${f[3]||""}</b><br>
+      📍 ${f[1]||""} - ${f[5]||""}, ${f[4]||""}<br>
+      <span class="etiqueta">${f[6]||""}</span> <span class="etiqueta">${f[7]||""}</span><br>
+      <small>${f[8]||""}</small>
+    </div>`;
   }
+  document.getElementById("lista").innerHTML=html;
 }
 </script>
 </body>
