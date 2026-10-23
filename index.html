@@ -13,11 +13,11 @@ body{background:#FFF7ED;font-family:system-ui;margin:0;padding:10px}
 input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #E7E5E4;margin:7px 0;font-size:16px}
 .checks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
 .checks label{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;background:#FFF7ED;padding:6px;border-radius:8px}
+label{font-weight:800;font-size:13px;margin-top:12px;display:block}
 .hidden{display:none}.item{border-bottom:1px solid #eee;padding:12px 0}.badge{background:#0A1931;color:#FFC947;padding:3px 8px;border-radius:8px;font-size:11px}
 button.verde{background:#27ae60;color:#fff;border:0;padding:14px;border-radius:10px;font-weight:900;width:100%;margin-top:12px}
 button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:800}
 .error{color:#DC2626;font-weight:800}.ok{color:#15803D;font-weight:800}
-.volver{background:#6B7280;color:#fff;border:0;padding:10px 16px;border-radius:8px;font-weight:800;margin:8px 0}
 .ultima{background:#fff8e1;padding:10px;border-radius:8px;margin-top:8px;border-left:4px solid #ff6f00;font-size:14px}
 </style>
 </head>
@@ -35,7 +35,8 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 <input id="t_nombre" placeholder="Nombre y Apellido *">
 <input id="t_wsp" placeholder="WhatsApp * ej 2974123456" type="tel">
 <select id="t_prov" onchange="cargarCiudades('t_prov','t_ciu')"><option value="">-- Provincia * --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
-<select id="t_ciu"><option value="">-- Ciudad * --</option></select>
+<select id="t_ciu" onchange="checkOtraCiudad('t_ciu','t_ciu_otra')"><option value="">-- Ciudad * --</option></select>
+<input id="t_ciu_otra" class="hidden" placeholder="Escribí tu ciudad *">
 <label>Oficios *</label>
 <div class="checks" id="t_oficios_checks">
 <label><input type="checkbox" value="Panadero"> Panadero</label>
@@ -44,8 +45,11 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 <label><input type="checkbox" value="Maestro Panadero"> Maestro</label>
 <label><input type="checkbox" value="Ayudante"> Ayudante</label>
 <label><input type="checkbox" value="Cajero"> Cajero</label>
+<label><input type="checkbox" value="Administrativo"> Administrativo</label>
+<label><input type="checkbox" value="Otros" onchange="checkOtrosOficio()"> Otros</label>
 </div>
-<label>Experiencia 1 - Donde trabajaste</label>
+<input id="t_oficio_otros" class="hidden" placeholder="¿Qué otro oficio? *">
+<label>Experiencia 1 - Obligatoria</label>
 <input id="t_exp1_nom" placeholder="Nombre del comercio *">
 <input id="t_exp1_dir" placeholder="Dirección del comercio *">
 <input id="t_exp1_tel" placeholder="Teléfono de referencia *">
@@ -59,20 +63,21 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 <input id="p_resp" placeholder="Responsable / Dueño *">
 <input id="p_dir" placeholder="Dirección *">
 <select id="p_prov" onchange="cargarCiudades('p_prov','p_ciu')"><option value="">-- Provincia * --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
-<select id="p_ciu"><option value="">-- Ciudad * --</option></select>
+<select id="p_ciu" onchange="checkOtraCiudad('p_ciu','p_ciu_otra')"><option value="">-- Ciudad * --</option></select>
+<input id="p_ciu_otra" class="hidden" placeholder="Escribí tu ciudad *">
 <input id="p_tel" placeholder="WhatsApp del comercio *">
-<input id="p_puesto" placeholder="Puesto que buscás * Ej: Panadero">
+<input id="p_puesto" placeholder="Puesto que buscás *">
 <button class="verde" onclick="guardarP()">🔐 Solicitar autorización</button>
 <div id="p_msg"></div>
 </div>
 
 <div id="bolsa" class="card hidden">
-<h3 style="text-align:center">🥖 Bolsa Panaderos Patagonia<br><small style="font-weight:400">Si sos panadería autorizada, ingresá tu WhatsApp</small></h3>
+<h3>Ver Bolsa - Solo Autorizados</h3>
 <input id="login_wsp" placeholder="Ej: 2974007317">
 <button class="verde" style="background:#ff6f00" onclick="loginBolsa()">Ya estoy autorizado, ver bolsa</button>
-<div id="login_msg" style="text-align:center;margin-top:8px"></div>
+<div id="login_msg"></div>
 <div id="bolsa_panel" class="hidden">
-<div id="saludo_comercio" style="background:#DCFCE7;color:#166534;padding:14px;border-radius:10px;font-weight:900;text-align:center;margin:12px 0"></div>
+<div id="saludo_comercio" style="background:#DCFCE7;color:#166534;padding:14px;border-radius:10px;font-weight:900;text-align:center;margin:12px 0;font-size:18px"></div>
 <select id="f_of" onchange="filtrar()"><option value="">-- Filtrar oficio --</option><option>Panadero</option><option>Facturero</option><option>Pastelero</option><option>Maestro Panadero</option><option>Ayudante</option><option>Cajero</option></select>
 <select id="f_prov" onchange="filtrar()"><option value="">-- Provincia --</option><option>Chubut</option><option>Santa Cruz</option><option>Rio Negro</option><option>Neuquen</option><option>Tierra del Fuego</option></select>
 <select id="f_ciu" onchange="filtrar()"><option value="">-- Ciudad --</option></select>
@@ -83,39 +88,86 @@ button.wsp{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px
 </div>
 
 <div id="admin" class="card hidden">
-<h3>Admin</h3>
+<h3>Admin - Clave: chanchadas</h3>
 <input id="a_pass" type="password" placeholder="Ingresar clave">
 <button class="verde" onclick="loginAdmin()">ENTRAR</button>
 <div id="a_msg"></div>
-<div id="a_panel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:12px;border-radius:8px;margin:8px 0"></div><select id="admin_filtro" onchange="cargarAdmin()"><option value="todo">Ver todo</option><option value="panaderias">Solo comercios</option><option value="trabajadores">Solo trabajadores</option></select><div id="a_lista"></div></div>
+<div id="a_panel" class="hidden"><div id="stats" style="background:#0A1931;color:#FFC947;padding:12px;border-radius:8px;margin:8px 0"></div><div id="a_lista"></div></div>
 </div>
 
 <script>
 const URL_SHEET="https://script.google.com/macros/s/AKfycbwcf6ovrDXhAWmUw8uPdMEwTVjnOSvTMKrcmk01B32rfjScyd3-QfTa-Kat54pTpFIM/exec";
-const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado","Las Heras"],"Rio Negro":["Bariloche","Cipolletti","General Roca","Viedma"],"Neuquen":["Neuquen Capital","Centenario","Zapala"],"Tierra del Fuego":["Ushuaia","Rio Grande"]};
+const CIUDADES={"Chubut":["Comodoro Rivadavia","Trelew","Puerto Madryn","Rawson","Esquel","Sarmiento","Rada Tilly"],"Santa Cruz":["Rio Gallegos","Caleta Olivia","Pico Truncado"],"Rio Negro":["Bariloche","Cipolletti","General Roca","Viedma"],"Neuquen":["Neuquen Capital","Centenario"],"Tierra del Fuego":["Ushuaia","Rio Grande"]};
+const OFICIOS_NO_PANADERIA=["Cajero","Administrativo","Maestranza","Atención al público","Atención"];
 let DATA=[]; let MI_WSP="";
 function show(id){document.querySelectorAll('#trabajador,#panaderia,#bolsa,#admin').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
-function cargarCiudades(idProv,idCiu){let prov=document.getElementById(idProv).value;let sel=document.getElementById(idCiu);if(!prov){sel.innerHTML='<option>-- Ciudad --</option>';return;}let lista=CIUDADES[prov]||[];sel.innerHTML='<option value="">-- Ciudad --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('');}
+function cargarCiudades(idProv,idCiu){let prov=document.getElementById(idProv).value;let sel=document.getElementById(idCiu);if(!prov){sel.innerHTML='<option>-- Ciudad --</option>';return;}let lista=CIUDADES[prov]||[];sel.innerHTML='<option value="">-- Ciudad * --</option>'+lista.map(c=>`<option value="${c}">${c}</option>`).join('');}
+function checkOtraCiudad(idCiu,idOtra){let val=document.getElementById(idCiu).value;document.getElementById(idOtra).classList.toggle('hidden', val!=='OTRA');}
+function checkOtrosOficio(){let chk=document.querySelector('#t_oficios_checks input[value="Otros"]');document.getElementById('t_oficio_otros').classList.toggle('hidden', !chk.checked);}
+function checkOtrosPuesto(){let chk=document.querySelector('#p_oficios_checks input[value="Otros"]');if(chk) document.getElementById('p_puesto_otros').classList.toggle('hidden', !chk.checked);}
+function getCheckedOficios(idDiv){return Array.from(document.querySelectorAll('#'+idDiv+' input:checked')).map(c=>c.value);}
+function validarNombreApellido(n){return n.trim().split(' ').filter(x=>x.length>1).length>=2;}
+function validarWSP(w){return w.replace(/\D/g,'').length>=10;}
+
 function loginBolsa(){
  let num=document.getElementById('login_wsp').value.trim();
+ if(!validarWSP(num)){document.getElementById('login_msg').innerHTML='<span class=error>❌ 10 dígitos mínimo</span>';return;}
  document.getElementById('login_msg').innerText='Verificando...';
- fetch(URL_SHEET+"?accion=verificar&num="+encodeURIComponent(num)).then(r=>r.json()).then(j=>{
+ fetch(URL_SHEET+"?accion=verificar&num="+encodeURIComponent(num)+"&v="+Date.now()).then(r=>r.json()).then(j=>{
   if(j.autorizado){
    MI_WSP=num;
-   document.getElementById('saludo_comercio').innerHTML='👋 Hola '+j.nombre+' '+(j.comercio?' - '+j.comercio:'')+'<br><small>Bienvenido a la bolsa</small>';
-   document.getElementById('login_msg').innerHTML='<span class=ok>✅ Autorizado: '+j.nombre+'</span>';
+   document.getElementById('saludo_comercio').innerText='👋 Hola '+j.nombre+' '+(j.comercio||'')+' - Bienvenido!';
+   document.getElementById('login_msg').innerHTML='<span class=ok>✅ AUTORIZADO: '+j.nombre+'</span>';
    document.getElementById('bolsa_panel').classList.remove('hidden');
    cargarDesdeSheet();
   }else{document.getElementById('login_msg').innerHTML='<span class=error>❌ No autorizado</span>';}
  });
 }
 function guardarT(){
- let oficios=Array.from(document.querySelectorAll('#t_oficios_checks input:checked')).map(c=>c.value).join(', ');
- let d={tipo:"trabajador",nombre:document.getElementById('t_nombre').value,wsp:document.getElementById('t_wsp').value,provincia:document.getElementById('t_prov').value,ciudad:document.getElementById('t_ciu').value,oficio:oficios,panaderia_nomb:document.getElementById('t_exp1_nom').value,panaderia_direc:document.getElementById('t_exp1_dir').value,panaderia_cont:document.getElementById('t_exp1_tel').value};
+ let nombre=document.getElementById('t_nombre').value.trim();
+ let wsp=document.getElementById('t_wsp').value.trim();
+ let prov=document.getElementById('t_prov').value;
+ let ciuSel=document.getElementById('t_ciu').value;
+ let ciuOtra=document.getElementById('t_ciu_otra').value.trim();
+ let ciu= ciuSel=='OTRA'?ciuOtra:ciuSel;
+ let oficios=getCheckedOficios('t_oficios_checks');
+ let oficioOtros=document.getElementById('t_oficio_otros').value.trim();
+ let oficioFinal= oficios.includes('Otros') ? oficios.filter(o=>o!=='Otros').concat(oficioOtros).join(', ') : oficios.join(', ');
+ let exp1_nom=document.getElementById('t_exp1_nom').value.trim();
+ let exp1_dir=document.getElementById('t_exp1_dir').value.trim();
+ let exp1_tel=document.getElementById('t_exp1_tel').value.trim();
+ if(!validarNombreApellido(nombre)){document.getElementById('t_msg').innerHTML='<span class=error>❌ Nombre y Apellido completo - 2 palabras mínimo</span>';return;}
+ if(!validarWSP(wsp)){document.getElementById('t_msg').innerHTML='<span class=error>❌ WhatsApp mínimo 10 dígitos - poné 2 números no va</span>';return;}
+ if(!prov||!ciu){document.getElementById('t_msg').innerHTML='<span class=error>❌ Provincia y Ciudad obligatorias</span>';return;}
+ if(oficios.length==0){document.getElementById('t_msg').innerHTML='<span class=error>❌ Elegí al menos un oficio</span>';return;}
+ if(oficios.includes('Otros')&&!oficioOtros){document.getElementById('t_msg').innerHTML='<span class=error>❌ Escribí qué otro oficio</span>';return;}
+ let necesitaExp=oficios.some(o=>!OFICIOS_NO_PANADERIA.includes(o)&&o!=='Otros');
+ if(necesitaExp){
+  if(!exp1_nom||!exp1_dir||!exp1_tel){document.getElementById('t_msg').innerHTML='<span class=error>❌ FALTA: Nombre comercio, Dirección y Tel de referencia son OBLIGATORIOS y no te deja guardar si no los ponés</span>';return;}
+  if(!validarWSP(exp1_tel)){document.getElementById('t_msg').innerHTML='<span class=error>❌ Tel referencia 10 dígitos mínimo</span>';return;}
+ }
+ let d={tipo:"trabajador",nombre:nombre,wsp:wsp,provincia:prov,ciudad:ciu,oficio:oficioFinal,panaderia_nomb:exp1_nom,panaderia_direc:exp1_dir,panaderia_cont:exp1_tel};
+ document.getElementById('t_msg').innerText='Guardando...';
  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('t_msg').innerHTML='<span class=ok>✅ Guardado</span>';});
 }
 function guardarP(){
- let d={tipo:"panaderia",nombreP:document.getElementById('p_nombre').value,responsable:document.getElementById('p_resp').value,direccion:document.getElementById('p_dir').value,provincia:document.getElementById('p_prov').value,ciudad:document.getElementById('p_ciu').value,puesto:document.getElementById('p_puesto').value,tel:document.getElementById('p_tel').value};
+ let nombreP=document.getElementById('p_nombre').value.trim();
+ let resp=document.getElementById('p_resp').value.trim();
+ let dir=document.getElementById('p_dir').value.trim();
+ let prov=document.getElementById('p_prov').value;
+ let ciuSel=document.getElementById('p_ciu').value;
+ let ciuOtra=document.getElementById('p_ciu_otra').value.trim();
+ let ciu= ciuSel=='OTRA'?ciuOtra:ciuSel;
+ let tel=document.getElementById('p_tel').value.trim();
+ let puesto=document.getElementById('p_puesto').value.trim();
+ if(nombreP.length<3){document.getElementById('p_msg').innerHTML='<span class=error>❌ Nombre comercio obligatorio</span>';return;}
+ if(!resp){document.getElementById('p_msg').innerHTML='<span class=error>❌ Responsable obligatorio</span>';return;}
+ if(!dir){document.getElementById('p_msg').innerHTML='<span class=error>❌ Dirección obligatoria</span>';return;}
+ if(!prov||!ciu){document.getElementById('p_msg').innerHTML='<span class=error>❌ Provincia y Ciudad obligatorias</span>';return;}
+ if(!validarWSP(tel)){document.getElementById('p_msg').innerHTML='<span class=error>❌ WhatsApp comercio 10 dígitos - si ponés 2 números no guarda</span>';return;}
+ if(!puesto){document.getElementById('p_msg').innerHTML='<span class=error>❌ Puesto que buscás obligatorio</span>';return;}
+ let d={tipo:"panaderia",nombreP:nombreP,responsable:resp,direccion:dir,provincia:prov,ciudad:ciu,puesto:puesto,tel:tel};
+ document.getElementById('p_msg').innerText='Enviando...';
  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(()=>{document.getElementById('p_msg').innerHTML='<span class=ok>✅ Solicitud enviada</span>';});
 }
 function cargarDesdeSheet(){
@@ -127,19 +179,19 @@ function cargarDesdeSheet(){
  });
 }
 function render(l){
- if(!l.length){document.getElementById('lista').innerHTML='Sin resultados';return;}
+ if(!l.length){document.getElementById('lista').innerHTML='Sin resultados - revisá que en la hoja Trabajadores haya datos';return;}
  document.getElementById('lista').innerHTML=l.map(t=>`
   <div class=item>
-   <b>${t.nombre}</b> <span class=badge>${t.puesto}</span><br>
-   📍 ${t.ciudad} - ${t.provincia}<br>
+   <b>${t.nombre}</b> <span class=badge>${t.puesto||''}</span><br>
+   📍 ${t.ciudad} - ${t.provincia||''}<br>
    📱 ${t.wsp}<br>
    <div class=ultima>
     <b>🏪 Trabajo cargado:</b><br>
-    Nombre: <b>${t.panaderia_nomb||'No informó'}</b><br>
-    ${t.panaderia_direc?`Dirección: ${t.panaderia_direc}<br>`:''}
-    ${t.panaderia_cont?`Tel referencia: ${t.panaderia_cont}`:''}
+    Comercio: <b>${t.panaderia_nomb||'No informó'}</b><br>
+    ${t.panaderia_direc?`📍 Dirección: ${t.panaderia_direc}<br>`:''}
+    ${t.panaderia_cont?`📞 Tel referencia: ${t.panaderia_cont}`:''}
    </div>
-   <button class="wsp" style="margin-top:8px" onclick="contactar('${t.wsp}','${t.nombre}')">📲 CONTACTAR</button>
+   <button class="wsp" style="margin-top:8px" onclick="window.open('https://wa.me/549${String(t.wsp).replace(/\\D/g,'')}','_blank')">📲 CONTACTAR</button>
   </div>`).join('');
 }
 function filtrar(){
@@ -155,17 +207,13 @@ function filtrar(){
  document.getElementById('contador').innerText='Mostrando: '+base.length+' de '+DATA.length;
  render(base);
 }
-function contactar(wsp,nombre){fetch(URL_SHEET+"?accion=contacto&de="+encodeURIComponent(MI_WSP)+"&para="+encodeURIComponent(wsp)+"&nombre="+encodeURIComponent(nombre));window.open("https://wa.me/549"+String(wsp).replace(/\D/g,''),'_blank');}
 function loginAdmin(){
- if(document.getElementById('a_pass').value!=='chanchadas'){document.getElementById('a_msg').innerHTML='<span class=error>❌ Clave mal</span>';return;}
+ if(document.getElementById('a_pass').value!=='chanchadas'){document.getElementById('a_msg').innerHTML='<span class=error>❌ Clave incorrecta - es chanchadas</span>';return;}
  document.getElementById('a_panel').classList.remove('hidden');
  document.getElementById('a_msg').innerHTML='<span class=ok>✅ Admin OK</span>';
- cargarAdmin();
-}
-function cargarAdmin(){
  fetch(URL_SHEET+"?accion=listar_admin&v="+Date.now()).then(r=>r.json()).then(j=>{
-  document.getElementById('stats').innerText='Trabajadores:'+j.trabajadores.length+' | Comercios:'+j.panaderias.length+' | Aut:'+j.autorizados.length;
-  document.getElementById('a_lista').innerHTML=j.trabajadores.map(t=>`<div class=item>${t.nombre} - ${t.wsp} - ${t.puesto}</div>`).join('')+j.panaderias.map(p=>`<div class=item>🏪 ${p.nombre} - ${p.estado}</div>`).join('');
+  document.getElementById('stats').innerText=`TOTAL: ${j.trabajadores.length} postulantes | ${j.panaderias.length} comercios | ${j.autorizados.length} autorizados`;
+  document.getElementById('a_lista').innerHTML='<h4>👷 TRABAJADORES</h4>'+j.trabajadores.map(t=>`<div class=item>${t.nombre} | ${t.wsp}</div>`).join('')+'<h4>🏪 COMERCIOS</h4>'+j.panaderias.map(p=>`<div class=item>${p.nombre} | ${p.wsp} | ${p.estado}</div>`).join('')+'<h4>✅ AUTORIZADOS</h4>'+j.autorizados.map(a=>`<div class=item>${a.nombre}</div>`).join('');
  });
 }
 show('bolsa');
