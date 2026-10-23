@@ -3,84 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolsa Trabajo Panaderos Patagonia</title>
+<title>Bolsa Panaderos Patagonia</title>
 <style>
-body{font-family:Arial,sans-serif;background:#fff8e1;margin:0;padding:12px}
-.card{background:white;max-width:650px;margin:auto;padding:18px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-input,button{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #ccc;font-size:16px;box-sizing:border-box}
-button{background:#ff6f00;color:white;border:none;font-weight:bold;cursor:pointer}
+body{background:#fef9e7;margin:0;padding:15px;font-family:Arial,sans-serif}
+.card{background:white;max-width:600px;margin:30px auto;padding:28px;border-radius:14px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+h2{margin:0 0 8px 0;font-size:22px}
+p{color:#555;margin:8px 0}
+input,select{width:100%;padding:14px;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;margin:8px 0}
+button{width:100%;padding:14px;background:#ff6f00;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;margin:6px 0}
+button.sec{background:#6d4c41}
+button.gris{background:#e0e0e0;color:#333}
 .oculto{display:none}
-.item{border-bottom:1px solid #eee;padding:12px 0}
-.etiqueta{background:#ffe0b2;padding:2px 6px;border-radius:4px;font-size:12px;margin-right:4px}
-.ultima{background:#fff3e0;padding:8px;border-radius:8px;margin-top:6px}
+.item{border:1px solid #f0e6c8;padding:14px;border-radius:10px;margin:10px 0;background:#fffdf5}
+.etiqueta{background:#fff3e0;padding:3px 8px;border-radius:12px;font-size:12px;margin-right:5px;display:inline-block}
+.ultima{background:#fff8e1;padding:10px;border-radius:8px;margin-top:8px;border-left:4px solid #ff6f00}
+.wa{display:inline-block;background:#25D366;color:white;padding:8px 12px;border-radius:6px;text-decoration:none;font-weight:bold;margin-top:6px}
+#lista{margin-top:15px}
 </style>
 </head>
 <body>
 <div class="card">
-<h2>🥖 Bolsa Panaderos Patagonia</h2>
-<div id="login">
-<input id="telInput" placeholder="WhatsApp autorizado" type="number">
-<button onclick="verificar()">Entrar</button>
-<p id="msg"></p>
+  <!-- LOGIN IGUAL A TU CAPTURA -->
+  <div id="login">
+    <h2>🥖 Bolsa Panaderos Patagonia</h2>
+    <p>Si sos panadería autorizada, ingresá tu WhatsApp</p>
+    <input id="telInput" type="number" placeholder="Ej: 2974007317">
+    <button onclick="verificar()">Ya estoy autorizado, ver bolsa</button>
+    <p id="msg" style="color:red;text-align:center"></p>
+  </div>
+
+  <!-- BOLSA -->
+  <div id="bolsa" class="oculto">
+    <h2>✅ Hola <span id="nombreAut"></span><br><small style="font-weight:normal"><span id="comercioAut"></span></small></h2>
+    
+    <input id="buscador" placeholder="Buscar por nombre, oficio, ciudad..." oninput="filtrar()">
+    <select id="filtroOficio" onchange="filtrar()">
+      <option value="">Todos los oficios</option>
+      <option value="panadero">Panadero</option>
+      <option value="pastelero">Pastelero</option>
+      <option value="facturero">Facturero</option>
+      <option value="ayudante">Ayudante</option>
+      <option value="maestro">Maestro</option>
+    </select>
+
+    <button onclick="cargarTrabajadores()">Ver trabajadores</button>
+    <button class="sec" onclick="cargarAutorizados()">Ver Solo Autorizados</button>
+    
+    <div id="contador" style="text-align:center;margin-top:10px;font-weight:bold"></div>
+    <div id="lista"></div>
+    
+    <button class="gris" onclick="location.reload()">Salir</button>
+  </div>
 </div>
-<div id="bolsa" class="oculto">
-<h3>Hola <span id="nombreAut"></span> - <span id="comercioAut"></span></h3>
-<button onclick="cargarTrabajadores()">Ver TODOS los trabajadores</button>
-<button onclick="cargarAutorizados()" style="background:#6d4c41">Ver TODOS los Autorizados</button>
-<div id="lista"></div>
-<button onclick="location.reload()" style="background:#ccc;color:#333;margin-top:20px">Salir</button>
-</div>
-</div>
+
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGj5IeGWMkOrSoUe-tXdVvcwusHdGGNDVvzzE2lW6EuSy4qJp8ov7Zt1mBXayuzOAk/exec";
+let TODOS_TRAB = [];
+let TODOS_AUT = [];
+
 function normTel(t){ return String(t||"").replace(/\D/g,"").slice(-10); }
 
 async function verificar(){
   let tel = normTel(document.getElementById("telInput").value);
-  let res = await fetch(`${SCRIPT_URL}?accion=verificar&telefono=${tel}&v=${Date.now()}`);
-  let data = await res.json();
-  if(data.autorizado){
-    document.getElementById("login").classList.add("oculto");
-    document.getElementById("bolsa").classList.remove("oculto");
-    document.getElementById("nombreAut").innerText = data.nombre;
-    document.getElementById("comercioAut").innerText = data.comercio;
-    cargarTrabajadores();
-  }else{ document.getElementById("msg").innerText="No autorizado"; }
+  if(tel.length < 10){ document.getElementById("msg").innerText="Ingresá un número válido de 10 dígitos"; return; }
+  document.getElementById("msg").innerText="Verificando...";
+  try{
+    let res = await fetch(`${SCRIPT_URL}?accion=verificar&telefono=${tel}&v=${Date.now()}`);
+    let data = await res.json();
+    if(data.autorizado){
+      document.getElementById("login").classList.add("oculto");
+      document.getElementById("bolsa").classList.remove("oculto");
+      document.getElementById("nombreAut").innerText = data.nombre;
+      document.getElementById("comercioAut").innerText = data.comercio || "";
+      cargarTrabajadores();
+    }else{
+      document.getElementById("msg").innerText="❌ No autorizado - No estás en la planilla Autorizados";
+    }
+  }catch(e){ document.getElementById("msg").innerText="Error de conexión"; }
 }
 
 async function cargarTrabajadores(){
-  document.getElementById("lista").innerHTML="Cargando...";
+  document.getElementById("lista").innerHTML="Cargando trabajadores...";
   let res = await fetch(`${SCRIPT_URL}?accion=lista_trabajadores&v=${Date.now()}`);
   let data = await res.json();
-  let html = `<h3>👷 Trabajadores (${data.length-1} en total)</h3>`;
+  TODOS_TRAB = data;
+  renderTrabajadores(data);
+}
+
+function renderTrabajadores(data){
+  let html = "";
+  let count = 0;
   for(let i=1;i<data.length;i++){
     let f = data[i];
     if(!f[0]) continue;
-    html += `<div class="item">
-      <b>${f[0]}</b> - ${f[4]||""} <span class="etiqueta">${f[2]||""} - ${f[3]||""}</span><br>
-      📱 ${f[1]||""}<br>
+    // Filtro por buscador y oficio se aplica en filtrar()
+    count++;
+    let nombre = f[0]||""; let wsp = f[1]||""; let prov = f[2]||""; let ciudad = f[3]||""; 
+    let oficio = f[4]||""; let panNom = f[5]||""; let panDir = f[6]||""; let panCont = f[7]||""; let fecha = f[8]||"";
+    if(String(panNom).toLowerCase().includes("no cargó")){ panNom="No informó última panadería"; panDir=""; panCont=""; }
+    let wspClean = String(wsp).replace(/\D/g,"");
+    html += `<div class="item" data-busqueda="${(nombre+" "+oficio+" "+ciudad+" "+prov).toLowerCase()}">
+      <b style="font-size:17px">${nombre}</b> - ${oficio}<br>
+      <span class="etiqueta">📍 ${prov} - ${ciudad}</span> <span class="etiqueta">📅 ${fecha}</span><br>
+      <div style="margin-top:6px">📱 ${wsp} <a class="wa" target="_blank" href="https://wa.me/${wspClean}?text=Hola%20${encodeURIComponent(nombre)}%20te%20contacto%20por%20la%20bolsa%20de%20panaderos">WhatsApp</a></div>
       <div class="ultima">
-        <b>Última panadería:</b> ${f[5]||"No informó"}<br>
-        ${f[6] ? `📍 ${f[6]}<br>` : ""}
-        ${f[7] ? `📞 ${f[7]}` : ""}
+        <b>Última panadería:</b><br>
+        🏪 ${panNom}<br>
+        ${panDir ? `📍 ${panDir}<br>` : ""}
+        ${panCont ? `📞 ${panCont}` : ""}
       </div>
-      <small>${f[8]||""}</small>
     </div>`;
   }
-  document.getElementById("lista").innerHTML=html;
+  document.getElementById("contador").innerText = `Total: ${count} trabajadores`;
+  document.getElementById("lista").innerHTML = html || "No hay trabajadores";
+}
+
+function filtrar(){
+  let q = document.getElementById("buscador").value.toLowerCase();
+  let oficio = document.getElementById("filtroOficio").value.toLowerCase();
+  let items = document.querySelectorAll(".item");
+  let visibles = 0;
+  items.forEach(el=>{
+    let txt = el.getAttribute("data-busqueda")||"";
+    let okQ = !q || txt.includes(q);
+    let okOf = !oficio || txt.includes(oficio);
+    el.style.display = (okQ && okOf) ? "block" : "none";
+    if(okQ && okOf) visibles++;
+  });
+  document.getElementById("contador").innerText = `Mostrando: ${visibles}`;
 }
 
 async function cargarAutorizados(){
-  document.getElementById("lista").innerHTML="Cargando...";
+  document.getElementById("lista").innerHTML="Cargando autorizados...";
   let res = await fetch(`${SCRIPT_URL}?accion=lista_autorizados&v=${Date.now()}`);
   let data = await res.json();
-  let html = `<h3>✅ Autorizados (${data.length-1} en total)</h3>`;
+  TODOS_AUT = data;
+  let html = `<h3>✅ Autorizados (${data.length-1})</h3>`;
   for(let i=1;i<data.length;i++){
     let f = data[i];
-    if(!f[3]) continue;
-    html += `<div class="item"><b>${f[0]}</b> - ${f[2]}<br>📱 ${f[3]}<br>📍 ${f[1]} - ${f[5]}, ${f[4]}<br><span class="etiqueta">${f[6]}</span> <span class="etiqueta">${f[7]}</span></div>`;
+    if(!f[0]) continue;
+    // A=0 nombre B=1 direccion C=2 comercio D=3 wsp E=4 provincia F=5 ciudad G=6 puesto H=7 estado I=8 fecha
+    html += `<div class="item">
+      <b>${f[0]||""}</b> - ${f[2]||""}<br>
+      📱 <b style="font-size:18px;color:#ff6f00">${f[3]||""}</b> <a class="wa" target="_blank" href="https://wa.me/${String(f[3]||"").replace(/\D/g,"")}">WhatsApp</a><br>
+      📍 ${f[1]||""}<br>🏙️ ${f[5]||""}, ${f[4]||""}<br>
+      <span class="etiqueta">${f[6]||""}</span> <span class="etiqueta">${f[7]||""}</span><br>
+      <small>${f[8]||""}</small>
+    </div>`;
   }
-  document.getElementById("lista").innerHTML=html;
+  document.getElementById("contador").innerText = `Total: ${data.length-1} autorizados`;
+  document.getElementById("lista").innerHTML = html;
 }
 </script>
 </body>
