@@ -18,68 +18,51 @@ button{background:#ff6f00;color:white;border:none;font-weight:bold;cursor:pointe
 <body>
 <div class="card">
 <h2>🥖 Bolsa Panaderos Patagonia</h2>
-
 <div id="login">
-<p>Si sos panadería autorizada, ingresá tu WhatsApp</p>
-<input id="telInput" placeholder="Ej: 2974007317" type="number">
-<button onclick="verificar()">Ya estoy autorizado, ver bolsa</button>
+<input id="telInput" placeholder="WhatsApp autorizado" type="number">
+<button onclick="verificar()">Entrar</button>
 <p id="msg"></p>
 </div>
-
 <div id="bolsa" class="oculto">
-<h3>✅ Hola <span id="nombreAut"></span> - <span id="comercioAut"></span></h3>
-<button onclick="cargarTrabajadores()">Ver trabajadores</button>
-<button onclick="cargarAutorizados()" style="background:#6d4c41">Ver Solo Autorizados (Admin)</button>
+<h3>Hola <span id="nombreAut"></span> - <span id="comercioAut"></span></h3>
+<button onclick="cargarTrabajadores()">Ver TODOS los trabajadores</button>
+<button onclick="cargarAutorizados()" style="background:#6d4c41">Ver TODOS los Autorizados</button>
 <div id="lista"></div>
 <button onclick="location.reload()" style="background:#ccc;color:#333;margin-top:20px">Salir</button>
 </div>
 </div>
-
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGj5IeGWMkOrSoUe-tXdVvcwusHdGGNDVvzzE2lW6EuSy4qJp8ov7Zt1mBXayuzOAk/exec";
 function normTel(t){ return String(t||"").replace(/\D/g,"").slice(-10); }
 
 async function verificar(){
   let tel = normTel(document.getElementById("telInput").value);
-  if(tel.length < 10){ document.getElementById("msg").innerText="Ingresá un número válido (10 dígitos)"; return; }
-  document.getElementById("msg").innerText="Verificando...";
-  try{
-    let res = await fetch(`${SCRIPT_URL}?accion=verificar&telefono=${tel}`);
-    let texto = await res.text();
-    let data;
-    try{ data = JSON.parse(texto); } catch(e){ data = {autorizado: texto.includes("true")} }
-    if(data.autorizado){
-      document.getElementById("login").classList.add("oculto");
-      document.getElementById("bolsa").classList.remove("oculto");
-      document.getElementById("nombreAut").innerText = data.nombre || tel;
-      document.getElementById("comercioAut").innerText = data.comercio || "";
-      cargarTrabajadores();
-    }else{
-      document.getElementById("msg").innerText="❌ No autorizado. No figura en Autorizados.";
-    }
-  }catch(e){
-    document.getElementById("msg").innerText="Error de conexión";
-  }
+  let res = await fetch(`${SCRIPT_URL}?accion=verificar&telefono=${tel}&v=${Date.now()}`);
+  let data = await res.json();
+  if(data.autorizado){
+    document.getElementById("login").classList.add("oculto");
+    document.getElementById("bolsa").classList.remove("oculto");
+    document.getElementById("nombreAut").innerText = data.nombre;
+    document.getElementById("comercioAut").innerText = data.comercio;
+    cargarTrabajadores();
+  }else{ document.getElementById("msg").innerText="No autorizado"; }
 }
 
 async function cargarTrabajadores(){
   document.getElementById("lista").innerHTML="Cargando...";
-  let res = await fetch(`${SCRIPT_URL}?accion=lista_trabajadores`);
+  let res = await fetch(`${SCRIPT_URL}?accion=lista_trabajadores&v=${Date.now()}`);
   let data = await res.json();
-  let html = "<h3>👷 Trabajadores</h3>";
+  let html = `<h3>👷 Trabajadores (${data.length-1} en total)</h3>`;
   for(let i=1;i<data.length;i++){
     let f = data[i];
     if(!f[0]) continue;
-    // A=0 nombre B=1 wsp C=2 prov D=3 ciudad E=4 oficio F=5 panad_nom G=6 panad_dire H=7 panad_cont I=8 fecha
-    let ultNom = f[5]||""; let ultDir = f[6]||""; let ultCont = f[7]||"";
-    if(String(ultNom).toLowerCase().includes("no cargó")){ ultNom = "No informó última panadería"; ultDir=""; ultCont=""; }
     html += `<div class="item">
       <b>${f[0]}</b> - ${f[4]||""} <span class="etiqueta">${f[2]||""} - ${f[3]||""}</span><br>
       📱 ${f[1]||""}<br>
       <div class="ultima">
-        <b>Última panadería:</b> ${ultNom}<br>
-        ${ultDir ? `📍 ${ultDir}<br>` : ""}
-        ${ultCont ? `📞 ${ultCont}` : ""}
+        <b>Última panadería:</b> ${f[5]||"No informó"}<br>
+        ${f[6] ? `📍 ${f[6]}<br>` : ""}
+        ${f[7] ? `📞 ${f[7]}` : ""}
       </div>
       <small>${f[8]||""}</small>
     </div>`;
@@ -88,21 +71,14 @@ async function cargarTrabajadores(){
 }
 
 async function cargarAutorizados(){
-  document.getElementById("lista").innerHTML="Cargando autorizados...";
-  let res = await fetch(`${SCRIPT_URL}?accion=lista_autorizados`);
+  document.getElementById("lista").innerHTML="Cargando...";
+  let res = await fetch(`${SCRIPT_URL}?accion=lista_autorizados&v=${Date.now()}`);
   let data = await res.json();
-  let html = "<h3>✅ Solo Autorizados</h3>";
-  // Foto Autorizados: A=0 nombre B=1 direccion C=2 comercio D=3 wsp E=4 prov F=5 ciudad G=6 puesto H=7 estado I=8 fecha
+  let html = `<h3>✅ Autorizados (${data.length-1} en total)</h3>`;
   for(let i=1;i<data.length;i++){
     let f = data[i];
     if(!f[3]) continue;
-    html += `<div class="item">
-      <b>${f[0]||""}</b> - ${f[2]||""}<br>
-      📱 <b style="color:#ff6f00;font-size:18px">${f[3]||""}</b><br>
-      📍 ${f[1]||""} - ${f[5]||""}, ${f[4]||""}<br>
-      <span class="etiqueta">${f[6]||""}</span> <span class="etiqueta">${f[7]||""}</span><br>
-      <small>${f[8]||""}</small>
-    </div>`;
+    html += `<div class="item"><b>${f[0]}</b> - ${f[2]}<br>📱 ${f[3]}<br>📍 ${f[1]} - ${f[5]}, ${f[4]}<br><span class="etiqueta">${f[6]}</span> <span class="etiqueta">${f[7]}</span></div>`;
   }
   document.getElementById("lista").innerHTML=html;
 }
