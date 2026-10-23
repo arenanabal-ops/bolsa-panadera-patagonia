@@ -8,7 +8,7 @@ body{background:#fef9e7;margin:0;padding:15px;font-family:Arial,sans-serif}
 .card{background:white;max-width:600px;margin:30px auto;padding:28px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
 h2{margin:0 0 8px 0} p{color:#555}
 input,select{width:100%;padding:14px;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;margin:8px 0}
-button{width:100%;padding:14px;background:#ff6f00;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:6px}
+button{width:100%;padding:14px;background:#ff6f00;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer}
 button.gris{background:#e0e0e0;color:#333}
 .oculto{display:none}
 .item{border:1px solid #f0e6c8;padding:14px;border-radius:10px;margin:10px 0;background:#fffdf5;text-align:left}
@@ -29,26 +29,22 @@ button.gris{background:#e0e0e0;color:#333}
 </div>
 
 <div id="bolsa" class="oculto">
-<h2>✅ Hola <span id="nombreAut"></span><br><small style="font-weight:normal" id="comercioAut"></small></h2>
-
+<h2>✅ Hola <span id="nombreAut"></span><br><small id="comercioAut"></small></h2>
 <div class="filtros">
-<select id="filtroOficio" onchange="filtrar()"><option value="">Todos los oficios</option></select>
-<select id="filtroProv" onchange="filtrar()"><option value="">Todas las provincias</option></select>
-<select id="filtroCiudad" onchange="filtrar()"><option value="">Todas las ciudades</option></select>
+<select id="filtroOficio" onchange="filtrar()"><option value="">Oficio</option></select>
+<select id="filtroProv" onchange="filtrar()"><option value="">Provincia</option></select>
+<select id="filtroCiudad" onchange="filtrar()"><option value="">Ciudad</option></select>
 </div>
-
 <div id="contador" style="text-align:center;font-weight:bold;margin:12px 0"></div>
 <div id="lista"></div>
-
 <button class="gris" onclick="location.reload()">Salir</button>
 </div>
 </div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGj5IeGWMkOrSoUe-tXdVvcwusHdGGNDVvzzE2lW6EuSy4qJp8ov7Zt1mBXayuzOAk/exec";
-let TRAB = [];
+let TRAB=[];
 function normTel(t){return String(t||"").replace(/\D/g,"").slice(-10);}
-
 async function verificar(){
  let tel=normTel(document.getElementById("telInput").value);
  if(tel.length<10){document.getElementById("msg").innerText="Número inválido";return;}
@@ -61,59 +57,36 @@ async function verificar(){
   document.getElementById("nombreAut").innerText=d.nombre;
   document.getElementById("comercioAut").innerText=d.comercio||"";
   cargarTrabajadores();
- }else{document.getElementById("msg").innerText="❌ No autorizado";}
+ }else{document.getElementById("msg").innerText="❌ No autorizado: "+d.tel_buscado;}
 }
-
 async function cargarTrabajadores(){
- document.getElementById("lista").innerHTML="Cargando trabajadores...";
+ document.getElementById("lista").innerHTML="Cargando...";
  let r=await fetch(`${SCRIPT_URL}?accion=lista_trabajadores&v=${Date.now()}`);
  let data=await r.json();
  TRAB=data;
-
- // Cargar opciones de filtros con datos reales de la planilla
  let oficios=new Set(), provs=new Set(), ciudades=new Set();
- for(let i=1;i<data.length;i++){
-   if(!data[i][0])continue;
-   if(data[i][4]) oficios.add(data[i][4]);
-   if(data[i][2]) provs.add(data[i][2]);
-   if(data[i][3]) ciudades.add(data[i][3]);
- }
- let selOf=document.getElementById("filtroOficio");
- oficios.forEach(o=>{let op=document.createElement("option");op.value=o;op.text=o;selOf.appendChild(op);});
- let selP=document.getElementById("filtroProv");
- provs.forEach(o=>{let op=document.createElement("option");op.value=o;op.text=o;selP.appendChild(op);});
- let selC=document.getElementById("filtroCiudad");
- ciudades.forEach(o=>{let op=document.createElement("option");op.value=o;op.text=o;selC.appendChild(op);});
-
+ for(let i=1;i<data.length;i++){if(!data[i][0])continue;if(data[i][4])oficios.add(data[i][4]);if(data[i][2])provs.add(data[i][2]);if(data[i][3])ciudades.add(data[i][3]);}
+ oficios.forEach(o=>{let op=document.createElement("option");op.value=o;op.text=o;document.getElementById("filtroOficio").appendChild(op);});
+ provs.forEach(o=>{let op=document.createElement("option");op.value=o;op.text=o;document.getElementById("filtroProv").appendChild(op);});
+ ciudades.forEach(o=>{let op=document.createElement("option");op.value=o;op.text=o;document.getElementById("filtroCiudad").appendChild(op);});
  render(data);
 }
-
 function render(data){
- let h=""; let c=0;
+ let h="";let c=0;
  for(let i=1;i<data.length;i++){let f=data[i];if(!f[0])continue;c++;
-  let wspClean=String(f[1]||"").replace(/\D/g,"");
-  h+=`<div class="item" data-oficio="${(f[4]||"").toLowerCase()}" data-prov="${(f[2]||"").toLowerCase()}" data-ciudad="${(f[3]||"").toLowerCase()}">
-  <b>${f[0]}</b> - ${f[4]||""}<br>
-  <span>📍 ${f[2]||""} - ${f[3]||""}</span><br>
-  📱 ${f[1]||""}<a class="wa" target="_blank" href="https://wa.me/${wspClean}">WhatsApp</a>
-  <div class="ultima"><b>Última panadería:</b> ${f[5]||"No informó"}<br>${f[6]?`📍 ${f[6]}<br>`:""}${f[7]?`📞 ${f[7]}`:""}</div>
-  </div>`;}
+  let wc=String(f[1]||"").replace(/\D/g,"");
+  h+=`<div class="item" data-oficio="${(f[4]||"").toLowerCase()}" data-prov="${(f[2]||"").toLowerCase()}" data-ciudad="${(f[3]||"").toLowerCase()}"><b>${f[0]}</b> - ${f[4]||""}<br>📍 ${f[2]||""} - ${f[3]||""}<br>📱 ${f[1]||""}<a class="wa" target="_blank" href="https://wa.me/${wc}">WhatsApp</a><div class="ultima"><b>Última:</b> ${f[5]||"No informó"}<br>${f[6]?`📍 ${f[6]}<br>`:""}${f[7]?`📞 ${f[7]}`:""}</div></div>`;}
  document.getElementById("contador").innerText=`Total: ${c} trabajadores`;
  document.getElementById("lista").innerHTML=h;
 }
-
 function filtrar(){
  let of=document.getElementById("filtroOficio").value.toLowerCase();
  let pr=document.getElementById("filtroProv").value.toLowerCase();
  let ci=document.getElementById("filtroCiudad").value.toLowerCase();
  let vis=0;
  document.querySelectorAll(".item").forEach(el=>{
-  let okOf=!of || el.dataset.oficio.includes(of);
-  let okPr=!pr || el.dataset.prov.includes(pr);
-  let okCi=!ci || el.dataset.ciudad.includes(ci);
-  let show=okOf&&okPr&&okCi;
-  el.style.display=show?"block":"none";
-  if(show)vis++;
+  let ok=(!of||el.dataset.oficio.includes(of))&&(!pr||el.dataset.prov.includes(pr))&&(!ci||el.dataset.ciudad.includes(ci));
+  el.style.display=ok?"block":"none";if(ok)vis++;
  });
  document.getElementById("contador").innerText=`Mostrando: ${vis}`;
 }
